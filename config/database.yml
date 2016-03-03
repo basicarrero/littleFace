@@ -17,6 +17,8 @@
 default: &default
   adapter: postgresql
   encoding: unicode
+  username: littleface
+  password: littleface #<%= ENV['LITTLEFACE_DATABASE_PASSWORD'] %>
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: 5
@@ -81,5 +83,4 @@ test:
 production:
   <<: *default
   database: littleFace_production
-  username: littleFace
-  password: <%= ENV['LITTLEFACE_DATABASE_PASSWORD'] %>
+
