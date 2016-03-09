@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 
   get 'page/home' => 'page#home'
 
+  resources :post
+  
   root 'session#index'
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -1,1 +1,19 @@
 <%= render "layouts/navbar" %>
+<div class="panel-corners, panel-default, paneltransparent" style="position: fixed; width: 100%; min-height: 80px; margin-top: 20px">
+	<div class="container">
+		<div class="panel-corners panel-default transparent" style="margin:0px">
+			<h1>My Posts:</small></h1>
+		</div>
+	</div>
+</div>
+</div>
+<div id="my-posts">
+	<div class="panel-corners panel-default transparent">
+		<div class="container main_panel">
+			<%= render @posts %>
+		</div>
+	</div>
+</div>
+<div id="infinite-scrolling">
+	<%= will_paginate @posts %>
+</div>
