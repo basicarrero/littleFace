@@ -1,5 +1,5 @@
 <div>
 	<h2><%= link_to post.title, post_path(post) %></h2>
 	<small><em><%= post.updated_at %></em></small>
-	<p><%= truncate(strip_tags(post.text), length: 600) %></p>
+	<p><%= truncate(strip_tags(post.text), length: 500) %></p>
 </div>
