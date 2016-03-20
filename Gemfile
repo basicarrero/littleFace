@@ -20,11 +20,15 @@ gem 'bootstrap-sass', '>= 3.0.0'
 # Pagination
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
-
+# Text Editor
+gem 'bootstrap-wysihtml5-rails', github: 'nerian/bootstrap-wysihtml5-rails'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Bootstrap jquery fix
 gem 'jquery-turbolinks'
+# File Upload
+gem 'cloudinary'
+
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder

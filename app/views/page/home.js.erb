@@ -1,8 +1,8 @@
 $('#my-posts').append('<%= j render @posts %>');
 <% if @posts.next_page %>
-  $('.pagination').html('<%= j will_paginate @posts %>');
+	$('.pagination').html('<%= j will_paginate @posts %>');
 <% else %>
-  $(window).off('scroll');
-  $('.pagination').remove();
-  $('#load-ico').remove();
+	$(window).off('scroll');
+	$('.pagination').remove();
+	$('#load-ico').remove();
 <% end %>

@@ -1,6 +1,6 @@
 class PageController < ApplicationController
   def home
-    @posts = Post.all.paginate(page: params[:page])
+    @posts = Post.order('created_at DESC').page(params[:page])
     respond_to do |format|
       format.html
       format.js

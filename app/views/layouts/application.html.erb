@@ -5,8 +5,12 @@
 		<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
 		<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 		<%= csrf_meta_tags %>
+		<%= cloudinary_js_config %>
 	</head>
 	<body>
 		<%= yield %>
 	</body>
+	<%= render "layouts/modal_post" %>
+	<%= javascript_include_tag 'wysihtml5-init.js', 'data-turbolinks-track' => true %>
+	<%= javascript_include_tag 'cloudinary-ui-bindings.js', 'data-turbolinks-track' => true %>
 </html>

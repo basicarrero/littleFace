@@ -9,12 +9,13 @@
  * compiled file so the styles you add here take precedence over styles defined in any styles
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
- *
+ * 
  *= require_tree .
  *= require_self
  */
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import "bootstrap-wysihtml5/bootstrap3-wysihtml5";
 
 /* Responsive styles
 -------------------------------------------------- */
@@ -26,7 +27,7 @@
     #main_panel {
     width: 100% !important;
     padding-right: 5px;
-      padding-left: 5px;
+    padding-left: 5px;
   }
 }
 
@@ -70,8 +71,6 @@ body > .container {
 
 /* Custom page CSS
 -------------------------------------------------- */
-/* Not required for template or sticky footer method. */
-
 .panel-corners {
     border-radius: 15px;
     padding-right: 20px;
@@ -89,4 +88,23 @@ body > .container {
   margin-top:30px;
   -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
   box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+
+/* Custom webkit scrollbar CSS
+-------------------------------------------------- */
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #555;
 }

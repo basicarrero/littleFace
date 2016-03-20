@@ -12,8 +12,10 @@
 		<div id="infinite-scrolling">
 			<%= will_paginate @posts %>
 		</div>
-		<div id="load-ico">
-			<img class="displayed" src="/images/ajax-loader.gif" alt="Loading..." title="Loading..." />
-		</div>
+		<% if @posts.next_page %>
+			<div id="load-ico">
+				<img class="displayed" src="/images/ajax-loader.gif" alt="Loading..." title="Loading..." />
+			</div>
+		<% end %>
 	</div>
 </div>
