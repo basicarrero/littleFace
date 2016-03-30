@@ -1,3 +1,21 @@
+//Scrollbar fix (You can't scroll in modal when closing an second modal)
+$(document).on('hidden.bs.modal', '.modal', function () {
+    $('.modal:visible').length && $(document.body).addClass('modal-open');
+});
+//Init wysihtml5 text editor
+$('#modalBody').wysihtml5({		
+	toolbar: {
+	      'font-styles': false,
+	      'color': true,
+	      'emphasis': true,
+	      'blockquote': true,
+	      'lists': true,
+	      'html': false,
+	      'link': true,
+	      'image': false,
+	      'smallmodals': true
+	},
+});
 /*
  * UI Cloudinary bindings
  */
@@ -154,8 +172,7 @@ $('.cloudinary-fileupload').bind('cloudinarydone', function (e, data) {
 	    	return false;
 	    });
 		if (currentFileUploads == 0 && doPost){
-			// AutoSend
-			doSubmit();
+			doSubmit();  // AutoSend
 		}
 	} else {
 		statusField.append('<i class="text-danger glyphicon glyphicon-remove"></i>');

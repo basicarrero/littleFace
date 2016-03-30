@@ -1,7 +1,7 @@
 # Be sure to restart your server when you modify this file.
 
 # Version of your assets, change this if you want to expire all your assets.
-Rails.application.config.assets.version = '1.0'
+Rails.application.config.assets.version = '8.0'
 
 # Add additional assets to the asset load path
 # Rails.application.config.assets.paths << Emoji.images_path
@@ -9,5 +9,6 @@ Rails.application.config.assets.version = '1.0'
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 # Rails.application.config.assets.precompile += %w( search.js )
-Rails.application.config.assets.precompile += %w( cloudinary-ui-bindings.js )
-Rails.application.config.assets.precompile += %w( wysihtml5-init.js )
+Rails.application.config.assets.precompile += %w( ui-conf.js )
+Rails.application.config.assets.precompile += %w( jquery.blueimp-gallery.min.js )
+Rails.application.config.assets.precompile += %w( bootstrap-image-gallery.min.js )

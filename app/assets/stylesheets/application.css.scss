@@ -38,7 +38,7 @@ html {
   min-height: 100%;
 }
 body {
-  background: url('/images/bg.jpg') no-repeat center center fixed;
+  background: url('/img/bg.jpg') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -72,20 +72,29 @@ body > .container {
 /* Custom page CSS
 -------------------------------------------------- */
 .panel-corners {
-    border-radius: 15px;
-    padding-right: 20px;
-    padding-left: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+  border-radius: 15px;
+  padding-right: 20px;
+  padding-left: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 .transparent {
     background: rgba(255, 255, 255, 0.9);
 }
+.glass {
+    background: rgba(255, 255, 255, 0.3);
+}
 .panel-default {
-    border: 1px solid transparent;
-    border-radius: 4px;
-    margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  margin-bottom: 20px;
   margin-top:30px;
+  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+  box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.panel-inner {
+  border: 1px solid primary;
+  border-radius: 4px;
   -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
   box-shadow: 0 1px 1px rgba(0,0,0,.05);
 }

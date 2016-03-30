@@ -1,5 +1,18 @@
-<div>
-	<h2><%= link_to post.title, post_path(post) %></h2>
-	<small><em><%= post.updated_at %></em></small>
-	<p><%= truncate(strip_tags(post.text), length: 500) %></p>
-</div>
+<div class="panel panel-info panel-inner">
+  <div class="panel-heading">
+    <h3 class="panel-title"><%= link_to post.title, post_path(post) %></h3>
+  </div>
+  <div class="panel-body">
+  	<h4 align="right"><small ><em><%= post.updated_at %></em></small></h4>
+    <p><%= truncate(strip_tags(post.text), length: 500) %></p>
+    	<% if post.photos.any? %>
+		<div id="links">
+			<% Cloudinary::Api.resources_by_ids(post.photos)['resources'].each do |r| %>
+	  			<a href=<%= r['url'] %> data-gallery>
+					<%= cl_image_tag(r['public_id'], :width => 90, :height => 90, :crop => :fill) %>
+				</a>
+			<% end %>
+		</div>
+	<% end -%>
+  </div>
+</div>﻿

@@ -5,7 +5,7 @@
 	</div>
 </div>
 <div class="container">
-	<div class="panel-corners panel-default transparent" style="margin-top:100px">
+	<div class="panel-corners panel-default glass" style="margin-top:125px">
 		<div id="my-posts" class="main_panel">
 			<%= render @posts %>
 		</div>
@@ -14,8 +14,9 @@
 		</div>
 		<% if @posts.next_page %>
 			<div id="load-ico">
-				<img class="displayed" src="/images/ajax-loader.gif" alt="Loading..." title="Loading..." />
+				<img class="displayed" height="50" width="50" src="/img/loading.gif" alt="Loading..." title="Loading..." />
 			</div>
 		<% end %>
 	</div>
 </div>
+<%= render "layouts/imageGallery" %>

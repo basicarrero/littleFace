@@ -4,19 +4,33 @@ class PostController < ApplicationController
   end
   
   def create
-    @post = Post.new(post_params)
-    @post.save
-    redirect_to controller: 'page', action: 'home'
+    if post_params
+      @post = Post.new(post_params)
+      @post.save!
+      
+
+        respond_to do |format|
+          format.js
+        end
+
+    end
   end
-   
+  
   private
     def post_params
-      params.permit(:title, :text, :photos => [])
+      my_params = params.permit(:title, :text, :photos => [])
+      if my_params[:title].present?
+        my_params[:title].capitalize!
+        if my_params[:photos].present?
+          id_photos = []
+          my_params[:photos].each do |p|
+            file = Cloudinary::PreloadedFile.new(p)
+            raise "Invalid upload signature" if !file.valid?
+            id_photos.push(file.public_id)
+          end
+          my_params[:photos] = id_photos
+        end
+        return my_params
+      end
     end
-# gett photo id
-#  if params[:image_id].present?
-#    preloaded = Cloudinary::PreloadedFile.new(params[:image_id])         
-#    raise "Invalid upload signature" if !preloaded.valid?
-#    @model.image_id = preloaded.identifier
-#  end
 end
