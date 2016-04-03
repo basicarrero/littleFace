@@ -1,8 +1,17 @@
+<% if @gap %>
+	$('#my-posts').append('<%= j render @gap %>');
+<% end %>
+
 $('#my-posts').append('<%= j render @posts %>');
+
 <% if @posts.next_page %>
-	$('.pagination').html('<%= j will_paginate @posts %>');
+	$('.pagination').html('<%= j will_paginate @posts, :page_links => false, :params => {:controller => 'page', :action => 'home' } %>');
 <% else %>
 	$(window).off('scroll');
 	$('.pagination').remove();
 	$('#load-ico').remove();
+<% end %>
+
+<% if @goTo %>
+	goToPost($('<%= '#p-' + params[:id] %>'));
 <% end %>

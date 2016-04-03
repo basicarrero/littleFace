@@ -18,104 +18,49 @@
   border-top-width: 1px;
 }
 
-#fixed-div {
-    position: fixed;
-    top: 1em;
-    right: 1em;
+#bar-toggle {
+  position:fixed;
+  height:150px;
+  width:35px;
+  margin-top:-50px;
+  top:50%;
+  font-size:30px;
+  text-align: center;
+  z-index: 1000;
+  
+  border-radius: 0 90px 90px 0;
+  -moz-border-radius: 0 90px 90px 0;
+  -webkit-border-radius: 0 90px 90px 0;
 }
 
-//.close { visibility: hidden; }
-
-.modal-dialog {
-  width: 740px;
-}
-
-.modal-elem {
-  width: 95%;
-}
-
-.modal-compact {
-  padding-top: 10px !important;
-  padding-bottom: 10px !important;
-}
-
-.files tbody, .files thead { 
-  display: block;
-}
-
-.files tbody td, .files thead th {
-    width: 10%;
-    vertical-align: middle !important;
-}
-
-.files {
-    margin-top:8px;
-    width: 100%; /* Optional */
-    /* border-collapse: collapse; */
-    border-spacing: 0;
-}
-
-.files tbody{
-  overflow-y: auto;    /* Trigger vertical scroll    */
-  height: 200px;
-  border: 1px solid rgb(173, 173, 173);
-}
-
-.progress-animated .progress-bar, .progress-animated .bar {
-  /* background: url("../img/progressbar.gif") !important; */
-  filter: none;
-}
-
-.fileupload-process {
-  float: right;
-  display: none;
-}
-
-.fileupload-processing .fileupload-process, .files .processing .preview {
-  display: block;
-  width: 32px;
-  height: 32px;
-  background-size: contain;
-  /* background: url("../img/loading.gif") center no-repeat; */
-}
-
-.cancel {
-  margin-right: 20px;
-}
-
-/*
- * jQuery File Upload Plugin CSS
- * https://github.com/blueimp/jQuery-File-Upload
- *
- * Copyright 2013, Sebastian Tschan
- * https://blueimp.net
- *
- * Licensed under the MIT license:
- * http://www.opensource.org/licenses/MIT
- */
-
-.fileinput-button {
+#bar-ico {
   position: relative;
-  overflow: hidden;
-  display: inline-block;
-  input {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
-    opacity: 0;
-    -ms-filter: 'alpha(opacity=0)';
-    font-size: 200px !important;
-    direction: ltr;
-    cursor: pointer;
-  }
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
-/* Fixes for IE < 8 */
-@media screen\9  {
-  .fileinput-button input {
-    filter: alpha(opacity = 0);
-    font-size: 100%;
-    height: 100%;
-  }
+.btn-text {
+    font-family: 'PT Sans', arial, serif;
+    color:#ffffff;
+    text-align:center;
+    font-size:24px;
+    font-weight:bold;
+    
+    text-shadow: /* Simulating Text Stroke */
+      -1px -1px 0 #000, 
+       1px -1px 0 #000, 
+      -1px 1px 0 #000, 
+       1px 1px 0 #000;
+}
+
+.sidebar-active-text {
+    text-decoration: none;
+    color: #fff;
+    background: rgba(255,255,255,0.2);
+}
+
+.sidebar-link {
+    margin: 0;
 }

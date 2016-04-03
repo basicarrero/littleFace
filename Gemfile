@@ -24,6 +24,8 @@ gem 'will_paginate-bootstrap'
 gem 'bootstrap-wysihtml5-rails', github: 'nerian/bootstrap-wysihtml5-rails'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+# Use jquery UI effects
+gem 'jquery-ui-rails'
 # Bootstrap jquery fix
 gem 'jquery-turbolinks'
 # File Upload

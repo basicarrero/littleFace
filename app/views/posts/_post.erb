@@ -1,11 +1,11 @@
-<div class="panel panel-info panel-inner">
-  <div class="panel-heading">
-    <h3 class="panel-title"><%= link_to post.title, post_path(post) %></h3>
-  </div>
-  <div class="panel-body">
-  	<h4 align="right"><small ><em><%= post.updated_at %></em></small></h4>
-    <p><%= truncate(strip_tags(post.text), length: 500) %></p>
-    	<% if post.photos.any? %>
+<div class="panel panel-info panel-inner" id=<%= 'p-' + post.id.to_s %>>
+	<div class="panel-heading">
+		<h3 class="panel-title"><%= link_to post.title, post_path(post) %></h3>
+	</div>
+	<div class="panel-body">
+		<h4 align="right"><small ><em><%= post.updated_at %></em></small></h4>
+		<p><%= truncate(strip_tags(post.text), length: 500) %></p>
+		<% if post.photos.any? %>
 			<div id="links">
 				<% Cloudinary::Api.resources_by_ids(post.photos)['resources'].each do |r| %>
 		  			<a href=<%= r['url'] %> data-gallery=<%= '#' + post.id.to_s %>>
@@ -47,6 +47,6 @@
 					</div>
 				</div>
 			</div>
-		<% end -%>
-  </div>
+		<% end %>
+	</div>
 </div>

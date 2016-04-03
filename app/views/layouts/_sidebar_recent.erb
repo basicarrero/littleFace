@@ -1,0 +1,26 @@
+<!-- Sidebar -->
+<div id="sidebar-wrapper" style="overflow-x: hidden; bottom: 0">
+    <ul class="sidebar-nav" style="padding-top:60px; height: 100%;">
+        <li class="sidebar-brand"><h3 style="color: #9d9d9d">Recent:</h3></li>
+        <% (1..6).reverse_each do |i| %>
+        	<% @list = @postList.where('extract(month from created_at) = ?', i) %>
+        	<% active = false %>
+        	<% if @list.any? %>
+	        	<% if !active %>
+	        		<% active = true %>
+	        		<li><p class="sidebar-active-text bar-link" aria-expanded="true" data-toggle="collapse" data-target=<%= '#m-' + i.to_s %>><%= @monthsLabels[i - 1] %></p></li>
+	        		<li><ul id=<%= 'm-' + i.to_s %> class="collapse in" aria-expanded="true">
+	        	<% else %>
+	        		<li><p class="bar-link" data-toggle="collapse" data-target=<%= '#m-' + i.to_s %>><%= @monthsLabels[i - 1] %></p></li>
+	        		<li><ul id=<%= 'm-' + i.to_s %> class="collapse">
+	        	<% end %>
+        			<% @list.each do |post| %>
+        				<li><a href="#" class="postLink" id=<%= post.id %>><%= post.title %></a></li>
+        			<% end %>
+		    	</ul></li>
+        	<% end %>
+		<% end %>
+		<li><span>&nbsp</span></li>
+    </ul>
+</div>
+<!-- /#sidebar-wrapper -->

@@ -1,8 +1,64 @@
-//Scrollbar fix (You can't scroll in modal when closing an second modal)
+// autoLoad post
+var autoLoad = true;
+
+function morePosts() {
+    var more_posts_url;
+    if (autoLoad === true) { more_posts_url = $('.pagination .next_page').attr('href'); }
+    if (more_posts_url && $(window).scrollTop() > $(document).height() - $(window).height() - 60) {
+		autoLoad = false;
+		$.getScript(more_posts_url).done(function(){ 
+			autoLoad = true; 
+		});
+    }
+};
+$(function() {
+	if ($('#infinite-scrolling').size() > 0) {
+		$(window).on('scroll', morePosts); 
+	}
+});
+// Scroll & Highlight
+function goToPost(item, time) {
+	time = typeof time === 'undefined' ? 800 : time;
+	var pos = { scrollTop: item.offset().top - 72 };
+	autoLoad = false;
+	$('html, body').animate(pos, time);
+	window.setTimeout(function(){
+		item.effect('highlight',{color: '#018EC4'},3200);
+		autoLoad = true;
+		morePosts();
+	}, time);
+};
+// SideBar Actions
+$("#bar-toggle").click(function(e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+});
+$(".postLink").click(function(e) {
+	e.preventDefault();
+	var lastPost = $('#my-posts').children().last().attr('id').split('-')[1];
+	var targetPost = $(this).attr('id');
+	if (parseInt(targetPost) < parseInt(lastPost)) {
+	    $.ajax({
+	        type: 'GET',
+	        url: '/post/' + targetPost,
+	        data: { last: lastPost },
+	    });
+    } else { goToPost($('#p-' + targetPost)); }
+});
+$(".bar-link").click(function(e) {
+    e.preventDefault();
+	if (e.target.hasClass('sidebar-active-text')){
+		e.target.removeClass('sidebar-active-text');
+	} else {
+		e.target.addClass('sidebar-active-text');
+	}
+});
+
+// Scrollbar fix (You can't scroll in modal when closing an second modal)
 $(document).on('hidden.bs.modal', '.modal', function () {
     $('.modal:visible').length && $(document.body).addClass('modal-open');
 });
-//Init wysihtml5 text editor
+// Init wysihtml5 text editor
 $('#modalBody').wysihtml5({		
 	toolbar: {
 	      'font-styles': false,

@@ -1,3 +1,103 @@
 // Place all the styles related to the Post controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#fixed-div {
+    position: fixed;
+    top: 1em;
+    right: 1em;
+}
+
+.modal-dialog {
+  width: 740px;
+}
+
+.modal-elem {
+  width: 95%;
+}
+
+.modal-compact {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+
+.files tbody, .files thead { 
+  display: block;
+}
+
+.files tbody td, .files thead th {
+    width: 10%;
+    vertical-align: middle !important;
+}
+
+.files {
+    margin-top:8px;
+    width: 100%; /* Optional */
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.files tbody{
+  overflow-y: auto;    /* Trigger vertical scroll    */
+  height: 200px;
+  border: 1px solid rgb(173, 173, 173);
+}
+
+.progress-animated .progress-bar, .progress-animated .bar {
+  background: url("/img/progressbar.gif") !important;
+  filter: none;
+}
+
+.fileupload-process {
+  float: right;
+  display: none;
+}
+
+.fileupload-processing .fileupload-process, .files .processing .preview {
+  display: block;
+  width: 32px;
+  height: 32px;
+  background-size: contain;
+  background: url("/img/loading.gif") center no-repeat;
+}
+
+.cancel {
+  margin-right: 20px;
+}
+
+/*
+ * jQuery File Upload Plugin CSS
+ * https://github.com/blueimp/jQuery-File-Upload
+ *
+ * Copyright 2013, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+
+.fileinput-button {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    opacity: 0;
+    -ms-filter: 'alpha(opacity=0)';
+    font-size: 200px !important;
+    direction: ltr;
+    cursor: pointer;
+  }
+}
+
+/* Fixes for IE < 8 */
+@media screen\9  {
+  .fileinput-button input {
+    filter: alpha(opacity = 0);
+    font-size: 100%;
+    height: 100%;
+  }
+}

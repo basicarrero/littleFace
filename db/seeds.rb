@@ -6,4 +6,4 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-50.times { |i| Post.create(title: "Post #{i}", text: BetterLorem.p(5, false, false)) }
+40.times { |i| Post.create(title: "Post #{i + 1}", created_at: (50 - i + 1).days.ago, text: BetterLorem.p(5, false, false)) }
