@@ -47,10 +47,11 @@ $(".postLink").click(function(e) {
 });
 $(".bar-link").click(function(e) {
     e.preventDefault();
-	if (e.target.hasClass('sidebar-active-text')){
-		e.target.removeClass('sidebar-active-text');
+    var lh = e.target;
+	if (lh.hasClass('sidebar-active-text')){
+		lh.removeClass('sidebar-active-text');
 	} else {
-		e.target.addClass('sidebar-active-text');
+		lh.addClass('sidebar-active-text');
 	}
 });
 
