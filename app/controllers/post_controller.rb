@@ -1,4 +1,6 @@
 class PostController < ApplicationController
+  before_filter :authenticate_user!
+  
   def new
     @post = Post.new
   end
@@ -10,7 +12,11 @@ class PostController < ApplicationController
       @posts = Post.order("created_at DESC").page(page)
       @gap = Post.where("id > " + @posts.first().id.to_s + " AND id <" + params[:last]).order("created_at DESC")
       @goTo = true
-
+      # avoid a new request loading next page if targeted post is at the end of the body
+      if @goTo and @posts.next_page
+        @gap += @posts
+        @posts = Post.order("created_at DESC").page(page + 1)
+      end
       render :template => 'page/home', :formats => [:js]
     else
       render :nothing => true, :status => 204
@@ -21,7 +27,6 @@ class PostController < ApplicationController
     if post_params
       @post = Post.new(post_params)
       @post.save!
-      
         respond_to do |format|
           format.js
         end

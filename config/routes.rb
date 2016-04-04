@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   
+  devise_for :users
   get 'session/index' => 'session#index'
 
   get 'page/home' => 'page#home'
