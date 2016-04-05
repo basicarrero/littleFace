@@ -8,13 +8,13 @@
 		<% if post.photos.any? %>
 			<div id="links">
 				<% Cloudinary::Api.resources_by_ids(post.photos)['resources'].each do |r| %>
-		  			<a href=<%= r['url'] %> data-gallery=<%= '#' + post.id.to_s %>>
+		  			<a href=<%= r['url'] %> data-gallery=<%= '#gallery-' + post.id.to_s %>>
 						<%= cl_image_tag(r['public_id'], :width => 90, :height => 90, :crop => :fill) %>
 					</a>
 				<% end %>
 			</div>
 			<!-- The Bootstrap Image Gallery lightbox, should be a child element of the document body -->
-			<div id=<%= post.id.to_s %> class="blueimp-gallery">
+			<div id=<%= 'gallery-' + post.id.to_s %> class="blueimp-gallery">
 				<!-- The container for the modal slides -->
 				<div class="slides"></div>
 				<!-- Controls for the borderless lightbox -->
@@ -25,8 +25,8 @@
 				<a class="play-pause"></a>
 				<ol class="indicator"></ol>
 				<!-- The modal dialog, which will be used to wrap the lightbox content -->
-				<div class="modal fade">
-					<div class="modal-dialog" style="width: 70%">
+				<div class="modal modal-fullscreen fade">
+					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" class="close" aria-hidden="true">&times;</button>

@@ -36,7 +36,7 @@ $("#bar-toggle").click(function(e) {
 $(".postLink").click(function(e) {
 	e.preventDefault();
 	var lastPost = $('#my-posts').children().last().attr('id').split('-')[1];
-	var targetPost = $(this).attr('id');
+	var targetPost = $(this).attr('targetPost');
 	if (parseInt(targetPost) < parseInt(lastPost)) {
 	    $.ajax({
 	        type: 'GET',
@@ -155,7 +155,7 @@ $('.cloudinary-fileupload').bind('fileuploadprocessalways', function (e, data) {
 	data.context = $('.files');
 	jqXHR = data.submit();
     $.each(data.files, function (i, file) {
-    	var node = $('<tr/>').addClass('fade in').attr('id', fileUploads);
+    	var node = $('<tr/>').addClass('fade in').attr('id', 'upload-' + fileUploads);
     	
     	if (file.preview) {
         	node.append($('<td/>').append(file.preview));
@@ -198,7 +198,8 @@ $('.cloudinary-fileupload').bind('fileuploadprogress', function (e, data) {
     }
     var progress = Math.floor(data.loaded / data.total * 100);
    	if (data.context) {
-        $('#' + data.id.toString()).find('.progress')
+   		var row = $('#upload-' + data.id.toString());
+        $('#upload-' + data.id.toString()).find('.progress')
             .attr('aria-valuenow', progress)
             .children().first().css(
                 'width',
@@ -208,7 +209,7 @@ $('.cloudinary-fileupload').bind('fileuploadprogress', function (e, data) {
 });
 $('.cloudinary-fileupload').bind('cloudinarydone', function (e, data) {
 	currentFileUploads--;
-	row = $('#' + data.id.toString());
+	row = $('#upload-' + data.id.toString());
 	btn = row.find('.cancel');
 	btn.removeClass('btn-danger');
 	btn.addClass('btn-default');

@@ -15,7 +15,7 @@
 	        		<li><ul id=<%= 'm-' + i.to_s %> class="collapse">
 	        	<% end %>
         			<% @list.each do |post| %>
-        				<li><a href="#" class="postLink" id=<%= post.id %>><%= post.title %></a></li>
+        				<li><a href="#" class="postLink" targetPost=<%= post.id %>><%= post.title %></a></li>
         			<% end %>
 		    	</ul></li>
         	<% end %>
