@@ -14,13 +14,12 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require jquery-ui
-//= require lib/angular.min
-//= require lib/angular-resource.min
 //=
 //= require bootstrap
 //= require bootstrap-wysihtml5
 //=
-//= require_tree ./coffee
+//= require angularApp
+//= require_tree ./angular
 //=
 //= require cloudinary
 //= require load-image.all.min.js
