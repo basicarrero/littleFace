@@ -59,18 +59,12 @@ body {
   background-color: #f5f5f5;
 }
 
-body > .container {
-  padding: 60px 15px 0;
-}
-.container .text-muted {
-  margin: 20px 0;
-}
-.form-group.last {
-  margin-bottom:0px;
-}
-
 /* Custom page CSS
 -------------------------------------------------- */
+.main_panel {
+  margin-top: 60px;
+  max-width: 600px;
+}
 .panel-corners {
   border-radius: 15px;
   padding-right: 20px;
@@ -81,21 +75,12 @@ body > .container {
 .transparent {
     background: rgba(255, 255, 255, 0.9);
 }
-.panel-default {
-  border: 1px solid transparent;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  margin-top:30px;
-  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
-  box-shadow: 0 1px 1px rgba(0,0,0,.05);
-}
 .panel-inner {
   border: 1px solid primary;
   border-radius: 4px;
   -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
   box-shadow: 0 1px 1px rgba(0,0,0,.05);
 }
-
 .glass {
     border: 1px solid rgba(0,0,0,0.5);
     border-bottom: 3px solid rgba(0,0,0,0.5);

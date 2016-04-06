@@ -3,14 +3,15 @@
 	<head>
 		<title>LittleFace</title>
 		<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+  		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-resource.min.js"></script>
 		<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 		<%= csrf_meta_tags %>
 		<%= cloudinary_js_config %>
+		<%= javascript_include_tag 'uploader-conf.js', 'data-turbolinks-track' => true %>
 	</head>
 	<body>
 		<%= yield %>
-		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
-  		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-resource.min.js"></script>
 	</body>
 	<%= render "layouts/modal_post" %>
 	<%= javascript_include_tag 'ui-conf.js', 'data-turbolinks-track' => true %>

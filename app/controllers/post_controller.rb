@@ -1,26 +1,12 @@
 class PostController < ApplicationController
-  before_filter :authenticate_user!
+  #before_filter :authenticate_user!
   
   def new
     @post = Post.new
   end
   
   def show
-    if params[:id].present? and params[:last].present? and params[:id].to_i < params[:last].to_i
-      prev = Post.count(:all) - params[:id].to_i
-      page = ((prev + 1) / WillPaginate.per_page.to_f).ceil
-      @posts = Post.order("created_at DESC").page(page)
-      @gap = Post.where("id > " + @posts.first().id.to_s + " AND id <" + params[:last]).order("created_at DESC")
-      @goTo = true
-      # avoid a new request loading next page if targeted post is at the end of the body
-      if @goTo and @posts.next_page
-        @gap += @posts
-        @posts = Post.order("created_at DESC").page(page + 1)
-      end
-      render :template => 'page/home', :formats => [:js]
-    else
-      render :nothing => true, :status => 204
-    end
+    render :nothing => true, :status => 204
   end
   
   def create

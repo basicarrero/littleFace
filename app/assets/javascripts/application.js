@@ -13,13 +13,12 @@
 //= require jquery
 //= require jquery.turbolinks
 //= require jquery_ujs
-//= require jquery-ui
+//=
+//= require angularCli
+//= require_tree ./angular
 //=
 //= require bootstrap
 //= require bootstrap-wysihtml5
-//=
-//= require angularApp
-//= require_tree ./angular
 //=
 //= require cloudinary
 //= require load-image.all.min.js

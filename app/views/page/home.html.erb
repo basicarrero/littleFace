@@ -5,18 +5,15 @@
 	<!-- Page Content -->
 	<div id="page-content-wrapper" style="padding-left: 8%">
 		<div class="container-fluid">
-			<div class="panel-corners panel-default glass" style="margin-top:125px; width: 700px">
-				<div id="my-posts" class="main_panel">
+			<div class="main_panel panel-corners glass" >
+				<div id="my-posts">
 					<%= render @posts %>
 				</div>
-				<div id="infinite-scrolling" style="height: 50px">
-					<%= will_paginate @posts, :page_links => false %>
+
+				<div id="load-ico">
+					<img style="margin: 30px 30px 70px 30px" class="displayed" height="60" width="60" src="/img/loading.gif" alt="Loading..." title="Loading..." />
 				</div>
-				<% if @posts.next_page %>
-					<div id="load-ico">
-						<img style="margin: 30px 30px 70px 30px" class="displayed" height="60" width="60" src="/img/loading.gif" alt="Loading..." title="Loading..." />
-					</div>
-				<% end %>
+				
 			</div>
 		</div>
 	</div>

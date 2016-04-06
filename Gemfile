@@ -18,16 +18,11 @@ gem 'therubyracer', platforms: :ruby
 gem 'coffee-script-source', '1.8.0'
 # Bootstrap
 gem 'bootstrap-sass', '>= 3.0.0'
-# Pagination
-gem 'will_paginate'
-gem 'will_paginate-bootstrap'
 # Text Editor
 gem 'bootstrap-wysihtml5-rails', github: 'nerian/bootstrap-wysihtml5-rails'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
-# Use jquery UI effects
-gem 'jquery-ui-rails'
-# Bootstrap jquery fix
+# Turbolinks for jquery
 gem 'jquery-turbolinks'
 # File Upload
 gem 'cloudinary'
