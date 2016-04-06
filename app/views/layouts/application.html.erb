@@ -8,13 +8,10 @@
 		<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 		<%= csrf_meta_tags %>
 		<%= cloudinary_js_config %>
-		<%= javascript_include_tag 'uploader-conf.js', 'data-turbolinks-track' => true %>
 	</head>
 	<body>
 		<%= yield %>
 	</body>
 	<%= render "layouts/modal_post" %>
-	<%= javascript_include_tag 'ui-conf.js', 'data-turbolinks-track' => true %>
-	<%= javascript_include_tag 'jquery.blueimp-gallery.min.js', 'data-turbolinks-track' => true %>
-	<%= javascript_include_tag 'bootstrap-image-gallery.min.js', 'data-turbolinks-track' => true %>
+	<%= javascript_include_tag 'config', 'data-turbolinks-track' => true %>
 </html>

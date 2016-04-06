@@ -21,10 +21,10 @@
 //= require bootstrap-wysihtml5
 //=
 //= require cloudinary
-//= require load-image.all.min.js
-//= require canvas-to-blob.min.js
-//= require jquery.fileupload-process.js
-//= require jquery.fileupload-image.js
-//= require jquery.fileupload-validate.js
+//= require uploader/load-image.all.min.js
+//= require uploader/canvas-to-blob.min.js
+//= require uploader/jquery.fileupload-process.js
+//= require uploader/jquery.fileupload-image.js
+//= require uploader/jquery.fileupload-validate.js
 //=
 //= require turbolinks
