@@ -24,6 +24,8 @@ gem 'bootstrap-wysihtml5-rails', github: 'nerian/bootstrap-wysihtml5-rails'
 gem 'jquery-rails'
 # Turbolinks for jquery
 gem 'jquery-turbolinks'
+# Angular
+gem 'angularjs-rails'
 # File Upload
 gem 'cloudinary'
 

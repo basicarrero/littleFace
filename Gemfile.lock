@@ -43,6 +43,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    angularjs-rails (1.5.0)
     arel (6.0.3)
     autoprefixer-rails (6.3.6)
       execjs
@@ -194,6 +195,7 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  angularjs-rails
   betterlorem (~> 0.1.2)
   bootstrap-sass (>= 3.0.0)
   bootstrap-wysihtml5-rails!
