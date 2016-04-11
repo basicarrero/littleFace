@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
   devise_for :users
-  
-  get 'session/index' => 'session#index'
 
   get 'page/home' => 'page#home'
-
-  resources :post
+  
+  get 'posts/interval' => 'posts#interval'
+  get 'posts/range' => 'posts#range'
+  resources :posts
   
   root 'page#home'
 

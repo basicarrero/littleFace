@@ -16,7 +16,7 @@
 //=
 //= require angular
 //= require angular-resource
-//= require angular/cli
+//= require angular/cli.js
 //= require_tree ./angular
 //=
 //= require bootstrap
