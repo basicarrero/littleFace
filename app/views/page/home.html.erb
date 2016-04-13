@@ -1,19 +1,14 @@
 <%= render "layouts/navbar" %>
-<div id="wrapper">
+<div id="wrapper" ng-controller="paginator" auto-load>
 	<%= render "layouts/sidebar_recent" %>
 	<div id="bar-toggle" class="btn-text glass"><span id="bar-ico" class="glyphicon glyphicon-menu-left"></span></div>
 	<!-- Page Content -->
-	<div id="page-content-wrapper" style="padding-left: 8%">
+	<div id="page-content-wrapper" style="padding-left: 8%; overflow-x: hide">
 		<div class="container-fluid">
 			<div class="main_panel panel-corners glass" >
 				<div id="my-posts">
-
+					<%= render "layouts/post" %>
 				</div>
-
-				<div id="load-ico">
-					<img style="margin: 30px 30px 70px 30px" class="displayed" height="60" width="60" src="/img/loading.gif" alt="Loading..." title="Loading..." />
-				</div>
-				
 			</div>
 		</div>
 	</div>

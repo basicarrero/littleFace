@@ -1,19 +1,21 @@
 <!-- Sidebar -->
 <div id="sidebar-wrapper" style="overflow-x: hidden; bottom: 0">
-    <ul class="sidebar-nav" style="padding-top:60px; height: 100%;">
-        <li class="sidebar-brand"><h3 style="color: #9d9d9d">Recent:</h3></li>
-        <% (1..6).reverse_each do |i| %>
-        	<% @list = @postList.where('extract(month from created_at) = ?', i) %>
-        	<% if @list.any? %>
-        		<li><a class="bar-header" aria-expanded="true" data-toggle="collapse" data-target=<%= '#m-' + i.to_s %>><%= @monthsLabels[i - 1] %></a></li>
-        		<li><ul id=<%= 'm-' + i.to_s %> class="collapse" aria-expanded="true">
-    			<% @list.each do |post| %>
-    				<li><a href="#" targetPost=<%= post.id %>><%= post.title %></a></li>
-    			<% end %>
-	    		</ul></li>
-        	<% end %>
-		<% end %>
-		<li><span>&nbsp</span></li>
-    </ul>
+    <div class="sidebar-nav" style="padding-left: 5px; padding-top:60px; height: 100%;">
+        <div class="sidebar-brand"><h3 class="brand-header">Recent:</h3></div>
+		<div ng-controller="accordion" style="padding-right: 15px">
+			<uib-accordion >
+				<uib-accordion-group ng-repeat="month in data" is-open="status.open" ng-init="status.open = isOpen(month)" is-disabled="isDisabled(month)">
+					<uib-accordion-heading>
+        				<strong>{{month.label | capitalize}}</strong><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+      				</uib-accordion-heading>
+					<ul>
+						<li class="item" ng-repeat="item in month.posts">
+							<a href="{{'#p-' + (item.id)}}" class="itemLink" will-scroll>{{item.title | capitalize}}</a>
+						</li>
+					</ul>
+				</uib-accordion-group>
+	    	</uib-accordion>
+		</div>
+    </div>
 </div>
 <!-- /#sidebar-wrapper -->

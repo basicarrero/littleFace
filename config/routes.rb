@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   get 'page/home' => 'page#home'
   
-  get 'posts/interval' => 'posts#interval'
+  get 'posts/recent' => 'posts#recent'
   get 'posts/range' => 'posts#range'
   resources :posts
   

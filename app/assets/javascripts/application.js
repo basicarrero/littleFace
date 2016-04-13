@@ -16,8 +16,9 @@
 //=
 //= require angular
 //= require angular-resource
-//= require angular/cli.js
-//= require_tree ./angular
+//= require angular-animate
+//= require angular-ui-bootstrap-tpls
+//= require ngCli.js
 //=
 //= require bootstrap
 //= require bootstrap-wysihtml5
@@ -26,6 +27,7 @@
 //= require gallery/jquery.blueimp-gallery.min.js
 //= require gallery/bootstrap-image-gallery.min.js
 //=
+//= require cloudinary
 //= require uploader/load-image.all.min.js
 //= require uploader/canvas-to-blob.min.js
 //= require uploader/jquery.fileupload-process.js

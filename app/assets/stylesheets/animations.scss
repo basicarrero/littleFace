@@ -1,0 +1,18 @@
+.pulse {
+  animation: pulse 1s infinite;
+  animation-duration: 1s;
+  animation-play-state: running;
+  animation-iteration-count: 1;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    transform: scale3d(1.25, 1.25, 1.25);
+  }
+  100% {
+    transform: scale3d(1, 1, 1);
+  }
+}

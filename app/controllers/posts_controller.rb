@@ -19,10 +19,20 @@ class PostsController < ApplicationController
     end
   end
   
-  def interval
-    @posts = Posts.select('id, title').where("created_at > CURRENT_DATE - INTERVAL '" + interval_params + "'").order("created_at DESC")
+  def recent
+    # get posts of the present year
+    posts = Posts.select('id, title, extract(month from created_at) as month').where('extract(year from created_at) = extract(year from CURRENT_DATE)').order("created_at DESC")
+    monthsLabels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    monthsPosts = [[],[],[],[],[],[],[],[],[],[],[],[]]
+    @resp = []
+    posts.each do |p|
+      monthsPosts[p.month.to_i - 1].push(p)
+    end
+    (0..11).reverse_each do |i|
+      @resp.push({label: monthsLabels[i], posts: monthsPosts[i]})
+    end
     respond_to do |format|
-      format.json { render json: @posts, status: 200}
+      format.json { render json: @resp, status: 200}
     end
   end
   
@@ -67,10 +77,6 @@ class PostsController < ApplicationController
       params.require(:begin)
       params.require(:end)
       return params.permit(:begin, :end)
-    end
-    
-    def interval_params
-      return params.require(:interval)
     end
     
     def  show_params
