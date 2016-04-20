@@ -5,11 +5,10 @@
 		<%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
 		<%= csrf_meta_tags %>
 	</head>
-	<body ng-app="ngCli">
+	<body ng-app="ngCli" style="overflow-x: hidden;">
 		<%= yield %>
 	</body>
-	<%= render "layouts/modal_post" %>
 	<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-	<%= cloudinary_js_config %>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-scroll/1.0.0/angular-scroll.min.js"></script>
+	<%= cloudinary_js_config %>
 </html>

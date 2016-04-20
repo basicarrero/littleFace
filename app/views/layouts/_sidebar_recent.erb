@@ -1,12 +1,12 @@
 <!-- Sidebar -->
 <div id="sidebar-wrapper" style="overflow-x: hidden; bottom: 0">
     <div class="sidebar-nav" style="padding-left: 5px; padding-top:60px; height: 100%;">
-        <div class="sidebar-brand"><h3 class="brand-header">Recent:</h3></div>
-		<div ng-controller="accordion" style="padding-right: 15px">
+        <div><p class="brand-header">Recent:</p></div>
+		<div ng-controller="accordionCtrl" style="padding-right: 15px">
 			<uib-accordion >
-				<uib-accordion-group ng-repeat="month in data" is-open="status.open" ng-init="status.open = isOpen(month)" is-disabled="isDisabled(month)">
+				<uib-accordion-group ng-repeat="month in data" is-open="open" ng-init="open = false" is-disabled="isDisabled(month)" panel-class="panel-no-padding">
 					<uib-accordion-heading>
-        				<strong>{{month.label | capitalize}}</strong><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+        				<strong>{{month.label | capitalize}}</strong><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': open, 'glyphicon-chevron-right': !open}"></i>
       				</uib-accordion-heading>
 					<ul>
 						<li class="item" ng-repeat="item in month.posts">
@@ -18,4 +18,5 @@
 		</div>
     </div>
 </div>
+<div id="bar-toggle" class="btn-text glass"><span id="bar-ico" class="glyphicon glyphicon-menu-left rotate180"></span></div>
 <!-- /#sidebar-wrapper -->

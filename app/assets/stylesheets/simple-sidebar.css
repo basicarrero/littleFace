@@ -58,21 +58,31 @@
     padding: 0;
     list-style: none;
 }
-
+/*
 .sidebar-nav li {
     text-indent: 20px;
     line-height: 40px;
+}
+*/
+.sidebar-nav li {
+    line-height: 25px;
+}
+
+.sidebar-nav ul {
+    padding-top: 8px;
 }
 
 .sidebar-nav li a {
     display: block;
     text-decoration: none;
+    word-wrap: break-word;
+    font-size: 15px;
 /*    color: #999999;	*/
 }
 
 .sidebar-nav li a:hover {
     text-decoration: none;
-/*    color: #fff;	*/
+/*    color: #fff;		*/
     background: rgba(255,255,255,0.2);
 }
 

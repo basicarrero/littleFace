@@ -18,11 +18,12 @@
 //= require angular-resource
 //= require angular-animate
 //= require angular-ui-bootstrap-tpls
+//= require_tree ./angular
 //= require ngCli.js
 //=
 //= require bootstrap
 //= require bootstrap-wysihtml5
-//= require config/ui-conf.js
+//= require ui-conf.js
 //=
 //= require gallery/jquery.blueimp-gallery.min.js
 //= require gallery/bootstrap-image-gallery.min.js
@@ -33,6 +34,5 @@
 //= require uploader/jquery.fileupload-process.js
 //= require uploader/jquery.fileupload-image.js
 //= require uploader/jquery.fileupload-validate.js
-//= require config/uploader-conf.js
 //=
 //= require turbolinks

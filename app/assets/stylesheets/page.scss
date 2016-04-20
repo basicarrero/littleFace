@@ -2,10 +2,8 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#load-ico {
-  width: 100%;
-  text-align:center;
-  display:block;
+.panel-no-padding .panel-body {
+  padding: 0 !important;
 }
 
 #photos {
@@ -29,12 +27,50 @@
   -webkit-border-radius: 0 90px 90px 0;
 }
 
-#bar-ico {
-  position: relative;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
+@media(min-width:768px) {
+    #bar-ico {
+        -ms-transform-origin: 50% 50%;
+        -webkit-transform-origin: 50% 50%;
+        -moz-transform-origin: 50% 50%;
+        transform-origin: 50% 50%;
+        transform: rotate(180deg);
+        -moz-transform: rotate(180deg);
+        -webkit-transform: rotate(180deg);
+        -o-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+    }
+    #bar-ico.rotate180  {
+        -ms-transform-origin: initial;
+        -webkit-transform-origin: initial;
+        -moz-transform-origin: initial;
+        transform-origin: initial;
+        transform: initial;
+        -moz-transform: initial;
+        -webkit-transform: initial;
+        -o-transform: initial;
+        -ms-transform: initial;
+    }
+}
+
+.rotate180  {
+  -ms-transform-origin: 50% 50%;
+  -webkit-transform-origin: 50% 50%;
+  -moz-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+}
+
+#bar-ico  {
+  top: 50% !important;
+  display: block !important;
+  line-height: 0 !important;
+  -moz-transition: 0.5s ease-in-out;
+  -webkit-transition: 0.5s ease-in-out;
+  transition: 0.5s ease-in-out;
 }
 
 .brand-header {

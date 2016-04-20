@@ -3,9 +3,9 @@ Rails.application.routes.draw do
 
   get 'page/home' => 'page#home'
   
-  get 'posts/recent' => 'posts#recent'
-  get 'posts/range' => 'posts#range'
-  resources :posts
+  get 'post/recent' => 'post#recent'
+  get 'post/range' => 'post#range'
+  resources :post
   
   root 'page#home'
 

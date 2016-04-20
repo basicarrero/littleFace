@@ -1,48 +1,38 @@
 <!-- Modal Dialog -->
-<div id="mainModal" class="modal hiden fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="mainModal" class="modal hiden fade" tabindex="-1" role="dialog" aria-hidden="true" ng-controller="modalNewPostCtrl" modal-actions>
 	<div class="modal-dialog">
 		<div class="modal-content" >
-			<div id="fixed-div">
-				<button class="btn btn-primary btn-lg" style="margin-right: 10px" data-dismiss="modal" id="dialogSubmit"><i class="glyphicon glyphicon-send"></i>&nbsp;Send!&nbsp;</button>
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			</div>
-			<form class="form" name="post" role="form" id="form" action="/post" method="POST" onsubmit="postForm();" data-remote="true"><!-- prevents GET -->
-				<%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %>
+			<form role="form" id="postForm" name="postForm" ng-submit="submitPost()">
+				<div id="fixed-div">
+					<button ng-disabled="doPost" type="submit" class="btn btn-primary btn-lg" style="margin-right: 10px" id="dialogSubmit"><i class="glyphicon glyphicon-send"></i>&nbsp;Send!&nbsp;</button>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<!-- <%= tag(:input, :type => "hidden", :name => request_forgery_protection_token.to_s, :value => form_authenticity_token) %> -->
 				<div class="modal-header modal-compact">
 					<div class="form-group">
 						<h3 id="myModalLabel">New Post:</h3>
-						<input type="text" name="title" id="modalTitle" placeholder="Title" class="modal-elem" required>
+						<input ng-disabled="doPost" type="text" name="title" id="modalTitle" placeholder="Title" class="modal-elem" ng-model="title" required>
 					</div>
 				</div>
 				<div class="modal-body modal-compact" class="col-md-12">
-					<div><textarea name="text" id="modalBody" placeholder="Did you had a good time?" class="modal-elem" style="height: 155px;"></textarea></div>
+					<div>
+						<rich-text-editor ng-disabled="doPost" content="text" is-active="doPost" name="text" id="modalBody" placeholder="Did you had a good time?" class="modal-elem" style="height: 155px;"></rich-text-editor>
+					</div>
 				</div>
 				<div class="modal-footer modal-compact" class="col-md-12">
 					<div class="form-group modal-elem">
-						<span class="btn btn-info fileinput-button"><i class="glyphicon glyphicon-picture"></i>
-				        	<span>Add photos</span>
-				        	<!-- The file input field used as target for the file upload widget -->
-				        	<%= cl_image_upload_tag('photos[]', :return_delete_token => true, :html => { :multiple => true, :class => 'fileinput-button'}) %>
-		    			</span>
-						<!-- The container for the uploaded files -->
-						<table id ="fileTable" role="presentation" class="table table-striped files"><tbody></tbody></table>
+						<file-uploader files="photos" uploads="currentUploads" do-callback="doPost" callback="send" id="modalNewPost">
+							<span ng-disabled="doPost" class="btn btn-info fileinput-button"><i class="glyphicon glyphicon-picture"></i>
+					        	<span>Add photos</span>
+					        	<!-- The file input field used as target for the file upload widget -->
+					        	<%= cl_image_upload_tag('photos[]', :folder => "currentuser", :return_delete_token => true, :html => { :multiple => true, :class => 'fileinput-button', 'ng-show' => "!doPost" }) %>
+			    			</span>
+							<!-- The container for the uploaded files -->
+							<table id="files-modalNewPost" role="presentation" class="table table-striped files"><tbody ng-disabled="doPost"></tbody></table>
+						</file-uploader>
 					</div>
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
-<script>
-// AJAX form submit handler
-function postForm () {
-    var frm = $('#form');
-    frm.submit(function (ev) {
-        $.ajax({
-            type: frm.attr('method'),
-            url: frm.attr('action'),
-            data: frm.serialize(),
-        });
-        ev.preventDefault();
-    });
-};
-</script>

@@ -26,6 +26,7 @@ gem 'jquery-rails'
 gem 'jquery-turbolinks'
 # Angular
 gem 'angularjs-rails'
+gem 'angular_rails_csrf'
 gem 'angular-ui-bootstrap-rails'
 # File Upload
 gem 'cloudinary'

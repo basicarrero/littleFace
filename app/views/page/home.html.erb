@@ -1,17 +1,19 @@
 <%= render "layouts/navbar" %>
-<div id="wrapper" ng-controller="paginator" auto-load>
-	<%= render "layouts/sidebar_recent" %>
-	<div id="bar-toggle" class="btn-text glass"><span id="bar-ico" class="glyphicon glyphicon-menu-left"></span></div>
-	<!-- Page Content -->
-	<div id="page-content-wrapper" style="padding-left: 8%; overflow-x: hide">
-		<div class="container-fluid">
-			<div class="main_panel panel-corners glass" >
-				<div id="my-posts">
-					<%= render "layouts/post" %>
+<paginator>
+	<div id="wrapper">
+		<%= render "layouts/sidebar_recent" %>
+		<!-- Page Content -->
+		<div id="page-content-wrapper" style="padding-left: 8%; overflow-x: auto">
+			<div class="container-fluid">
+				<div class="main_panel panel-corners glass" >
+					<div id="my-posts">
+						<%= render "layouts/post" %>
+					</div>
 				</div>
 			</div>
 		</div>
+		<!-- /#page-content-wrapper -->
+		<%= render "layouts/modal_post" %>
 	</div>
-	<!-- /#page-content-wrapper -->
-</div>
+<paginator>
 <!-- /#wrapper -->

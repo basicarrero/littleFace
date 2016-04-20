@@ -1,1 +1,52 @@
-<post id="{{'p-' + (post.id)}}" title="{{post.title}}" text="{{post.text}}" photos="{{post.photos}}" ng-repeat="post in items"></post>
+<post class="repeated-item" id="{{'p-' + (post.id)}}" ng-repeat="post in items">
+	<div class="panel panel-info panel-inner">
+		<div class="panel-heading">
+			<h3 class="panel-title">{{post.title}}</h3>
+		</div>
+		<div class="panel-body">
+			<h4 align="right"><small ><em>{{post.updated_at}}</em></small></h4>
+			<p>{{post.text | limitTo : 300}}</p>
+			<!-- <p ng-bind-html-unsafe="text"></p> -->
+			<div id="links" ng-if="post.resources.length > 0">
+				<a href="{{resource.url}}" gallery-link data-gallery="{{'#gallery-' + (post.id)}}" ng-repeat="resource in post.resources">
+					<cloud-image public_id="{{resource.public_id}}" width="90" height="90" crop="fill">
+				</a>
+			</div>
+		</div>
+	</div>
+</post>
+<!-- The Bootstrap Image Gallery lightbox, should be a child element of the document body -->
+<div id="" class="blueimp-gallery">
+	<!-- The container for the modal slides -->
+	<div class="slides"></div>
+	<!-- Controls for the borderless lightbox -->
+	<h3 class="title"></h3>
+	<a class="prev">‹</a>
+	<a class="next">›</a>
+	<a class="close">×</a>
+	<a class="play-pause"></a>
+	<ol class="indicator"></ol>
+	<!-- The modal dialog, which will be used to wrap the lightbox content -->
+	<div class="modal modal-fullscreen fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" aria-hidden="true">&times;</button>
+					<h4 class="modal-title"></h4>
+				</div>
+				<div class="modal-body next"></div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default pull-left prev">
+						<i class="glyphicon glyphicon-chevron-left"></i>
+						Previous
+					</button>
+					<button type="button" class="btn btn-primary next">
+						Next
+						<i class="glyphicon glyphicon-chevron-right"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
