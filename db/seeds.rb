@@ -9,7 +9,9 @@
 User.create(email: 'bender@gmail.com', password: 'topsecret', password_confirmation: 'topsecret')
 User.create(email: 'leela@gmail.com', password: 'topsecret', password_confirmation: 'topsecret')
 User.create(email: 'fry@gmail.com', password: 'topsecret', password_confirmation: 'topsecret')
+User.create(email: 'basicarrero@hotmail.com', password: 'topsecret', password_confirmation: 'topsecret')
 
 50.times { |i| Post.create(user_id: 1, title: "Post #{i + 1}", created_at: (50 - i + 1).days.ago, text: BetterLorem.p(2, false, false)) }
 50.times { |i| Post.create(user_id: 2, title: "Post #{i + 1}", created_at: (50 - i + 1).days.ago, text: BetterLorem.p(2, false, false)) }
 50.times { |i| Post.create(user_id: 3, title: "Post #{i + 1}", created_at: (50 - i + 1).days.ago, text: BetterLorem.p(2, false, false)) }
+50.times { |i| Post.create(user_id: 4, title: "Post #{i + 1}", created_at: (50 - i + 1).days.ago, text: BetterLorem.p(2, false, false)) }

@@ -17,6 +17,7 @@
 //= require angular
 //= require angular-resource
 //= require angular-animate
+//= require angular-sanitize
 //= require angular-ui-bootstrap-tpls
 //= require_tree ./angular
 //= require ngCli.js

@@ -50,17 +50,23 @@ body {
   font-size: 16px;
   padding: 0;
 }
+/*
 #footer {
   position: fixed;
   bottom: 0;
   margin: 0px;
   width: 100%;
-  /* Set the fixed height of the footer here */
+  // Set the fixed height of the footer here
   background-color: #f5f5f5;
 }
+*/
 
 /* Custom page CSS
 -------------------------------------------------- */
+.rightText {
+    text-align: right;
+}
+
 .main_panel {
   margin-top: 60px;
   max-width: 600px;

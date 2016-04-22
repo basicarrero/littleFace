@@ -1,5 +1,6 @@
 angular.module('ngCli', ['duScroll',
                          'ngResource',
+                         'ngSanitize',
                          'ngAnimate',
                          'ui.bootstrap',
                          'lf.filters',

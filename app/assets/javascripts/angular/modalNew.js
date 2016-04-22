@@ -2,16 +2,26 @@ angular.module("lf.modalNew", [])
 	.controller('modalNewPostCtrl', function($scope, $document, postRes, JSONutils) {
 		$scope.currentUploads = 0;
 		$scope.doPost = false;
+		$scope.active = true;
 		$scope.text = '';
 		$scope.title = '';
 		$scope.photos = [];
 		
+	    $scope.$watch('doPost',
+	        function (val) {
+	    		if (val) {
+	    			$scope.active = !val;
+	    		}
+	        }
+		);
+	    
 		$scope.submitPost = function() {
 			if ($scope.currentUploads > 0) {
 				$scope.doPost = true;
 			} else {
 				$scope.send();
 				$scope.clear();
+				$scope.doPost = true;
 			}
 			$scope.dismiss();
 		};

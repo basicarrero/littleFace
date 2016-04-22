@@ -17,7 +17,6 @@
   }
 }
 
-
 .ng-enter,
 .ng-move {
   -webkit-transition:0.5s linear all;
@@ -33,10 +32,10 @@
 }
 
 .ng-leave {
-  -webkit-animation:0.5s my_animation;
-  -moz-animation:0.5s my_animation;
-  -o-animation:0.5s my_animation;
-  animation:0.5s my_animation;
+  -webkit-animation:0.5s lst_fade;
+  -moz-animation:0.5s lst_fade;
+  -o-animation:0.5s lst_fade;
+  animation:0.5s lst_fade;
 }
 
 @keyframes lst_fade {

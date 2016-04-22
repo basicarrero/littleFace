@@ -44,11 +44,25 @@ class PostController < ApplicationController
   end
   
   def show
-    @post = Posts.where("id = " + show_params)
+    @post = current_user.posts.where("id = " + paramID)
     respond_to do |format|
-      format.json { render json: postArray_resolver(@posts), status: 200}
+      if @post.first
+          format.json { render json: post_resolver(@post.first), status: 200}
+      else
+          format.json { render :nothing => true, :status => 404}
+      end
     end
-    #render :nothing => true, :status => 204
+  end
+  
+  def destroy
+    @post = current_user.posts.destroy(paramID)
+    respond_to do |format|
+      if @post.first && !@post.first.persisted?
+          format.json { render json: @post.first, status: 200}
+      else
+          format.json { render :nothing => true, :status => 500}
+      end
+    end
   end
   
   def recent
@@ -97,7 +111,7 @@ class PostController < ApplicationController
       return params.permit(:begin, :end)
     end
     
-    def  show_params
+    def  paramID
       return params.require(:id)
     end
 end

@@ -82,7 +82,7 @@ angular.module("lf.fileUploader", [])
 				       	}
 				        node.append($('<td/>').append($('<span/>').text(file.name)));
 				        
-				        btn = $('<button/>').addClass('btn btn-danger stop');
+				        btn = $('<button/>').addClass('btn btn-danger btn-filelist');
 				       	btn.append('<i class="glyphicon glyphicon-ban-circle"></i>');
 				        
 				        if (file.error) {
@@ -130,7 +130,7 @@ angular.module("lf.fileUploader", [])
 				
 				input.bind('cloudinarydone', function (e, data) {
 					row = $('#upload-' + data.id.toString());
-					btn = row.find('.stop');
+					btn = row.find('.btn-filelist');
 					btn.removeClass('btn-danger');
 					btn.addClass('btn-default');
 					btn.children().first().removeClass('glyphicon-ban-circle');
