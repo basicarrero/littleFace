@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get 'post/recent' => 'post#recent'
   get 'post/range' => 'post#range'
   resources :post
+  resources :notif
   
   root 'page#home'
 

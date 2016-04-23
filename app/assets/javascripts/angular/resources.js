@@ -1,6 +1,9 @@
 angular.module("lf.resources", [])
 	.factory('postRes', function($resource) {
-		return $resource('/post/:id/:action.json');
+		return $resource('/post/:id/:action.json', {id: "@id"},
+			    {
+		    		'update': { method:'PUT' }
+			    });
 	})
 	.factory('notifRes', function($resource) {
 		return $resource('/notif.json');

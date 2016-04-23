@@ -17,6 +17,10 @@ class NotifController < ApplicationController
     # TODO
   end
   
+  def destroy
+    # TODO
+  end
+  
   private
     # TODO: strong params here
 end

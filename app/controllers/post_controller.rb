@@ -77,14 +77,26 @@ class PostController < ApplicationController
     end
   end
   
-  def create
-    @post = current_user.posts.create(post_params)
-    if @post.valid?
-      statusCode = 201
+def update
+  @post = current_user.posts.update(paramID, update_params)
+  respond_to do |format|
+    if @post
+      statusCode = 200
     else
       statusCode = 500
     end
+    format.json { render json:  post_resolver(@post), status: statusCode}
+  end
+end
+  
+  def create
+    @post = current_user.posts.create(post_params)
     respond_to do |format|
+      if @post.valid?
+        statusCode = 201
+      else
+        statusCode = 500
+      end
       format.json { render json:  post_resolver(@post), status: statusCode}
     end
   end
@@ -99,6 +111,10 @@ class PostController < ApplicationController
       else
         raise "Missing post title!"
       end
+    end
+    
+    def update_params
+      return params.permit(:title, :text, :photos => [])
     end
     
     def index_params

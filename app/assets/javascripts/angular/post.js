@@ -1,5 +1,5 @@
 angular.module("lf.post", [])
-	.controller('postCtrl', function($scope, $filter, postRes) {
+	.controller('postCtrl', function($scope, $filter, postRes, JSONutils) {
 		$scope.id = $scope.post.id;
 		$scope.title = $scope.post.title;
 		$scope.text = $scope.post.text;
@@ -15,39 +15,47 @@ angular.module("lf.post", [])
 	    		}
 	        }
 		);
-		
 		$scope.edition = false;
 		
-		$scope.deletePost = function(post) {
+		$scope.likeIt = function() {
+			console.log('liked');
+			// TODO: send notif
+		};
+		
+		var cleanParams = function() {
 			if ($scope.photos && $scope.photos.length === 0) { $scope.photos = undefined; }
-			
-			var post = postRes.delete({id: post.id});
+			if ($scope.text && $scope.text === '') { $scope.text = undefined; }
+		};
+		
+		$scope.deletePost = function(post) {
+			cleanParams();
+			var post = postRes.remove({id: post.id});
 			post.$promise.then(
 					function(res) {
-						var found = $filter('filter')($scope.items, {id: post.id}, true)[0];
-						$scope.items.splice($scope.items.indexOf(found), 1);
+						var found = $filter('filter')($scope.items, {id: post.id}, true);
+						if (found.length > 0) {
+							$scope.items.splice($scope.items.indexOf(found[0]), 1);
+						}
 					},
-					function(err) { console.log(err); });
-			
-			
-			
+					function(err) { 
+						console.log(err);
+					});
 		};
 		
 		$scope.updatePost = function() {
-			if ($scope.photos.length === 0) { $scope.photos = undefined; }
-			
-			var post = postRes.get({id: $scope.id});
-			console.log(post);
-			
-			post.$update({title: $scope.title, text: $scope.text, photos: $scope.photos}).$promise.then(
+			cleanParams();
+			var post = postRes.update({id: $scope.id}, { title: $scope.title, text: $scope.text, photos: $scope.photos });
+			post.$promise.then(
 				function(res) {
-					
-					//angular.copy(res, $scope.items[$scope.id]);
-
+					// TODO: Update also in sidebar
+					var found = $filter('filter')($scope.items, {id: post.id}, true);
+					if (found.length > 0) {
+						angular.copy(res, found[0]);
+					}
 					console.log('post updated: ' + JSON.stringify(res, JSONutils.escape, 4));
 				},
 				function(err) { console.log(err); });
-			$scope.clear();
+			$scope.edition = false;
 		};
 	})
 	.directive('richTextEditor', function() {
@@ -86,9 +94,16 @@ angular.module("lf.post", [])
 	        			$scope.editor.composer.disable();
 	    			}
                 };
-
+                
+//                var edBody = textarea.parent().find('iframe').contents().find('body');
+//                edBody.on('keyup', function (e, data) {
+//                	$scope.content = $scope.editor.getValue();
+//                	$scope.$apply();
+//        	    });
+                
                 $scope.editor.on('change', function (e, data) {
                 	$scope.content = $scope.editor.getValue();
+                	$scope.$apply();
         	    });
         	    
                 $scope.editor.on('load', function (e, data) {

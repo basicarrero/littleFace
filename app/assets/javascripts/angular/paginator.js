@@ -88,9 +88,7 @@ angular.module("lf.paginator", [])
 					}
 	        	};
 				$element.on('click', function(e) {
-					
 					console.log($scope.items[0]);
-					
 					if (e.stopPropagation) e.stopPropagation();
 					if (e.preventDefault) e.preventDefault();
 					var id = parseInt($attr.href.replace(/.*(?=#[^\s]+$)/, '').substring(1).split('-')[1]);
@@ -101,6 +99,14 @@ angular.module("lf.paginator", [])
 				        });
 					} else { go(id); }
 				});
+			}
+	    };
+	})
+	.directive('reveal', function () {
+	    return {
+	        restrict: 'A',
+			link : function($scope, $element, $attr) {
+				$element.removeClass('hidden');
 			}
 	    };
 	});
