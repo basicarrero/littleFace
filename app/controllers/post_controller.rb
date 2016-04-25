@@ -1,44 +1,39 @@
 class PostController < ApplicationController
   before_filter :authenticate_user!
-  
-  def post_resolver (p)
-    if p
-      p_attr = p.attributes
-        if p.photos.length > 0
-          resources = Cloudinary::Api.resources_by_ids(p.photos)['resources']
-          p_attr['resources'] = []
-          resources.each do |r|
-            p_attr['resources'].push({url: r['url'], public_id: r['public_id']})
-          end
-        end
-      return p_attr
-    end
-  end
-  
-  def postArray_resolver (postLst)
-    result = []
-    if postLst
-      postLst.each do |p|
-        result.push(post_resolver(p))
-      end
-    end
-    return result
-  end
+  include PostResourceResolver
   
   def new
     return Post.new
   end
   
   def index
-    @posts = current_user.posts.order("created_at DESC").limit(index_params)
     respond_to do |format|
-      format.json { render json: postArray_resolver(@posts), status: 200}
+      if index_params[:start].present?
+        startPost = Post.where('id = ?', index_params[:start])
+        @posts = current_user.posts.where('created_at < ?', startPost.first.created_at).order("created_at DESC").limit(index_params[:limit])
+      else
+        @posts = current_user.posts.order("created_at DESC").limit(index_params[:limit])
+      end
+      if @posts
+        format.json { render json: postArray_resolver(@posts), status: 200}
+      else
+        format.json { render :nothing => true, :status => 400}
+      end
     end
   end
   
   def range
-    @posts = current_user.posts.where("id <= " + range_params[:begin].to_s + " AND id >= " + range_params[:end].to_s).order("created_at DESC")
     respond_to do |format|
+      startPost = Post.where('id = ?', range_params[:begin])
+      endPost = Post.where('id = ?', range_params[:end])
+      if startPost && endPost
+        @posts = current_user.posts.where('created_at < ? AND created_at >= ?', startPost.first.created_at, endPost.first.created_at).order("created_at DESC")
+      else
+        format.json { render :nothing => true, :status => 400}
+      end  
+      if range_params[:tailSize].present?
+        @posts += current_user.posts.where('created_at < ?', endPost.first.created_at).order("created_at DESC").limit(range_params[:tailSize])
+      end
       format.json { render json: postArray_resolver(@posts), status: 200}
     end
   end
@@ -80,12 +75,7 @@ class PostController < ApplicationController
 def update
   @post = current_user.posts.update(paramID, update_params)
   respond_to do |format|
-    if @post
-      statusCode = 200
-    else
-      statusCode = 500
-    end
-    format.json { render json:  post_resolver(@post), status: statusCode}
+    format.json { render json:  post_resolver(@post), status: 200}
   end
 end
   
@@ -118,13 +108,14 @@ end
     end
     
     def index_params
-      return params.require(:limit)
+      params.require(:limit)
+      return params.permit(:limit, :start)
     end
     
     def range_params
       params.require(:begin)
       params.require(:end)
-      return params.permit(:begin, :end)
+      return params.permit(:begin, :end, :tailSize)
     end
     
     def  paramID

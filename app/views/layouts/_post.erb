@@ -3,13 +3,15 @@
 		<div class="panel-heading" style="position: relative; height: 45px;">
 			<div style="display: inline-block; vertical-align: middle;">
 				<h3 class="panel-title" ng-show="!edition">{{post.title}}</h3>
-				<input type="text" name="title" ng-model="title" ng-show="edition">
-				<div class="btn-group" style="position: absolute; top: 5px; right: 5px;" ng-show="!edition">
-					<button class="btn btn-default" ng-click="edition = true"><i class="glyphicon glyphicon-edit"></i></button>
-					<button class="btn btn-default" ng-click="deletePost(post)"><i class="glyphicon glyphicon-trash"></i></button>
-				</div>
-				<div class="btn-group" style="position: absolute; top: 5px; right: 5px;" ng-show="edition">
-					<button class="btn btn-primary" ng-click="updatePost(post)"><i class="glyphicon glyphicon-floppy-disk"></i>&nbsp;Save</button>
+				<div ng-show="editable">
+					<input type="text" name="title" ng-model="title" ng-show="edition">	
+					<div class="btn-group" style="position: absolute; top: 5px; right: 5px;" ng-show="!edition">
+						<button class="btn btn-default" ng-click="edition = true"><i class="glyphicon glyphicon-edit"></i></button>
+						<button class="btn btn-default" ng-click="deletePost(post)"><i class="glyphicon glyphicon-trash"></i></button>
+					</div>
+					<div class="btn-group" style="position: absolute; top: 5px; right: 5px;" ng-show="edition">
+						<button class="btn btn-primary" ng-click="updatePost(post)"><i class="glyphicon glyphicon-floppy-disk"></i>&nbsp;Save</button>
+					</div>
 				</div>
 			</div>
 		</div>

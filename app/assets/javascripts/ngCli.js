@@ -10,4 +10,5 @@ angular.module('ngCli', ['duScroll',
                          'lf.modalNew',
                          'lf.post',
                          'lf.fileUploader',
+                         'lf.user',
                          'lf.notifications']);

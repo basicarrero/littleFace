@@ -8,6 +8,12 @@ angular.module("lf.resources", [])
 	.factory('notifRes', function($resource) {
 		return $resource('/notif.json');
 	})
+	.factory('timelineRes', function($resource) {
+		return $resource('/timeline.json');
+	})
+	.factory('userRes', function($resource) {
+		return $resource('/user.json');
+	})
 	.factory('JSONutils', function() {
 		return {
 			escape: function (key, val) {

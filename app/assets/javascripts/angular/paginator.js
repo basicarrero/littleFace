@@ -1,61 +1,73 @@
 angular.module("lf.paginator", [])
-	.controller('paginatorCtrl', function($scope, $window, $document, $filter, $q, postRes) {
-    	$scope.pageSize = 10;
-    	$scope.items = postRes.query({limit: $scope.pageSize});
+	.controller('timelineCtrl', function($scope, timelineRes) {
+		$scope.endPoint = timelineRes;
+	})
+	.controller('homeCtrl', function($scope, postRes) {
+		$scope.endPoint = postRes;
+	})
+	.controller('paginatorCtrl', function($scope, $window, $document, $filter, $q) {
+    	$scope.pageSize = 8;
+    	$scope.items = $scope.endPoint.query({limit: $scope.pageSize});
     	$scope.isBusy = false;
-    	$scope.areMore = undefined;
+    	$scope.areMore = true;
     	
-        $scope.$watch(
-            function () {
-            	return $scope.items[$scope.items.length - 1];
-            },
-            function (newVal, oldVal) {
-            	if (newVal) {
-                    if (newVal.id === 1) { $scope.areMore = false; }
-                    else { $scope.areMore = true; }
-            	}
-            }
-        );
+    	var onSuccess = function(defered) {
+    		return function(res) {	// success function
+    			angular.forEach(res, function(r) { $scope.items.push(r); });
+    			$scope.isBusy = false;
+    			if (res.length < $scope.pageSize) {
+    				$scope.areMore = false;
+    			}
+    			defered.resolve(res);
+    		};
+		};
+		
+    	var onErr = function(defered) {
+    		return function(err) {	// error function
+    			console.log(err);
+    			$scope.isBusy = false;
+    			defered.reject(err);
+    		};
+		};
+		
+    	var loadMore = function() {
+    		var defered = $q.defer();
+    		var lastLoaded = $scope.items.length > 0 ? $scope.items[$scope.items.length - 1] : undefined;
+    		
+			var res = $scope.endPoint.query({start: lastLoaded.id, limit: $scope.pageSize});
+			res.$promise.then(onSuccess(defered), onErr(defered));
+			
+    		return defered.promise;
+    	};
+    	
     	var loadUntil = function(id) {
-    		var defered = $q.defer(); 
-    		var lastLoaded = $scope.items.length > 0 ? $scope.items[$scope.items.length - 1] : {id: 1};
+    		var defered = $q.defer();
+    		var lastLoaded = $scope.items.length > 0 ? $scope.items[$scope.items.length - 1] : undefined;
+    		
     		var found = $filter('filter')($scope.items, {id: id}, true);
     		var tailSize;
     		if (found.length > 0) {
     			var pos = $scope.items.indexOf(found[0]);
     			tailSize = (($scope.items.length - 1 ) - pos );
-    			tailSize = tailSize < 0 ? 0 : tailSize;
+    			if (tailSize < $scope.pageSize) {
+        			var res = $scope.endPoint.query({start: lastLoaded.id, limit: tailSize});
+    				res.$promise.then(onSuccess(defered), onErr(defered));
+    			}else 
+    				return;
+    		}else {
+    			var res = $scope.endPoint.query({begin: lastLoaded.id, end: id, tailSize: $scope.pageSize, action: 'range'});
+				res.$promise.then(onSuccess(defered), onErr(defered));
     		}
-    		if (!tailSize || tailSize < $scope.pageSize) {
-    			var begin = lastLoaded.id - 1;
-    			var end = (id - $scope.pageSize - 1) < 1 ? 1 : (id - $scope.pageSize);
-    			if (begin >= end) {
-    				$scope.isBusy = true;
-    				//console.log('get from: ' + begin + ' to ' + end);
-    				var res = postRes.query({begin: begin, end: end, action: 'range'});
-    				res.$promise.then(
-    					function(res) {	// success function
-    						angular.forEach(res, function(r) { $scope.items.push(r); });
-    						$scope.isBusy = false;
-    						defered.resolve(res);
-    					},
-    					function(err) {	// error function
-    						console.log(err);
-    						$scope.isBusy = false;
-    						defered.reject(err);
-    					});
-    				return defered.promise;
-    			}
-    		}
+    		return defered.promise;
     	};
     	
     	$scope.showMore = function(id) {
     		if (!$scope.isBusy && $scope.areMore) {
-    			if (id) {
+    			$scope.isBusy = true;
+    			if (id)
     				return loadUntil(id);
-    			} else {
-    				return loadUntil($scope.items[$scope.items.length - 1].id);
-    			}
+    			else
+    				return loadMore();
     		}
     	};
     	
@@ -88,7 +100,6 @@ angular.module("lf.paginator", [])
 					}
 	        	};
 				$element.on('click', function(e) {
-					console.log($scope.items[0]);
 					if (e.stopPropagation) e.stopPropagation();
 					if (e.preventDefault) e.preventDefault();
 					var id = parseInt($attr.href.replace(/.*(?=#[^\s]+$)/, '').substring(1).split('-')[1]);

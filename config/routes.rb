@@ -2,9 +2,12 @@ Rails.application.routes.draw do
   devise_for :users
 
   get 'page/home' => 'page#home'
+  get 'page/timeline' => 'page#timeline'
   
   get 'post/recent' => 'post#recent'
   get 'post/range' => 'post#range'
+  get 'timeline' => 'timeline#index'
+  get 'user' => 'user#current'
   resources :post
   resources :notif
   

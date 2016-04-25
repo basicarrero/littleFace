@@ -1,10 +1,19 @@
 angular.module("lf.post", [])
 	.controller('postCtrl', function($scope, $filter, postRes, JSONutils) {
 		$scope.id = $scope.post.id;
+		$scope.userId = $scope.post.user_id;
 		$scope.title = $scope.post.title;
 		$scope.text = $scope.post.text;
 		$scope.photos = $scope.post.photos;
 		
+		$scope.edition = false;
+		$scope.editable = false;
+        $scope.$watch('user', function (val) {
+        	if (val && $scope.userId === val.id) {
+        		$scope.editable = true;
+        	}
+	    });
+        
 		$scope.currentUploads = 0;
 		$scope.doPost = false;
 		$scope.active = true;
@@ -15,7 +24,6 @@ angular.module("lf.post", [])
 	    		}
 	        }
 		);
-		$scope.edition = false;
 		
 		$scope.likeIt = function() {
 			console.log('liked');
