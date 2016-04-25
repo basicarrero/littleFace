@@ -24,7 +24,6 @@
 //=
 //= require bootstrap
 //= require bootstrap-wysihtml5
-//= require ui-conf.js
 //=
 //= require gallery/jquery.blueimp-gallery.min.js
 //= require gallery/bootstrap-image-gallery.min.js

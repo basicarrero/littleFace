@@ -15,7 +15,8 @@ angular.module("lf.paginator", [])
     		return function(res) {	// success function
     			angular.forEach(res, function(r) { $scope.items.push(r); });
     			$scope.isBusy = false;
-    			if (res.length < $scope.pageSize) {
+    			if (res.length == 0) {
+    				console.log('no more');
     				$scope.areMore = false;
     			}
     			defered.resolve(res);
@@ -53,6 +54,7 @@ angular.module("lf.paginator", [])
         			var res = $scope.endPoint.query({start: lastLoaded.id, limit: tailSize});
     				res.$promise.then(onSuccess(defered), onErr(defered));
     			}else 
+    				$scope.isBusy = false;
     				return;
     		}else {
     			var res = $scope.endPoint.query({begin: lastLoaded.id, end: id, tailSize: $scope.pageSize, action: 'range'});
