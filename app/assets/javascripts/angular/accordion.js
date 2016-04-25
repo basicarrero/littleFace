@@ -30,11 +30,37 @@ angular.module("lf.accordion", [])
 				}, 1);
 		});
 		
-	    $scope.$watch('lastPost',
+	    $scope.$watch('lastCreated',
 	        function (post) {
 	    		if (post) {
 	    			var idx = $scope.data.length - 1 - new Date(post.created_at).getMonth();
 	    			$scope.data[idx].posts.unshift({id: post.id, title: post.title});
+	    		}
+	        }
+	    );
+	    
+	    $scope.$watch('lastUpdated',
+	        function (post) {
+	    		if (post) {
+	    			var idx = $scope.data.length - 1 - new Date(post.created_at).getMonth();
+	    			angular.forEach($scope.data[idx].posts, function(p) {
+	    				if (post.id === p.id) {
+	    					p.title = post.title;
+	    				}
+	    			});
+	    		}
+	        }
+	    );
+	    
+	    $scope.$watch('lastDeleted',
+	        function (post) {
+	    		if (post) {
+	    			var idx = $scope.data.length - 1 - new Date(post.created_at).getMonth();
+	    			angular.forEach($scope.data[idx].posts, function(p) {
+	    				if (post.id === p.id) {
+	    					$scope.data[idx].posts.splice($scope.data[idx].posts.indexOf(p), 1);
+	    				}
+	    			});
 	    		}
 	        }
 	    );

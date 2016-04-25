@@ -43,6 +43,8 @@ angular.module("lf.post", [])
 						var found = $filter('filter')($scope.items, {id: post.id}, true);
 						if (found.length > 0) {
 							$scope.items.splice($scope.items.indexOf(found[0]), 1);
+							$scope.showMore(1);
+							$scope.setLastDeleted(post);
 						}
 					},
 					function(err) { 
@@ -55,11 +57,11 @@ angular.module("lf.post", [])
 			var post = postRes.update({id: $scope.id}, { title: $scope.title, text: $scope.text, photos: $scope.photos });
 			post.$promise.then(
 				function(res) {
-					// TODO: Update also in sidebar
 					var found = $filter('filter')($scope.items, {id: post.id}, true);
 					if (found.length > 0) {
 						angular.copy(res, found[0]);
 					}
+					$scope.setLastUpdated(post);
 					console.log('post updated: ' + JSON.stringify(res, JSONutils.escape, 4));
 				},
 				function(err) { console.log(err); });

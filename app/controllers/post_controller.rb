@@ -14,11 +14,7 @@ class PostController < ApplicationController
       else
         @posts = current_user.posts.order("created_at DESC").limit(index_params[:limit])
       end
-      if @posts
-        format.json { render json: postArray_resolver(@posts), status: 200}
-      else
-        format.json { render :nothing => true, :status => 400}
-      end
+      format.json { render json: postArray_resolver(@posts), status: 200}
     end
   end
   

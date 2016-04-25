@@ -5,6 +5,8 @@ angular.module("lf.user", [])
 				function(res) {
 					$scope.user = res.user;
 					$scope.friends = res.friends;
+					
+					console.log(res);
 				},
 				function(err) { 
 					console.log(err);

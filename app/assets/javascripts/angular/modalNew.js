@@ -31,7 +31,7 @@ angular.module("lf.modalNew", [])
 			postRes.save({title: $scope.title, text: $scope.text, photos: $scope.photos}).$promise.then(
 				function(res) {
 					$scope.$parent.items.unshift(res);
-					$scope.$parent.lastPost = res;
+					$scope.setLastCreated(res);
 					console.log('post saved: ' + JSON.stringify(res, JSONutils.escape, 4));
 				},
 				function(err) { console.log(err); });

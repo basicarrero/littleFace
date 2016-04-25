@@ -12,32 +12,45 @@ angular.module("lf.paginator", [])
     	$scope.areMore = true;
     	
     	var onSuccess = function(defered) {
-    		return function(res) {	// success function
+    		// success function
+    		return function(res) {
     			angular.forEach(res, function(r) { $scope.items.push(r); });
     			$scope.isBusy = false;
     			if (res.length == 0) {
-    				console.log('no more');
+    				console.log('No more!');
     				$scope.areMore = false;
     			}
+    			
+    			console.log(res);
+    			
     			defered.resolve(res);
     		};
 		};
 		
     	var onErr = function(defered) {
-    		return function(err) {	// error function
+    		// error function
+    		return function(err) {
     			console.log(err);
     			$scope.isBusy = false;
     			defered.reject(err);
     		};
 		};
 		
-    	var loadMore = function() {
+    	var loadMore = function(n) {
     		var defered = $q.defer();
     		var lastLoaded = $scope.items.length > 0 ? $scope.items[$scope.items.length - 1] : undefined;
     		
-			var res = $scope.endPoint.query({start: lastLoaded.id, limit: $scope.pageSize});
+    		var params = {};
+    		if (lastLoaded)
+    			params.start = lastLoaded.id;
+    		
+    		if (n)
+    			params.limit = n;
+    		else
+    			params.limit = $scope.pageSize;
+    		
+    		var res = $scope.endPoint.query(params);
 			res.$promise.then(onSuccess(defered), onErr(defered));
-			
     		return defered.promise;
     	};
     	
@@ -66,11 +79,27 @@ angular.module("lf.paginator", [])
     	$scope.showMore = function(id) {
     		if (!$scope.isBusy && $scope.areMore) {
     			$scope.isBusy = true;
-    			if (id)
-    				return loadUntil(id);
-    			else
-    				return loadMore();
+    			return loadMore(id);
     		}
+    	};
+    	
+    	$scope.showUntil = function(id) {
+    		if (!$scope.isBusy && $scope.areMore) {
+    			$scope.isBusy = true;
+    			return loadUntil(id);
+    		}
+    	};
+    	
+    	$scope.setLastCreated = function(p) {
+    		$scope.lastCreated = p;
+    	};
+    	
+    	$scope.setLastUpdated = function(p) {
+    		$scope.lastUpdated = p;
+    	};
+    	
+    	$scope.setLastDeleted = function(p) {
+    		$scope.lastDeleted = p;
     	};
     	
     	$scope.goTo = function(target) {
@@ -105,7 +134,7 @@ angular.module("lf.paginator", [])
 					if (e.stopPropagation) e.stopPropagation();
 					if (e.preventDefault) e.preventDefault();
 					var id = parseInt($attr.href.replace(/.*(?=#[^\s]+$)/, '').substring(1).split('-')[1]);
-					var promise = $scope.showMore(id);
+					var promise = $scope.showUntil(id);
 					if (promise) {
 						promise.then(function() {
 							$timeout(function () { go(id); }, 500);
