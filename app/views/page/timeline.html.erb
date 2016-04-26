@@ -1,21 +1,23 @@
-<div ng-controller="userCtrl">	
-	<div ng-controller="timelineCtrl">	
-		<%= render "layouts/navbar" %>
-		<div id="wrapper" ng-controller="paginatorCtrl">
-			<%= render "layouts/sidebar_friends" %>
-			<!-- Page Content -->
-			<div id="page-content-wrapper" style="padding-left: 8%; overflow-x: auto">
-				<div class="container-fluid">
-					<div class="main_panel panel-corners glass" >
-						<div id="my-posts" class="hidden" reveal>
-							<%= render "layouts/post" %>
+<div ng-controller="notificationsCtrl">
+	<div ng-controller="userCtrl">	
+		<div ng-controller="timelineCtrl">	
+			<%= render "layouts/navbar" %>
+			<div id="wrapper" ng-controller="paginatorCtrl">
+				<%= render "layouts/sidebar_friends" %>
+				<!-- Page Content -->
+				<div id="page-content-wrapper" style="padding-left: 8%; overflow-x: auto">
+					<div class="container-fluid">
+						<div class="main_panel panel-corners glass" >
+							<div id="my-posts" class="hidden" reveal>
+								<%= render "layouts/post" %>
+							</div>
 						</div>
 					</div>
 				</div>
+				<!-- /#page-content-wrapper -->
+				<%= render "layouts/modal_post" %>
 			</div>
-			<!-- /#page-content-wrapper -->
-			<%= render "layouts/modal_post" %>
+			<!-- /#wrapper -->
 		</div>
-		<!-- /#wrapper -->
 	</div>
 </div>

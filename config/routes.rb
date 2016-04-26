@@ -6,8 +6,9 @@ Rails.application.routes.draw do
   
   get 'post/recent' => 'post#recent'
   get 'post/range' => 'post#range'
-  get 'timeline' => 'timeline#index'
+  put 'post/:id/like' => 'post#like'
   get 'user' => 'user#current'
+  get 'timeline' => 'timeline#index'
   resources :post
   resources :notif
   

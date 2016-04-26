@@ -7,8 +7,11 @@ class PageController < ApplicationController
     end
   end
   
-  def home   
+  def home
     respond_to do |format|
+      if params[:go].present?
+        @go = params[:go]
+      end
       format.html
     end
   end

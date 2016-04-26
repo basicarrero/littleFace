@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 20160424102645) do
 
   create_table "notifs", force: :cascade do |t|
     t.integer  "user_id",                 null: false
-    t.integer  "type",                    null: false
+    t.string   "nType",                   null: false
     t.integer  "receivers",  default: [],              array: true
     t.string   "message"
     t.datetime "created_at",              null: false

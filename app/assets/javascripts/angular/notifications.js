@@ -1,11 +1,17 @@
 angular.module("lf.notifications", [])
 	.controller('notificationsCtrl', function($scope, notifRes) {
-    	//$scope.maxItems = 8;
-    	//$scope.items = notifRes.query({limit: $scope.maxItems});
-		// TODO: use this https://angular-ui.github.io/bootstrap/#dropdown && http://getbootstrap.com/components/#badges
-		$scope.pushNotif = function(notif) {
-			console.log('TODO');
-			console.log(notif);
-			// TODO
-		};
+    	$scope.maxItems = 5;
+    	$scope.notifs = notifRes.query({limit: $scope.maxItems});
+    	$scope.notifs.$promise.then(
+				function(res) {
+					console.log(res);
+				},
+				function(err) { 
+					console.log(err);
+				});
+    	// TODO : repeat every 5s notifRes.query({limit: $scope.maxItems, last: $scope.notifs[0].id});
+    	//
+    	// TODO: use this in view "_navbar" dropdown:
+    	//		https://angular-ui.github.io/bootstrap/#dropdown
+    	//		http://getbootstrap.com/components/#badges
 	});
