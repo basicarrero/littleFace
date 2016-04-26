@@ -9,7 +9,7 @@ class PostController < ApplicationController
   def index
     respond_to do |format|
       if index_params[:start].present?
-        startPost = Post.where('id = ?', index_params[:start])
+        startPost = current_user.posts.where('id = ?', index_params[:start])
         @posts = current_user.posts.where('created_at < ?', startPost.first.created_at).order("created_at DESC").limit(index_params[:limit])
       else
         @posts = current_user.posts.order("created_at DESC").limit(index_params[:limit])
@@ -20,17 +20,17 @@ class PostController < ApplicationController
   
   def range
     respond_to do |format|
-      startPost = Post.where('id = ?', range_params[:begin])
-      endPost = Post.where('id = ?', range_params[:end])
-      if startPost && endPost
+      startPost = current_user.posts.where('id = ?', range_params[:begin])
+      endPost = current_user.posts.where('id = ?', range_params[:end])
+      if startPost.first && endPost.first
         @posts = current_user.posts.where('created_at < ? AND created_at >= ?', startPost.first.created_at, endPost.first.created_at).order("created_at DESC")
+        if range_params[:tailSize].present?
+          @posts += current_user.posts.where('created_at < ?', endPost.first.created_at).order("created_at DESC").limit(range_params[:tailSize])
+        end
+        format.json { render json: postArray_resolver(@posts), status: 200}
       else
         format.json { render :nothing => true, :status => 400}
       end  
-      if range_params[:tailSize].present?
-        @posts += current_user.posts.where('created_at < ?', endPost.first.created_at).order("created_at DESC").limit(range_params[:tailSize])
-      end
-      format.json { render json: postArray_resolver(@posts), status: 200}
     end
   end
   

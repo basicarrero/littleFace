@@ -7,8 +7,8 @@ angular.module("lf.paginator", [])
 	})
 	.controller('paginatorCtrl', function($scope, $window, $document, $filter, $q) {
     	$scope.pageSize = 8;
-    	$scope.items = $scope.endPoint.query({limit: $scope.pageSize});
-    	$scope.isBusy = false;
+    	$scope.items = [];
+    	$scope.isBusy = true;
     	$scope.areMore = true;
     	
     	var onSuccess = function(defered) {
@@ -20,10 +20,7 @@ angular.module("lf.paginator", [])
     				console.log('No more!');
     				$scope.areMore = false;
     			}
-    			
-    			console.log(res);
-    			
-    			defered.resolve(res);
+    			if (defered) { defered.resolve(res); }
     		};
 		};
 		
@@ -32,10 +29,13 @@ angular.module("lf.paginator", [])
     		return function(err) {
     			console.log(err);
     			$scope.isBusy = false;
-    			defered.reject(err);
+    			if (defered) { defered.reject(err); }
     		};
 		};
 		
+    	var res = $scope.endPoint.query({limit: $scope.pageSize});
+    	res.$promise.then(onSuccess(), onErr());
+    	
     	var loadMore = function(n) {
     		var defered = $q.defer();
     		var lastLoaded = $scope.items.length > 0 ? $scope.items[$scope.items.length - 1] : undefined;
@@ -102,10 +102,6 @@ angular.module("lf.paginator", [])
     		$scope.lastDeleted = p;
     	};
     	
-    	$scope.goTo = function(target) {
-    		return $document.scrollToElementAnimated(target, 130);
-    	};
-    	
     	angular.element($window).bind('scroll', function () {
             //console.log('in scroll ' + (angular.element($document)[0].body.clientHeight - $window.innerHeight - 60) + ' - ' + $window.pageYOffset);
 			if ($window.pageYOffset > angular.element($document)[0].body.clientHeight - $window.innerHeight - 60) {
@@ -114,32 +110,58 @@ angular.module("lf.paginator", [])
 			//$scope.$apply(); // scroll will run outside of the normal digest cycle, so we need to apply changes to scope
         });
 	})
+	.directive('scroller', function ($timeout, $animate) {
+	    return {
+			controller : function($scope, $document) {
+		    	$scope.goTo = function(target) {
+		    		return $document.scrollToElementAnimated(target, 130);
+		    	};
+			},
+			link : function($scope, $element, $attr) {
+		    	$scope.go = function (id, after) {
+		    		var t = after ? after : 500;
+					$timeout(function () { // Do after render
+						var target = document.getElementById('p-' + id);
+						if (target) { 
+							$scope.goTo(target).then(function(res) {
+								$animate.addClass(target, 'pulse').then(function() {
+									$timeout(function(){ 
+										$animate.removeClass(target, 'pulse'); 
+									}, 2000);
+							    });
+							});
+						}
+					}, t);
+	        	};
+	        	if ($attr.goTo) {
+	        		var id = $attr.goTo.split('-')[1];
+	        		var listener = $scope.$watch("isBusy", function (val) {
+	        			if (val === false) {
+							var promise = $scope.showUntil(id);
+							if (promise)
+								promise.then($scope.go(id, 2500));
+							else
+								$scope.go(id);
+							listener();
+	        			}
+	        		});
+	        	}
+			}
+	    };
+	})
 	.directive('willScroll', function ($timeout, $animate) {
 	    return {
 	        restrict: 'A',
 			link : function($scope, $element, $attr) {
-	        	function go(id) {
-					var target = document.getElementById('p-' + id);
-					if (target) { 
-						$scope.goTo(target).then(function(res) {
-							$animate.addClass(target, 'pulse').then(function() {
-								$timeout(function(){ 
-									$animate.removeClass(target, 'pulse'); 
-								}, 2000);
-						    });
-						});
-					}
-	        	};
 				$element.on('click', function(e) {
 					if (e.stopPropagation) e.stopPropagation();
 					if (e.preventDefault) e.preventDefault();
 					var id = parseInt($attr.href.replace(/.*(?=#[^\s]+$)/, '').substring(1).split('-')[1]);
 					var promise = $scope.showUntil(id);
-					if (promise) {
-						promise.then(function() {
-							$timeout(function () { go(id); }, 500);
-				        });
-					} else { go(id); }
+					if (promise)
+						promise.then($scope.go(id));
+					else
+						$scope.go(id);
 				});
 			}
 	    };
