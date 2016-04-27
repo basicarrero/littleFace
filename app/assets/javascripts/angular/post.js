@@ -1,44 +1,32 @@
 angular.module("lf.post", [])
 	.controller('postCtrl', function($scope, $filter, postRes, JSONutils) {
-		$scope.id = $scope.post.id;
-		$scope.userId = $scope.post.user_id;
-		$scope.title = $scope.post.title;
-		$scope.text = $scope.post.text;
-		$scope.photos = $scope.post.photos;
-		
-		$scope.edition = false;
-		$scope.editable = false;
-        $scope.$watch('user', function (val) {
-        	if (val && $scope.userId === val.id) {
-        		$scope.editable = true;
-        	}
-	    });
-        
+		$scope.pop = {
+			title : 'Friends who likes It:',
+			place: 'right',
+			templateUrl : 'likersTemplate.html'
+		};
 		$scope.currentUploads = 0;
 		$scope.doPost = false;
-		$scope.active = true;
-	    $scope.$watch('doPost',
-	        function (val) {
-	    		if (val) {
-	    			$scope.active = !val;
-	    		}
-	        }
-		);
+		$scope.edition = false;
+		$scope.editable = false;
+        var usrListener = $scope.$watch('user', function (usr) {
+        	if (usr) {
+        		if ($scope.post.user_id === usr.id) { $scope.editable = true; }
+        		$scope.owner = $scope.resolveUsers([$scope.post.user_id]).pop();
+        		$scope.likers = $scope.resolveUsers($scope.post.likes);
+        		usrListener();
+        	}
+	    });
 		
-		$scope.likeIt = function() {
-			console.log('liked');
-			// TODO: send notif
-		};
-		
-		var cleanParams = function() {
-			if ($scope.photos && $scope.photos.length === 0) { $scope.photos = undefined; }
-			if ($scope.text && $scope.text === '') { $scope.text = undefined; }
+		$scope.updatePost = function(post) {
+			if ($scope.currentUploads > 0)
+				$scope.doPost = true;
+			else
+				$scope.edit(post);
 		};
 		
 		$scope.deletePost = function(post) {
-			cleanParams();
-			var post = postRes.remove({id: post.id});
-			post.$promise.then(
+			postRes.remove({id: post.id}).$promise.then(
 					function(res) {
 						var found = $filter('filter')($scope.items, {id: post.id}, true);
 						if (found.length > 0) {
@@ -51,21 +39,30 @@ angular.module("lf.post", [])
 						console.log(err);
 					});
 		};
-		
-		$scope.updatePost = function() {
-			cleanParams();
-			var post = postRes.update({id: $scope.id}, { title: $scope.title, text: $scope.text, photos: $scope.photos });
-			post.$promise.then(
+
+		var updatePost = function(post, params, action) {
+			var args = {id: post.id};
+			if (action) { args.action = action; }
+			postRes.update(args, params).$promise.then(
 				function(res) {
 					var found = $filter('filter')($scope.items, {id: post.id}, true);
 					if (found.length > 0) {
 						angular.copy(res, found[0]);
 					}
+					$scope.likers = $scope.resolveUsers(res.likes);
 					$scope.setLastUpdated(post);
 					console.log('post updated: ' + JSON.stringify(res, JSONutils.escape, 4));
 				},
 				function(err) { console.log(err); });
+		};
+		
+		$scope.edit = function(post) {
+			updatePost(post, { title: $scope.post.title, text: $scope.post.text, photos: $scope.post.photos });
 			$scope.edition = false;
+		};
+		
+		$scope.likeIt = function(post) {
+			updatePost(post, {}, 'like');
 		};
 	})
 	.directive('richTextEditor', function() {
@@ -73,7 +70,7 @@ angular.module("lf.post", [])
             restrict : "E",
             replace: true,
             scope : {
-            	isActive: "=",
+            	disabled: "=",
             	content: "="
             },
             template : '<textarea></textarea>',
@@ -105,12 +102,6 @@ angular.module("lf.post", [])
 	    			}
                 };
                 
-//                var edBody = textarea.parent().find('iframe').contents().find('body');
-//                edBody.on('keyup', function (e, data) {
-//                	$scope.content = $scope.editor.getValue();
-//                	$scope.$apply();
-//        	    });
-                
                 $scope.editor.on('change', function (e, data) {
                 	$scope.content = $scope.editor.getValue();
                 	$scope.$apply();
@@ -118,17 +109,17 @@ angular.module("lf.post", [])
         	    
                 $scope.editor.on('load', function (e, data) {
         	    	$scope.editor.setValue($scope.content);
+        	    	
+            	    $scope.$watch('disabled', function (val) {
+            	    	if ($scope.editor && $scope.editor.toolbar) {
+            	    		switchEditor(!val);
+            	    	}
+                	});
             	});
         	    
                 $scope.$watch('content', function (val) {
                 	$scope.editor.setValue(val);
         	    });
-        	    
-        	    $scope.$watch('isActive', function (val) {
-        	    	if ($scope.editor && $scope.editor.toolbar) {
-        	    		switchEditor(val);
-        	    	}
-            	});
             }
 	    };
 	})

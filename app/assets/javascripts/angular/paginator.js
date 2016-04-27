@@ -33,8 +33,7 @@ angular.module("lf.paginator", [])
     		};
 		};
 		
-    	var res = $scope.endPoint.query({limit: $scope.pageSize});
-    	res.$promise.then(onSuccess(), onErr());
+    	$scope.endPoint.query({limit: $scope.pageSize}).$promise.then(onSuccess(), onErr());
     	
     	var loadMore = function(n) {
     		var defered = $q.defer();
@@ -139,7 +138,7 @@ angular.module("lf.paginator", [])
 	        			if (val === false) {
 							var promise = $scope.showUntil(id);
 							if (promise)
-								promise.then($scope.go(id, 2500));
+								promise.then($scope.go(id, 2000));
 							else
 								$scope.go(id);
 							listener();

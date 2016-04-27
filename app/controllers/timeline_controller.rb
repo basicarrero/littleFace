@@ -10,11 +10,7 @@ class TimelineController < ApplicationController
       else
         @posts = Post.where('user_id IN (?)', current_user.friends).order("created_at DESC").limit(index_params[:limit])
       end
-      if @posts
-        format.json { render json: postArray_resolver(@posts), status: 200}
-      else
-        format.json { render :nothing => true, :status => 400}
-      end
+      format.json { render json: postArray_resolver(@posts), status: 200}
     end
   end
   

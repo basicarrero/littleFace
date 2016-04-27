@@ -17,12 +17,14 @@ ActiveRecord::Schema.define(version: 20160424102645) do
   enable_extension "plpgsql"
 
   create_table "notifs", force: :cascade do |t|
-    t.integer  "user_id",                 null: false
-    t.string   "nType",                   null: false
-    t.integer  "receivers",  default: [],              array: true
+    t.integer  "user_id",    null: false
+    t.integer  "from",       null: false
+    t.string   "nType",      null: false
+    t.string   "nTypeAux"
     t.string   "message"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.string   "link"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "notifs", ["user_id"], name: "index_notifs_on_user_id", using: :btree

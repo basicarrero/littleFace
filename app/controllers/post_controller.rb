@@ -6,13 +6,35 @@ class PostController < ApplicationController
     return Post.new
   end
   
+  def likeIt (p)
+    existingNotif = Notif.where(user_id: p.user_id, from: current_user.id, nType: 'like', nTypeAux: p.id)
+    if existingNotif.empty?
+      msg = current_user.name + ' Likes your post!: ' + p.title
+      Notif.create(user_id: p.user_id, from: current_user.id, message: msg, nType: 'like', nTypeAux: p.id)
+    end
+  end
+  
+  def like
+    respond_to do |format|
+      @post = Post.where('id = ' + paramID).first
+      if @post.likes.include? current_user.id
+        @post.likes.delete(current_user.id)
+      else
+        @post.likes.push(current_user.id)
+      end
+      @post.save!
+      likeIt(@post)
+      format.json { render json: post_resolver(@post), status: 200}
+    end
+  end
+  
   def index
     respond_to do |format|
       if index_params[:start].present?
         startPost = current_user.posts.where('id = ?', index_params[:start])
-        @posts = current_user.posts.where('created_at < ?', startPost.first.created_at).order("created_at DESC").limit(index_params[:limit])
+        @posts = current_user.posts.where('created_at < ?', startPost.first.created_at).order('created_at DESC').limit(index_params[:limit])
       else
-        @posts = current_user.posts.order("created_at DESC").limit(index_params[:limit])
+        @posts = current_user.posts.order('created_at DESC').limit(index_params[:limit])
       end
       format.json { render json: postArray_resolver(@posts), status: 200}
     end
@@ -23,9 +45,9 @@ class PostController < ApplicationController
       startPost = current_user.posts.where('id = ?', range_params[:begin])
       endPost = current_user.posts.where('id = ?', range_params[:end])
       if startPost.first && endPost.first
-        @posts = current_user.posts.where('created_at < ? AND created_at >= ?', startPost.first.created_at, endPost.first.created_at).order("created_at DESC")
+        @posts = current_user.posts.where('created_at < ? AND created_at >= ?', startPost.first.created_at, endPost.first.created_at).order('created_at DESC')
         if range_params[:tailSize].present?
-          @posts += current_user.posts.where('created_at < ?', endPost.first.created_at).order("created_at DESC").limit(range_params[:tailSize])
+          @posts += current_user.posts.where('created_at < ?', endPost.first.created_at).order('created_at DESC').limit(range_params[:tailSize])
         end
         format.json { render json: postArray_resolver(@posts), status: 200}
       else
@@ -35,12 +57,12 @@ class PostController < ApplicationController
   end
   
   def show
-    @post = current_user.posts.where("id = " + paramID)
+    @post = current_user.posts.where('id = ' + paramID)
     respond_to do |format|
-      if @post.first
-          format.json { render json: post_resolver(@post.first), status: 200}
+      if @post.empty?
+        format.json { render :nothing => true, :status => 404}
       else
-          format.json { render :nothing => true, :status => 404}
+        format.json { render json: post_resolver(@post.first), status: 200}     
       end
     end
   end
@@ -58,7 +80,7 @@ class PostController < ApplicationController
   
   def recent
     # get posts of the present year
-    posts = current_user.posts.select('id, title, created_at').where('extract(year from created_at) = extract(year from CURRENT_DATE)').order("created_at DESC")
+    posts = current_user.posts.select('id, title, created_at').where('extract(year from created_at) = extract(year from CURRENT_DATE)').order('created_at DESC')
     @monthsPosts = [[],[],[],[],[],[],[],[],[],[],[],[]]
     posts.each do |p|
       @monthsPosts[p.created_at.to_time.month - 1].push({id: p.id, title: p.title})
@@ -95,7 +117,7 @@ end
         my_params[:title].capitalize!
         return my_params
       else
-        raise "Missing post title!"
+        raise 'Missing post title!'
       end
     end
     

@@ -18,7 +18,7 @@ User.create(name: 'Basi', email: 'basicarrero@hotmail.com', password: 'topsecret
   
 Post.create(user_id: 4, title: "Liked Post", text: 'Popular one', likes: [1,2,3])
 
-8.times { |i| Notif.create(user_id: 1, message: "Notif #{i + 1}", nType: "dummy_notif", created_at: (10 - i + 1).days.ago) }
-8.times { |i| Notif.create(user_id: 2, message: "Notif #{i + 1}", nType: "dummy_notif", created_at: (10 - i + 1).days.ago) }
-8.times { |i| Notif.create(user_id: 3, message: "Notif #{i + 1}", nType: "dummy_notif", created_at: (10 - i + 1).days.ago) }
-8.times { |i| Notif.create(user_id: 4, message: "Notif #{i + 1}", nType: "dummy_notif", created_at: (10 - i + 1).days.ago) }
+8.times { |i| Notif.create(user_id: 1, from: 2, message: "Notif #{i + 1}", nType: "dummy_notif", created_at: (10 - i + 1).days.ago) }
+8.times { |i| Notif.create(user_id: 2, from: 1, message: "Notif #{i + 1}", nType: "dummy_notif", created_at: (10 - i + 1).days.ago) }
+8.times { |i| Notif.create(user_id: 3, from: 2, message: "Notif #{i + 1}", nType: "dummy_notif", created_at: (10 - i + 1).days.ago) }
+8.times { |i| Notif.create(user_id: 4, from: 1, message: "Notif #{i + 1}", nType: "dummy_notif", created_at: (10 - i + 1).days.ago) }

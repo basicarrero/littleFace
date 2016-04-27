@@ -5,7 +5,7 @@ angular.module("lf.fileUploader", [])
 	    		uploads: "=",
 	    		files: "=",
 	    		doCallback: "=",
-	    		callback: "=",
+	    		callback: "&",
 	    		id: "@"
 	    	},
             controller: function($scope, $document) {
