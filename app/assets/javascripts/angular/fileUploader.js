@@ -4,37 +4,56 @@ angular.module("lf.fileUploader", [])
 	    	scope: {
 	    		uploads: "=",
 	    		files: "=",
+	    		resetFlag: "=",
+	    		deleteTokens: "=",
 	    		doCallback: "=",
 	    		callback: "&",
 	    		id: "@"
 	    	},
             controller: function($scope, $document) {
-        		var l = $document[0].getElementsByClassName('cloudinary-fileupload');
-        		
-        	    angular.element(l).bind('fileuploadsend', function (e, data) {
-        	    	if (data.scope == $scope.id) { 
-        	    		$scope.uploads += 1;
-        	    		console.log('Upload ' + data.id.toString() + ' send.');
-        	    	}
-        	    });
-        	    angular.element(l).bind('fileuploadalways', function (e, data) {
-        	    	if (data.scope == $scope.id) { 
-        	    		$scope.uploads -= 1;
-        	    		if ($scope.doCallback) { $scope.callback(); }
-        	    	}
-        	    });
-        	    angular.element(l).bind('cloudinarydone', function (e, data) {
-        	    	if (data.scope == $scope.id) { 
-        	        	if (data.jqXHR.status === 200) {
-        	        		$scope.files.push(data.result.public_id);
-        	        		console.log('Upload ' + data.id.toString() + ' succeed.');
-        	        	}
-        	    	}
-        	    });
+            	$scope.rows = [];
         	},
 			link : function($scope, $element, $attr) {
-				// jQuery needed!
 				var input = angular.element($element.children().find("input"));
+				
+				input.bind('fileuploadadd', function (e, data) {
+    	    		$scope.uploads += 1;
+    	    		$scope.$apply();
+    	    		console.log('New upload added.');
+        	    });
+				input.bind('fileuploaddone', function (e, data) {
+    	    		$scope.uploads -= 1;
+    	    		$scope.$apply();
+        	    });
+				input.bind('fileuploadfail', function (e, data) {
+    	    		$scope.uploads -= 1;
+    	    		$scope.$apply();
+        	    });
+				input.bind('cloudinarydone', function (e, data) {
+    	        	if (data.jqXHR.status === 200) {
+    	        		$scope.files.push(data.result.public_id);
+    	        		if ($scope.deleteTokens)
+    	        			$scope.deleteTokens.push(data.result.delete_token);
+    	        		console.log('Upload ' + data.id.toString() + ' succeed.');
+    	        		if ($scope.uploads === 0 && $scope.doCallback) { $scope.callback(); }
+    	        	}
+        	    });
+        		$scope.$watch("resetFlag", function (val) {
+        			if (val === true) {
+        				angular.forEach($scope.rows, function(row) {
+        					row.remove();
+        				});
+        				$scope.resetFlag = false;
+        			}
+        		});
+        		var tbody = angular.element($element.children().find("tbody"));
+        		$scope.$watch("doCallback", function (val) {
+        			if (val === true)
+        				tbody.find("button").attr('disabled', 'disabled');
+        			else
+        				tbody.find("button").removeAttr('disabled');
+        		});
+        	    // jQuery needed!
 				var fileUploads = 0;
 
 				var FormatFileSize = function FormatFileSize(bytes) {
@@ -72,13 +91,13 @@ angular.module("lf.fileUploader", [])
 				input.bind('fileuploadprocessalways', function (e, data) {
 					data.id = fileUploads;
 					data.scope = $scope.id;
-					data.context = $('#files-' + $scope.id);
+					data.context = $('#files-' + $scope.id.split('-')[1]);
 					data.submit();
 				    $.each(data.files, function (i, file) {
-				    	var node = $('<tr/>').addClass('fade in').attr('id', 'upload-' + fileUploads);
+				    	var node = $('<tr/>').addClass('fade in upload-' + fileUploads);
 				    	
 				    	if (file.preview) {
-				        	node.append($('<td/>').append(file.preview));
+				        	node.append($('<td/>').attr('style', 'text-align: right').append(file.preview));
 				       	}
 				        node.append($('<td/>').append($('<span/>').text(file.name)));
 				        
@@ -102,12 +121,14 @@ angular.module("lf.fileUploader", [])
 						    	if (data.progress()['loaded'] < data.progress()['total']) {
 						    		data.jqXHR.abort();  
 						       	 	console.log('Upload ' + data.id.toString() + ' canceled.');
-						       	 	fadeAway($('#upload-' + data.id.toString()));
+						       	 	fadeAway($('.upload-' + data.id.toString()));
 						    	}
 						    });
 				       	}
 				       	node.append($('<td/>').append(btn));
-						node.appendTo(data.context);
+						node.prependTo(data.context);
+						// Track row
+						$scope.rows.push(node);
 					});
 				    fileUploads++;
 				});
@@ -118,8 +139,7 @@ angular.module("lf.fileUploader", [])
 				    }
 				    var progress = Math.floor(data.loaded / data.total * 100);
 				   	if (data.context) {
-				   		var row = $('#upload-' + data.id.toString());
-				        $('#upload-' + data.id.toString()).find('.progress')
+				   		$('.upload-' + data.id.toString()).find('.progress')
 				            .attr('aria-valuenow', progress)
 				            .children().first().css(
 				                'width',
@@ -129,7 +149,7 @@ angular.module("lf.fileUploader", [])
 				});
 				
 				input.bind('cloudinarydone', function (e, data) {
-					row = $('#upload-' + data.id.toString());
+					row = $('.upload-' + data.id.toString());
 					btn = row.find('.btn-filelist');
 					btn.removeClass('btn-danger');
 					btn.addClass('btn-default');
@@ -145,7 +165,7 @@ angular.module("lf.fileUploader", [])
 				    		e.preventDefault();
 					    	if (data.result.delete_token) {
 					    		$.cloudinary.delete_by_token(data.result.delete_token);
-					    		fadeAway($('#upload-' + data.id.toString()));
+					    		fadeAway($('.upload-' + data.id.toString()));
 					       	 	console.log('Upload ' + data.id.toString() + ' deleted.');
 					    	}
 					    	return false;

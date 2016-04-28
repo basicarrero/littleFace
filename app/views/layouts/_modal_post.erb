@@ -16,16 +16,16 @@
 				</div>
 				<div class="modal-body modal-compact">
 					<div>
-						<rich-text-editor disabled="doPost" content="text" name="text" id="modalBody" placeholder="Did you had a good time?" class="modal-elem" style="height: 155px;"></rich-text-editor>
+						<rich-text-editor editor-disabled="doPost" content="text" name="text" id="modalBody" placeholder="Did you had a good time?" class="modal-elem" style="height: 155px;"></rich-text-editor>
 					</div>
 				</div>
 				<div class="modal-footer modal-compact">
 					<div class="form-group modal-elem">
-						<file-uploader files="photos" uploads="currentUploads" do-callback="doPost" callback="send()" id="modalNewPost">
+						<file-uploader files="photos" uploads="currentUploads" do-callback="doPost" callback="send()" id="uploader-modalNewPost">
 							<span ng-disabled="doPost" class="btn btn-info fileinput-button"><i class="glyphicon glyphicon-picture"></i>
 					        	<span>Add photos</span>
 					        	<!-- The file input field used as target for the file upload widget -->
-					        	<%= cl_image_upload_tag('photos[]', :folder => current_user.email, :return_delete_token => true, :html => { :multiple => true, 'ng-show' => '!doPost' }) %>
+					        	<%= cl_image_upload_tag('photos[]', :use_filename => true, :folder => current_user.email, :return_delete_token => true, :html => { :multiple => true, 'ng-show' => '!doPost' }) %>
 			    			</span>
 							<!-- The container for the uploaded files -->
 							<table id="files-modalNewPost" role="presentation" class="table table-striped files"><tbody ng-disabled="doPost"></tbody></table>

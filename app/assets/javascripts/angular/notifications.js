@@ -4,23 +4,23 @@ angular.module("lf.notifications", [])
     	$scope.maxItems = 5;
     	$scope.unReadCount = 0;
     	$scope.notifs = notifRes.query({limit: $scope.maxItems});
-    	$scope.notifs.$promise.then(
-				function(res) {
-					$scope.notifs = res;
-					$interval(function(){
-						var queryParams = {limit: $scope.maxItems};
-						if ($scope.notifs.length > 0) { queryParams.last = $scope.notifs[0].id; }
-						notifRes.query(queryParams).$promise.then(
-								function(res) {
-									console.log(res);
-									angular.forEach(res, function(r) {
-										$scope.notifs.unshift(r);
-										$scope.notifs.pop();
-										$scope.unReadCount += 1;
-									});
-								});
-					},INTERVAL);
-				});
+//    	$scope.notifs.$promise.then(
+//				function(res) {
+//					$scope.notifs = res;
+//					$interval(function(){
+//						var queryParams = {limit: $scope.maxItems};
+//						if ($scope.notifs.length > 0) { queryParams.last = $scope.notifs[0].id; }
+//						notifRes.query(queryParams).$promise.then(
+//								function(res) {
+//									console.log(res);
+//									angular.forEach(res, function(r) {
+//										$scope.notifs.unshift(r);
+//										$scope.notifs.pop();
+//										$scope.unReadCount += 1;
+//									});
+//								});
+//					},INTERVAL);
+//				});
     	
     	$scope.resetCounter = function() {
     		$scope.unReadCount = 0;

@@ -8,7 +8,7 @@ angular.module("lf.modalNew", [])
 	    
 		$scope.submitPost = function() {
 			if ($scope.currentUploads > 0)
-				$scope.doPost = true;
+				$scope.doPost = !$scope.doPost;
 			else
 				$scope.send();
 

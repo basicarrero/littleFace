@@ -67,13 +67,10 @@ body {
   margin-right: 10px;
 }
 
-.rightText {
-    text-align: right;
-}
-
 .main_panel {
   margin-top: 60px;
   max-width: 600px;
+  min-width: 484px;
 }
 .panel-corners {
   border-radius: 15px;
@@ -86,6 +83,7 @@ body {
     background: rgba(255, 255, 255, 0.9);
 }
 .panel-inner {
+  min-width: 460px;
   border: 1px solid primary;
   border-radius: 4px;
   -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);

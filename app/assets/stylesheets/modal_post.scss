@@ -27,6 +27,8 @@
 
 .files tbody td, .files thead th {
     width: 10%;
+    max-width: 170px;
+    word-wrap: break-word;
     vertical-align: middle !important;
 }
 

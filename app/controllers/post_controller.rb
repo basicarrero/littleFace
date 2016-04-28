@@ -68,10 +68,11 @@ class PostController < ApplicationController
   end
   
   def destroy
-    @post = current_user.posts.destroy(paramID)
+    @post = current_user.posts.destroy(paramID).first
+    Cloudinary::Api.delete_resources(@post.photos)
     respond_to do |format|
-      if @post.first && !@post.first.persisted?
-          format.json { render json: @post.first, status: 200}
+      if !@post.persisted?
+          format.json { render json: @post, status: 200}
       else
           format.json { render :nothing => true, :status => 500}
       end
@@ -91,7 +92,11 @@ class PostController < ApplicationController
   end
   
 def update
-  @post = current_user.posts.update(paramID, update_params)
+  @post = current_user.posts.where('id = ' + paramID).first
+  beforePhotos = @post.photos
+  @post.update(update_params)
+  photosForDeletion = beforePhotos - @post.photos
+  Cloudinary::Api.delete_resources(photosForDeletion)
   respond_to do |format|
     format.json { render json:  post_resolver(@post), status: 200}
   end
@@ -122,7 +127,11 @@ end
     end
     
     def update_params
-      return params.permit(:title, :text, :photos => [])
+      my_params = params.permit(:title, :text, :photos => [])
+      if params[:photos].present? and params[:photos] == 0
+        my_params[:photos]  = []
+      end
+      return my_params
     end
     
     def index_params
