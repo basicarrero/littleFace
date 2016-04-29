@@ -5,11 +5,18 @@
 		<%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
 		<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-scroll/1.0.0/angular-scroll.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-audio/1.7.2/angular.audio.min.js"></script>
 		<%= cloudinary_js_config %>
 		<%= csrf_meta_tags %>
 	</head>
 	<body ng-app="ngCli" style="overflow-x: hidden;">
-		<%= yield %>
+		<% if user_signed_in? %>
+			<div ng-controller="commonCtrl">
+				<%= yield %>
+			</div>
+		<% else %>
+			<%= yield %>
+		<% end %>
 	</body>
 	<script>
 		// SideBar Actions

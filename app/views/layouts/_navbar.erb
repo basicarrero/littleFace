@@ -22,15 +22,15 @@
 					<li class="navbar-tab"><a href="/page/timeline"><i class="glyphicon glyphicon-time icon-space" style="font-size: 1.1em; color:grey;"></i>Timeline</a></li>
 				<% end %>
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" ng-click="resetCounter()">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" ng-click="resetNotifCounter()">
 						<i class="glyphicon glyphicon-bullhorn" style="font-size: 1.1em; color:grey;" ng-class="{'icon-space': unReadCount < 1}"></i>
 						<pulsing-badge counter="unReadCount" style="background-color: red; margin-left: 2px"></pulsing-badge>
 						Notifications
 						<span class="caret"></span>
 					</a>
-					<ul class="dropdown-menu">
+					<ul class="dropdown-menu" style="font-size: 15px">
 						<li ng-repeat="notif in notifs">
-							<a href="{{notif.link.length > 0 ? notif.link : 'javascript:;'}}"><notif notif="notif"></a>
+							<a link-handler href="{{notif.link.length > 0 ? notif.link : 'javascript:;'}}"><notif notif="notif"></p></a>
 						</li>
 						<li role="separator" class="divider"></li>
 						<li class="dropdown-header">Nav header</li>

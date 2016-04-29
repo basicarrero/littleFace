@@ -68,9 +68,12 @@ angular.module("lf.paginator", [])
     			}else 
     				$scope.isBusy = false;
     				return;
-    		}else {
+    		}else if (lastLoaded.id > id) {
     			var res = $scope.endPoint.query({begin: lastLoaded.id, end: id, tailSize: $scope.pageSize, action: 'range'});
 				res.$promise.then(onSuccess(defered), onErr(defered));
+    		}else {
+				$scope.isBusy = false;
+				return;
     		}
     		return defered.promise;
     	};
@@ -109,7 +112,7 @@ angular.module("lf.paginator", [])
 			//$scope.$apply(); // scroll will run outside of the normal digest cycle, so we need to apply changes to scope
         });
 	})
-	.directive('scroller', function ($timeout, $animate) {
+	.directive('linkHandler', function ($window, $timeout, $animate) {
 	    return {
 			controller : function($scope, $document) {
 		    	$scope.goTo = function(target) {
@@ -117,7 +120,8 @@ angular.module("lf.paginator", [])
 		    	};
 			},
 			link : function($scope, $element, $attr) {
-		    	$scope.go = function (id, after) {
+				
+		    	var go = function (id, after) {
 		    		var t = after ? after : 500;
 					$timeout(function () { // Do after render
 						var target = document.getElementById('p-' + id);
@@ -132,36 +136,45 @@ angular.module("lf.paginator", [])
 						}
 					}, t);
 	        	};
-	        	if ($attr.goTo) {
+	        	
+				$element.on('click', function(e) {
+					//if (e.stopPropagation) e.stopPropagation();
+					if (e.preventDefault) e.preventDefault();
+					var pathParts = $attr.href.split('#');
+					var currentPath = $window.location.pathname == '/' ? '/page/home' : $window.location.pathname;
+					if ((pathParts[0] == '') || (pathParts[0] == currentPath)) {
+						if (pathParts.length == 2) {
+							if (/^p-/.test(pathParts[1])){
+								var id = pathParts[1].split('-')[1];
+								var promise = $scope.showUntil(id);
+								if (promise)
+									promise.then(go(id));
+								else
+									go(id);
+							}
+							if (/^fr/.test(pathParts[1])){
+								console.log('A friend request link');
+								// TODO:
+							}
+						}
+					}else {
+						$window.location.href = pathParts[0] + '?go=' + pathParts[1];
+					}
+				});
+				
+		        if ($attr.goTo) {
 	        		var id = $attr.goTo.split('-')[1];
 	        		var listener = $scope.$watch("isBusy", function (val) {
 	        			if (val === false) {
 							var promise = $scope.showUntil(id);
 							if (promise)
-								promise.then($scope.go(id, 2000));
+								promise.then(go(id, 2000));
 							else
-								$scope.go(id);
+								go(id);
 							listener();
 	        			}
 	        		});
 	        	}
-			}
-	    };
-	})
-	.directive('willScroll', function ($timeout, $animate) {
-	    return {
-	        restrict: 'A',
-			link : function($scope, $element, $attr) {
-				$element.on('click', function(e) {
-					if (e.stopPropagation) e.stopPropagation();
-					if (e.preventDefault) e.preventDefault();
-					var id = parseInt($attr.href.replace(/.*(?=#[^\s]+$)/, '').substring(1).split('-')[1]);
-					var promise = $scope.showUntil(id);
-					if (promise)
-						promise.then($scope.go(id));
-					else
-						$scope.go(id);
-				});
 			}
 	    };
 	})

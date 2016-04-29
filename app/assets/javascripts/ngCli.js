@@ -1,14 +1,14 @@
 angular.module('ngCli', ['duScroll',
+                         'ngAudio',
                          'ngResource',
                          'ngSanitize',
                          'ngAnimate',
                          'ui.bootstrap',
                          'lf.filters',
                          'lf.resources',
+                         'lf.common',
                          'lf.paginator',
                          'lf.accordion',
                          'lf.modalNew',
                          'lf.post',
-                         'lf.fileUploader',
-                         'lf.user',
-                         'lf.notifications']);
+                         'lf.fileUploader']);

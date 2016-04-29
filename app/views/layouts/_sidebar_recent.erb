@@ -3,14 +3,14 @@
     <div class="sidebar-nav" style="padding-left: 5px; padding-top:60px; height: 100%;">
         <div><p class="brand-header">Recent:</p></div>
 		<div ng-controller="accordionCtrl" style="padding-right: 15px">
-			<uib-accordion scroller>
+			<uib-accordion>
 				<uib-accordion-group ng-repeat="month in data" is-open="open" ng-init="open = false" is-disabled="isDisabled(month)" panel-class="panel-no-padding">
 					<uib-accordion-heading>
         				<strong>{{month.label | capitalize}}</strong><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': open, 'glyphicon-chevron-right': !open}"></i>
       				</uib-accordion-heading>
 					<ul>
 						<li class="item" ng-repeat="item in month.posts">
-							<a href="{{'#p-' + (item.id)}}" class="itemLink" will-scroll>{{item.title | capitalize}}</a>
+							<a href="{{'#p-' + (item.id)}}" class="itemLink" link-handler>{{item.title | capitalize}}</a>
 						</li>
 					</ul>
 				</uib-accordion-group>
