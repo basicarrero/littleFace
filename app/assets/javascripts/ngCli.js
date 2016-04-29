@@ -9,6 +9,7 @@ angular.module('ngCli', ['duScroll',
                          'lf.common',
                          'lf.paginator',
                          'lf.accordion',
+                         'lf.friends',
                          'lf.modalNew',
                          'lf.post',
                          'lf.fileUploader']);
