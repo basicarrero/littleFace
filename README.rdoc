@@ -5,8 +5,5 @@ by Basilio Carrero & Raúl Tejuelo.
 
 TODO:
 
-* User Control
-* Edit Posts
 * Friends
-* Notifications
-* ...
+* Admin view
