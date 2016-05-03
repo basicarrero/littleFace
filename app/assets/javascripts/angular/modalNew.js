@@ -26,7 +26,7 @@ angular.module("lf.modalNew", [])
 		
 		$scope.send = function() {
 			if ($scope.photos.length === 0) { $scope.photos = undefined; }
-			postRes.save({title: $scope.title, text: $scope.text, photos: $scope.photos}).$promise.then(
+			postRes.save({user_id: $scope.user.id}, {title: $scope.title, text: $scope.text, photos: $scope.photos}).$promise.then(
 				function(res) {
 					$scope.$parent.items.unshift(res);
 					$scope.setLastCreated(res);

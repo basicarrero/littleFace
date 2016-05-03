@@ -1,8 +1,8 @@
 <!-- Sidebar -->
-<div id="sidebar-wrapper" style="overflow-x: hidden; bottom: 0">
-    <div class="sidebar-nav" style="padding-left: 5px; padding-top:60px; height: 100%;">
-        <div><p class="brand-header">Recent:</p></div>
-		<div ng-controller="accordionCtrl" style="padding-right: 15px">
+<div id="sidebar-wrapper" style="overflow: hidden; bottom: 0">
+    <div class="sidebar-nav" style="padding: 60px 5px 0px 5px; height: 100%;">
+        <div class="brand-header" style="overflow: hidden; height: 8%"><p>Recent:</p></div>
+		<div ng-controller="accordionCtrl" style="overflow: auto; height: 92%">
 			<uib-accordion>
 				<uib-accordion-group ng-repeat="month in data" is-open="open" ng-init="open = false" is-disabled="isDisabled(month)" panel-class="panel-no-padding">
 					<uib-accordion-heading>

@@ -33,13 +33,18 @@ angular.module("lf.paginator", [])
     		};
 		};
 		
-    	$scope.endPoint.query({limit: $scope.pageSize}).$promise.then(onSuccess(), onErr());
+		var listener = $scope.$watch("user", function (usr) {
+			if (usr) {
+				$scope.endPoint.query({user_id: $scope.user.id, limit: $scope.pageSize}).$promise.then(onSuccess(), onErr());
+				listener();
+			}
+		});
     	
     	var loadMore = function(n) {
     		var defered = $q.defer();
     		var lastLoaded = $scope.items.length > 0 ? $scope.items[$scope.items.length - 1] : undefined;
     		
-    		var params = {};
+    		var params = {user_id: $scope.user.id};
     		if (lastLoaded)
     			params.start = lastLoaded.id;
     		
@@ -63,13 +68,13 @@ angular.module("lf.paginator", [])
     			var pos = $scope.items.indexOf(found[0]);
     			tailSize = (($scope.items.length - 1 ) - pos );
     			if (tailSize < $scope.pageSize) {
-        			var res = $scope.endPoint.query({start: lastLoaded.id, limit: tailSize});
+        			var res = $scope.endPoint.query({user_id: $scope.user.id, start: lastLoaded.id, limit: tailSize});
     				res.$promise.then(onSuccess(defered), onErr(defered));
     			}else 
     				$scope.isBusy = false;
     				return;
     		}else if (lastLoaded.id > id) {
-    			var res = $scope.endPoint.query({begin: lastLoaded.id, end: id, tailSize: $scope.pageSize, action: 'range'});
+    			var res = $scope.endPoint.query({user_id: $scope.user.id, begin: lastLoaded.id, end: id, tailSize: $scope.pageSize, action: 'range'});
 				res.$promise.then(onSuccess(defered), onErr(defered));
     		}else {
 				$scope.isBusy = false;

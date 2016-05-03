@@ -8,7 +8,7 @@
 
 User.create(name: 'Bender', email: 'bender@gmail.com', password: 'topsecret', password_confirmation: 'topsecret', friends: [2,3,4])
 User.create(name: 'Leela', email: 'leela@gmail.com', password: 'topsecret', password_confirmation: 'topsecret', friends: [1,3])
-User.create(name: 'Fry', email: 'fry@gmail.com', password: 'topsecret', password_confirmation: 'topsecret', friends: [1,2,4])
+User.create(name: 'Fry', email: 'fry@hotmail.es', password: 'topsecret', password_confirmation: 'topsecret', friends: [1,2,4])
 User.create(name: 'Basi', email: 'basicarrero@hotmail.com', password: 'topsecret', password_confirmation: 'topsecret', friends: [1,3])
 
 50.times { |i| Post.create(user_id: 1, title: "Post #{i + 1}", created_at: (50 - i + 1).days.ago, text: BetterLorem.p(2, false, false)) }
@@ -17,8 +17,3 @@ User.create(name: 'Basi', email: 'basicarrero@hotmail.com', password: 'topsecret
 50.times { |i| Post.create(user_id: 4, title: "Post #{i + 1}", created_at: (50 - i + 1).days.ago, text: BetterLorem.p(2, false, false)) }
   
 Post.create(user_id: 4, title: "Liked Post", text: 'Popular one', likes: [1,2,3])
-
-8.times { |i| Notif.create(user_id: 1, from: 2, message: "Notif #{i + 1}", nType: "dummy_notif", created_at: (10 - i + 1).days.ago) }
-8.times { |i| Notif.create(user_id: 2, from: 1, message: "Notif #{i + 1}", nType: "dummy_notif", created_at: (10 - i + 1).days.ago) }
-8.times { |i| Notif.create(user_id: 3, from: 2, message: "Notif #{i + 1}", nType: "dummy_notif", created_at: (10 - i + 1).days.ago) }
-8.times { |i| Notif.create(user_id: 4, from: 1, message: "Notif #{i + 1}", nType: "dummy_notif", created_at: (10 - i + 1).days.ago) }

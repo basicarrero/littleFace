@@ -1,38 +1,34 @@
 <!-- Sidebar -->
-<div id="sidebar-wrapper" style="overflow-x: hidden; bottom: 0">
-    <div class="sidebar-nav" style="padding-left: 5px; padding-top:60px; height: 100%;" ng-controller="friendsCtrl">
-        <div><p class="brand-header">Friends:</p></div>
-		<uib-tabset active="activeJustified" justified="true" >
-		    <uib-tab index="0">
-		    	<uib-tab-heading>
-        			<i class="glyphicon glyphicon-search"></i> Search
-      			</uib-tab-heading>
-				<div style="margin-top: 30px; overflow: hidden;">
-          			<form class="form-search"> 
-				        <div class="input-group">
-				          <input type="text" ng-model="search" class="form-control" placeholder="Text input">
-				          <span class="input-group-btn">
-				          	<button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
-				          </span>
-				        </div>
-				        <ul class="nav nav-pills nav-stacked">
-				        	<li class="contact-animation" ng-repeat="name in names | filter:search">
-				            	<a href="#"> {{name}} </a>
-				          	</li>
-				          	<!-- <li ng-animate="'animate'" ng-repeat="friend in friends | filter:search">
-				            	<a href="#">{{friend.name}}</a>
-				          	</li> -->
-				      </ul>
-					</form>
-  				</div>
-		    </uib-tab>
-		    <uib-tab index="1">
-		    	<uib-tab-heading>
-        			<i class="glyphicon glyphicon-bell"></i> Requests
-      			</uib-tab-heading>
-		    	<p>TODO</p>
-		    </uib-tab>
-  		</uib-tabset>
+<div id="sidebar-wrapper" style="overflow: hidden; bottom: 0">
+    <div class="sidebar-nav" style="padding: 60px 5px 0px 5px; height: 100%;" ng-controller="friendsCtrl">
+    	<div class="brand-header" style="overflow: hidden; height: 8%"><p>Friends:</p></div>
+    	<div style="height: 92%">
+    		<div style="background-color: #222222">
+				<ul class="nav nav-pills nav-stacked">
+					<li role="presentation" ng-class="{active: tabSelector}" ng-click="toggleTab()" class="active"><a href="#"><i class="glyphicon glyphicon-search"></i> Search</a></li>
+					<li role="presentation" ng-class="{active: !tabSelector}" ng-click="toggleTab()"><a href="#"><i class="glyphicon glyphicon-bell"></i> Requests</a></li>
+				</ul>
+				<form class="form-search" style="padding-top: 10px" ng-submit="search(searchToken)" ng-show="tabSelector"> 
+			        <div class="input-group" >
+			          <input type="text" ng-model="searchToken" class="form-control" placeholder="Username or eMail">
+			          <span class="input-group-btn">
+			          	<button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+			          </span>
+			        </div>
+				</form>
+			</div>
+	        <ul class="nav nav-stacked">
+	        	<li class="contact-animation tab-animation" ng-show="tabSelector" ng-repeat="usrEntry in searchResults | filter:searchToken">
+					<div class="user-entry btn-group">
+							<button class="btn btn-default col-xs-10">
+								<a href="#" class="pull-left"><i class="glyphicon glyphicon-user" style="padding-right: 4px;"></i><span>{{usrEntry.name}}</span></a>
+							</button>
+							<button class="btn btn-danger col-xs-2" style="margin: 0; height: 35px" ng-click="frManager(usrEntry.id, 'unfriends')"><i class="glyphicon glyphicon-remove"></i></button>
+					</div>
+	          	</li>
+	          	<!-- TODO -->
+	      	</ul>
+		</div>
     </div>
 </div>
 <div id="bar-toggle" class="btn-text glass"><span id="bar-ico" class="glyphicon glyphicon-menu-left rotate180"></span></div>

@@ -4,13 +4,20 @@ Rails.application.routes.draw do
   get 'page/home' => 'page#home'
   get 'page/timeline' => 'page#timeline'
   
-  get 'post/recent' => 'post#recent'
-  get 'post/range' => 'post#range'
-  put 'post/:id/like' => 'post#like'
-  get 'user' => 'user#current'
-  get 'timeline' => 'timeline#index'
-  resources :post
-  resources :notif
+  get 'user/current' => 'user#current'
+  get 'user/search' => 'user#search'
+  
+  put 'user/:user_id/post/:id/like' => 'post#like'
+  get 'user/:user_id/post/recent' => 'post#recent'
+  get 'user/:user_id/post/range' => 'post#range'
+
+  get 'user/:user_id/timeline' => 'timeline#index'
+  put 'user/:user_id/friends' => 'user#friends'
+  delete 'user/:user_id/friends' => 'user#unfriends'
+  
+  resources :user do
+    resources :post, :notif
+  end
   
   root 'page#home'
 

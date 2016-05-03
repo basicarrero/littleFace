@@ -10,12 +10,6 @@
   width: 100%;
 }
 
-#photos {
-  border-top-color: rgb(229, 229, 229);
-  border-top-style: solid;
-  border-top-width: 1px;
-}
-
 #bar-toggle {
   position:fixed;
   height:150px;
@@ -112,4 +106,8 @@
   text-shadow: 0 1px 0 #fff;
   opacity: 0.4;
   filter: alpha(opacity=40);
+}
+
+.user-entry {
+  width: 100%;
 }

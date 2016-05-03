@@ -1,18 +1,24 @@
 angular.module("lf.resources", [])
 	.factory('postRes', function($resource) {
-		return $resource('/post/:id/:action.json', {},
+		return $resource('/user/:user_id/post/:id/:action.json', {},
 			    {
 		    		'update': { method:'PUT' }
 			    });
 	})
-	.factory('notifRes', function($resource) {
-		return $resource('/notif.json');
-	})
 	.factory('timelineRes', function($resource) {
-		return $resource('/timeline.json');
+		return $resource('/user/:user_id/timeline.json');
+	})
+	.factory('notifRes', function($resource) {
+		return $resource('/user/:user_id/notif/:id/:action.json', {},
+				{
+					'update': { method:'PUT' }
+				});
 	})
 	.factory('userRes', function($resource) {
-		return $resource('/user.json');
+		return $resource('/user/:id/:action.json', {},
+				{
+					'update': { method:'PUT' }
+				});
 	})
 	.factory('JSONutils', function() {
 		return {

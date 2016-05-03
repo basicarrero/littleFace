@@ -1,5 +1,8 @@
 class PostController < ApplicationController
   before_filter :authenticate_user!
+#  before_filter do 
+#    redirect_to :new_user_session_path unless current_user && current_user.admin?
+#  end
   include PostResourceResolver
   
   def new
@@ -10,7 +13,7 @@ class PostController < ApplicationController
     existingNotif = Notif.where(user_id: p.user_id, from: current_user.id, nType: 'like', nTypeAux: p.id)
     if existingNotif.empty?
       msg = current_user.name + ' Likes your post: ' + p.title
-      Notif.create(user_id: p.user_id, from: current_user.id, message: msg, nType: 'like', nTypeAux: p.id, link: '/page/home#p-' + p.id.to_s)
+      Notif.create(user_id: p.user_id, from: current_user.id, message: msg, n_type: 'like', n_type_aux: p.id, link: '/page/home#p-' + p.id.to_s)
     end
   end
   
@@ -91,16 +94,16 @@ class PostController < ApplicationController
     end
   end
   
-def update
-  @post = current_user.posts.where('id = ' + paramID).first
-  beforePhotos = @post.photos
-  @post.update(update_params)
-  photosForDeletion = beforePhotos - @post.photos
-  Cloudinary::Api.delete_resources(photosForDeletion)
-  respond_to do |format|
-    format.json { render json:  post_resolver(@post), status: 200}
+  def update
+    @post = current_user.posts.where('id = ' + paramID).first
+    beforePhotos = @post.photos
+    @post.update(update_params)
+    photosForDeletion = beforePhotos - @post.photos
+    Cloudinary::Api.delete_resources(photosForDeletion)
+    respond_to do |format|
+      format.json { render json:  post_resolver(@post), status: 200}
+    end
   end
-end
   
   def create
     @post = current_user.posts.create(post_params)
