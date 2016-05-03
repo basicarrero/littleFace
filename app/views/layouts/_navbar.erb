@@ -43,8 +43,8 @@
 					<button class="btn btn-info"><i class="glyphicon glyphicon-user" style="font-size: 1.1em; margin-right:10px; margin-left:10px; color:white;"></i>User</button>
 					<button class="btn btn-info dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
 					<ul class="dropdown-menu">
-						<li><a href="#">Options</a></li>
-						<li><a href="#">LogOut</a></li>
+						<li><a href="#">Options (not implemented)</a></li>
+						<li><%= link_to "LogOut", :destroy_user_session, :method => :delete %></li>
 					</ul>
 				</li>
 			</ul>
