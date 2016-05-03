@@ -18,8 +18,8 @@
 			        </div>
 				</form>
 			</div>
-	        <ul class="nav nav-stacked hidden" reveal time="1500">
-	        	<li class="contact-animation tab-animation" ng-show="tabSelector" ng-repeat="usrEntry in (filteredContent = (searchResults | filter:searchToken))">
+	        <ul ng-show="tabSelector" class="nav nav-stacked hidden" reveal time="1500">
+	        	<li class="contact-animation tab-animation"  ng-repeat="usrEntry in (filteredContent = (searchResults | filter:searchToken))">
 					<div class="user-entry btn-group" ng-if="user.friends.indexOf(usrEntry.id) >= 0" style="margin-top: 1px; margin-bottom: 1px">
 							<a href="/page/external/{{usrEntry.id}}" class="btn userEntry col-xs-10">
 								<i class="glyphicon glyphicon-user" style="padding-right: 4px;"></i><span>{{usrEntry.name}}</span>
@@ -33,8 +33,10 @@
 							<button class="btn btn-warning col-xs-2" style="margin: 0; height: 35px" ng-click="sendFrReq(usrEntry)"><i class="glyphicon glyphicon-envelope"></i></button>
 					</div>
 	          	</li>
-	          	<uib-alert type="info" ng-show="filteredContent.length == 0 && tabSelector" style="margin-top: 20px" >Hit enter for a global search!</uib-alert>
-	        	<li class="contact-animation tab-animation" ng-show="!tabSelector" ng-repeat="req in frRequests">
+	          	<uib-alert type="info" ng-show="filteredContent.length == 0 && tabSelector" style="margin-top: 20px" >Hit enter for a global search!</uib-alert>          	
+	      	</ul>
+	        <ul ng-show="!tabSelector" class="nav nav-stacked">
+	        	<li class="contact-animation tab-animation" ng-repeat="req in frRequests">
 					<div class="user-entry btn-group" style="margin-top: 1px; margin-bottom: 1px">
 							<a href="/page/external/{{req.from}}" class="btn userEntry col-xs-8">
 								<i class="glyphicon glyphicon-user" style="padding-right: 4px;"></i><span>{{req.message.split(' ')[0]}}</span>
