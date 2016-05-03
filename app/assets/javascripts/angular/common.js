@@ -7,6 +7,7 @@ angular.module("lf.common", [])
 		$scope.sound = ngAudio.load("/audio/notif.mp3");
     	$scope.maxNotifs = 9;
     	$scope.newNotifsCount = 0;
+    	
 		userRes.get({action: 'current'}).$promise.then(
 				function(res) {
 					$scope.user = res.user;
@@ -29,6 +30,8 @@ angular.module("lf.common", [])
 //												console.log(res);
 //												angular.forEach(res.slice().reverse(), function(r) {
 //													$scope.notifs.unshift(r);
+//													if (r.n_type == 'frienship')
+//														$scope.frRequests.push(r);
 //													if ($scope.notifs.length > $scope.maxNotifs)
 //														$scope.notifs.pop();
 //													$scope.newNotifsCount += 1;
@@ -89,7 +92,7 @@ angular.module("lf.common", [])
             	var ico = $element.find('i');
             	if ($scope.notif.n_type === 'like')
             		ico.addClass('glyphicon-thumbs-up');
-            	if ($scope.notif.n_type === 'frienshipRQ')
+            	if ($scope.notif.n_type === 'frienship')
             		ico.addClass('glyphicon-user');
             }
 	    };

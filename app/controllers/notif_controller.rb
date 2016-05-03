@@ -35,14 +35,8 @@ class NotifController < ApplicationController
   
   def create
     respond_to do |format|
-      # TODO
-      format.json { render :nothing => true, :status => 200}
-    end
-  end
-  
-  def frRequests
-    respond_to do |format|
-      # TODO
+      byebug
+      #Notif.create(user_id: p.user_id, from: current_user.id, message: msg, n_type: 'like', n_type_aux: p.id, link: '/page/home#p-' + p.id.to_s)
       format.json { render :nothing => true, :status => 200}
     end
   end
@@ -53,6 +47,13 @@ class NotifController < ApplicationController
     end
     
 #    def update_params
+#      
+#      newReq.from = $scope.user.id;
+#      newReq.n_type_aux = 'pending';
+#      newReq.n_type = 'frienship';
+#      newReq.message = user.name + ' wants to be your friend!';
+#      newReq.link = '/page/external/' + user.id;
+#      
 #      params.require(:id)
 #      params.require(:status)
 #      return params.permit(:id, :status)

@@ -20,24 +20,15 @@ angular.module("lf.friends", [])
 								$scope.friends.unshift(res);
 					});
 		};
-		
-		var refreshFrienshipRq = function() {
-	    	$scope.notifs = notifRes.query({user_id: $scope.user.id, action: 'frRequests'}).$promise.then(
-					function(res) {
-						$scope.frRequests = res;
-					});
+
+		// TODO: untested
+		$scope.updateFrReq = function(notif, state) {
+			notifRes.update({user_id: $scope.user.id, id: notif.id}, {n_type_aux: state});
+			$scope.frRequests.splice($scope.frRequests.indexOf(notif), 1);
 		};
 		
-		$scope.updateFrReq = function(notifId, state) {
-			notifRes.update({user_id: $scope.user.id, id: notifId}, {n_type_aux: state}).$promise.then(refreshFrienshipRq());
-		};
-		
-		$scope.sendFrReq = function(friendId) {
-			var newReq = {};
-			newReq.from = $scope.user.id;
-			newReq.n_type_aux = 'pending';
-			// TODO: more params msg, link etc...
-			notifRes.save({user_id: friendId}, newReq).$promise.then(refreshFrienshipRq());
+		$scope.sendFrReq = function(friend) {
+			notifRes.save({user_id: $scope.user.id}, {to: friend.id});
 		};
 		
 		$scope.toggleTab = function() {
