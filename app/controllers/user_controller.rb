@@ -38,7 +38,7 @@ class UserController < ApplicationController
           @user.friends.delete(current_user.id)
           current_user.save!
           @user.save!
-          format.json { render json: current_user, status: 200}
+          format.json { render json: @user, status: 200}
         else
           format.json { render :nothing => true, :status => 404}
         end
@@ -57,7 +57,7 @@ class UserController < ApplicationController
           @user.friends.push(current_user.id)
           current_user.save!
           @user.save!
-          format.json { render json: current_user, status: 200}
+          format.json { render json: @user, status: 200}
         else
           format.json { render :nothing => true, :status => 404}
         end

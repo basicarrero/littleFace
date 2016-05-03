@@ -10,8 +10,13 @@ class PostController < ApplicationController
   def likeIt (p)
     existingNotif = Notif.where(user_id: p.user_id, from: current_user.id, n_type: 'like', n_type_aux: p.id)
     if existingNotif.empty?
-      msg = current_user.name + ' Likes your post: ' + p.title
-      Notif.create(user_id: p.user_id, from: current_user.id, message: msg, n_type: 'like', n_type_aux: p.id, link: '/page/home#p-' + p.id.to_s)
+      Notif.create(
+        user_id: p.user_id,
+        from: current_user.id,
+        message: current_user.name + ' Likes your post: ' + p.title,
+        n_type: 'like',
+        n_type_aux: p.id,
+        link: '/page/home#p-' + p.id.to_s)
     end
   end
   

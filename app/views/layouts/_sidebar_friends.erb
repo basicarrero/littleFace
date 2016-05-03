@@ -12,33 +12,33 @@
 			        <div class="input-group" >
 			          <input type="text" ng-model="searchToken" class="form-control" placeholder="Username or eMail">
 			          <span class="input-group-btn">
-			          	<button type="button" class="btn btn-success" ng-click="clearSearch()" ng-show="goBack"><i class="glyphicon glyphicon-step-backward"></i></button>
+			          	<button type="button" class="btn btn-success hidden" ng-click="clearSearch()" ng-show="goBack" reveal time="1500"><i class="glyphicon glyphicon-step-backward"></i></button>
 			          	<button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
 			          </span>
 			        </div>
 				</form>
 			</div>
-	        <ul class="nav nav-stacked">
+	        <ul class="nav nav-stacked hidden" reveal time="1500">
 	        	<li class="contact-animation tab-animation" ng-show="tabSelector" ng-repeat="usrEntry in (filteredContent = (searchResults | filter:searchToken))">
-					<div class="user-entry btn-group" ng-if="user.friends.indexOf(usrEntry.id) >= 0">
-							<button class="btn btn-default col-xs-10">
-								<a href="/page/external/{{usrEntry.id}}" class="pull-left"><i class="glyphicon glyphicon-user" style="padding-right: 4px;"></i><span>{{usrEntry.name}}</span></a>
-							</button>
+					<div class="user-entry btn-group" ng-if="user.friends.indexOf(usrEntry.id) >= 0" style="margin-top: 1px; margin-bottom: 1px">
+							<a href="/page/external/{{usrEntry.id}}" class="btn userEntry col-xs-10">
+								<i class="glyphicon glyphicon-user" style="padding-right: 4px;"></i><span>{{usrEntry.name}}</span>
+							</a>
 							<button class="btn btn-danger col-xs-2" style="margin: 0; height: 35px" ng-click="frManager(usrEntry.id, 'unfriends')"><i class="glyphicon glyphicon-remove"></i></button>
 					</div>
-					<div class="user-entry btn-group" ng-if="user.friends.indexOf(usrEntry.id) < 0">
-							<button class="btn btn-default col-xs-10">
-								<a href="/page/external/{{usrEntry.id}}" class="pull-left"><i class="glyphicon glyphicon-user" style="padding-right: 4px;"></i><span>{{usrEntry.name}}</span></a>
-							</button>
+					<div class="user-entry btn-group" ng-if="user.friends.indexOf(usrEntry.id) < 0" style="margin-top: 1px; margin-bottom: 1px">
+							<a href="/page/external/{{usrEntry.id}}" class="btn userEntry col-xs-10">
+								<i class="glyphicon glyphicon-user" style="padding-right: 4px;"></i><span>{{usrEntry.name}}</span>
+							</a>
 							<button class="btn btn-warning col-xs-2" style="margin: 0; height: 35px" ng-click="sendFrReq(usrEntry)"><i class="glyphicon glyphicon-envelope"></i></button>
 					</div>
 	          	</li>
 	          	<uib-alert type="info" ng-show="filteredContent.length == 0 && tabSelector" style="margin-top: 20px" >Hit enter for a global search!</uib-alert>
 	        	<li class="contact-animation tab-animation" ng-show="!tabSelector" ng-repeat="req in frRequests">
-					<div class="user-entry btn-group">
-							<button class="btn btn-default col-xs-8">
-								<a href="/page/external/{{req.from}}" class="pull-left"><i class="glyphicon glyphicon-user" style="padding-right: 4px;"></i><span>{{usrEntry.name}}</span></a>
-							</button>
+					<div class="user-entry btn-group" style="margin-top: 1px; margin-bottom: 1px">
+							<a href="/page/external/{{req.from}}" class="btn userEntry col-xs-8">
+								<i class="glyphicon glyphicon-user" style="padding-right: 4px;"></i><span>{{req.message.split(' ')[0]}}</span>
+							</a>
 							<button class="btn btn-success col-xs-2" style="margin: 0; height: 35px" ng-click="updateFrReq(req, 'accepted')"><i class="glyphicon glyphicon-ok"></i></button>
 							<button class="btn btn-danger col-xs-2" style="margin: 0; height: 35px" ng-click="updateFrReq(req, 'refused')"><i class="glyphicon glyphicon-remove"></i></button>
 					</div>

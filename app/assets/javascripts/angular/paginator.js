@@ -187,11 +187,15 @@ angular.module("lf.paginator", [])
 			}
 	    };
 	})
-	.directive('reveal', function () {
+	.directive('reveal', function ($timeout) {
 	    return {
 	        restrict: 'A',
+	        scope: {time: "@"},
 			link : function($scope, $element, $attr) {
-				$element.removeClass('hidden');
+				var t = $scope.time ? $scope.time : 0;
+				$timeout(function(){ 
+					$element.removeClass('hidden');
+				}, t);
 			}
 	    };
 	});

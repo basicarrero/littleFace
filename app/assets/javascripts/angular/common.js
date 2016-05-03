@@ -30,7 +30,7 @@ angular.module("lf.common", [])
 //												console.log(res);
 //												angular.forEach(res.slice().reverse(), function(r) {
 //													$scope.notifs.unshift(r);
-//													if (r.n_type == 'frienship')
+//													if (r.n_type == 'friendship')
 //														$scope.frRequests.push(r);
 //													if ($scope.notifs.length > $scope.maxNotifs)
 //														$scope.notifs.pop();
@@ -92,7 +92,7 @@ angular.module("lf.common", [])
             	var ico = $element.find('i');
             	if ($scope.notif.n_type === 'like')
             		ico.addClass('glyphicon-thumbs-up');
-            	if ($scope.notif.n_type === 'frienship')
+            	if ($scope.notif.n_type === 'friendship')
             		ico.addClass('glyphicon-user');
             }
 	    };

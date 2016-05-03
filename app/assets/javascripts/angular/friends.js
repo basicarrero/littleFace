@@ -13,18 +13,23 @@ angular.module("lf.friends", [])
 			
 			req.$promise.then(
 					function(res) {
-						var found = $filter('filter')($scope.friends, {id: frId}, true);
-						if (found.length > 0 && action == 'unfriends')
+						if (action == 'friends') {
+							$scope.user.friends.push(res.id);
+							$scope.friends.unshift(res);						
+						}
+						else {
+							var found = $filter('filter')($scope.friends, {id: frId}, true);
+							if (found.length > 0 && action == 'unfriends')
 								$scope.friends.splice($scope.friends.indexOf(found[0]), 1);
-						else if (res.length > 0 && action == 'friends')
-								$scope.friends.unshift(res);
+						}
 					});
 		};
 
-		// TODO: untested
 		$scope.updateFrReq = function(notif, state) {
 			notifRes.update({user_id: $scope.user.id, id: notif.id}, {n_type_aux: state});
 			$scope.frRequests.splice($scope.frRequests.indexOf(notif), 1);
+			if (state == 'accepted')
+				$scope.frManager(notif.from, 'friends');
 		};
 		
 		$scope.sendFrReq = function(friend) {
