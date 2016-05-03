@@ -61,7 +61,7 @@ angular.module("lf.post", [])
 		// Perform the update
 		var update = function(post, params, action) {
 			var defered = $q.defer();
-			var args = {id: post.id};
+			var args = {user_id: $scope.user.id, id: post.id};
 			if (action) { args.action = action; }
 			postRes.update(args, params).$promise.then(
 				function(res) {
@@ -85,7 +85,7 @@ angular.module("lf.post", [])
 		};
 		// Delete a post
 		$scope.deletePost = function(post) {
-			postRes.remove({id: post.id}).$promise.then(
+			postRes.remove({user_id: $scope.user.id, id: post.id}).$promise.then(
 					function(res) {
 						var found = $filter('filter')($scope.items, {id: post.id}, true);
 						if (found.length > 0) {

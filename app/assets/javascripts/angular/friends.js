@@ -2,6 +2,7 @@ angular.module("lf.friends", [])
 	.controller('friendsCtrl', function($scope, $filter, userRes, notifRes) {
 
 		$scope.tabSelector = true;
+		$scope.goBack = false;
 		$scope.searchResults = [];
 		
 		$scope.frManager = function(frId, action) {
@@ -46,12 +47,15 @@ angular.module("lf.friends", [])
 		$scope.search = function(token) {
 			userRes.query({searchToken: token, action: 'search'}).$promise.then(
 					function(res) {
+						$scope.goBack = true;
 						console.log(res);
 						$scope.searchResults = res;
 					});
 		};
 		
-		$scope.clearSearch = function(token) {
+		$scope.clearSearch = function() {
+			$scope.goBack = false;
+			$scope.searchToken = '';
 			$scope.searchResults = $scope.friends;
 		};
 		

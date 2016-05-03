@@ -67,7 +67,8 @@ class UserController < ApplicationController
   
   def search
      respond_to do |format|
-       @users = User.where('name LIKE ? OR email LIKE ?', search_params, search_params)
+       regexp = '%' + search_params + '%'
+       @users = User.where('name LIKE ? OR email LIKE ?', regexp, regexp)
        if @users.empty?
          format.json { render :nothing => true, :status => 404}
        else
