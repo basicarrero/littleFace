@@ -1,6 +1,13 @@
 angular.module("lf.paginator", [])
-	.controller('timelineCtrl', function($scope, timelineRes) {
-		$scope.endPoint = timelineRes;
+	.controller('timelineCtrl', function($scope, $window, timelineRes, postRes) {
+		var currentPath = $window.location.pathname == '/' ? '/page/home' : $window.location.pathname;
+		if (/^\/page\/external\//.test(currentPath)){
+			var pathParts = currentPath.split('/');
+			$scope.externalUsr = parseInt(pathParts[pathParts.length - 1]);
+			$scope.endPoint = postRes;
+		}else {
+			$scope.endPoint = timelineRes;
+		}
 	})
 	.controller('homeCtrl', function($scope, postRes) {
 		$scope.endPoint = postRes;
@@ -35,7 +42,8 @@ angular.module("lf.paginator", [])
 		
 		var listener = $scope.$watch("user", function (usr) {
 			if (usr) {
-				$scope.endPoint.query({user_id: $scope.user.id, limit: $scope.pageSize}).$promise.then(onSuccess(), onErr());
+				$scope.target = $scope.externalUsr ? $scope.externalUsr : usr.id;
+				$scope.endPoint.query({user_id: $scope.target, limit: $scope.pageSize}).$promise.then(onSuccess(), onErr());
 				listener();
 			}
 		});
@@ -44,7 +52,7 @@ angular.module("lf.paginator", [])
     		var defered = $q.defer();
     		var lastLoaded = $scope.items.length > 0 ? $scope.items[$scope.items.length - 1] : undefined;
     		
-    		var params = {user_id: $scope.user.id};
+    		var params = {user_id: $scope.target};
     		if (lastLoaded)
     			params.start = lastLoaded.id;
     		
@@ -68,13 +76,13 @@ angular.module("lf.paginator", [])
     			var pos = $scope.items.indexOf(found[0]);
     			tailSize = (($scope.items.length - 1 ) - pos );
     			if (tailSize < $scope.pageSize) {
-        			var res = $scope.endPoint.query({user_id: $scope.user.id, start: lastLoaded.id, limit: tailSize});
+        			var res = $scope.endPoint.query({user_id: $scope.target, start: lastLoaded.id, limit: tailSize});
     				res.$promise.then(onSuccess(defered), onErr(defered));
     			}else 
     				$scope.isBusy = false;
     				return;
     		}else if (lastLoaded.id > id) {
-    			var res = $scope.endPoint.query({user_id: $scope.user.id, begin: lastLoaded.id, end: id, tailSize: $scope.pageSize, action: 'range'});
+    			var res = $scope.endPoint.query({user_id: $scope.target, begin: lastLoaded.id, end: id, tailSize: $scope.pageSize, action: 'range'});
 				res.$promise.then(onSuccess(defered), onErr(defered));
     		}else {
 				$scope.isBusy = false;
@@ -148,19 +156,15 @@ angular.module("lf.paginator", [])
 					var pathParts = $attr.href.split('#');
 					var currentPath = $window.location.pathname == '/' ? '/page/home' : $window.location.pathname;
 					if ((pathParts[0] == '') || (pathParts[0] == currentPath)) {
-						if (pathParts.length == 2) {
-							if (/^p-/.test(pathParts[1])){
-								var id = pathParts[1].split('-')[1];
-								var promise = $scope.showUntil(id);
-								if (promise)
-									promise.then(go(id));
-								else
-									go(id);
-							}
-							if (/^fr/.test(pathParts[1])){
-								console.log('A friend request link');
-								// TODO:
-							}
+						if (pathParts.length == 2 && /^p-/.test(pathParts[1])) {
+							var id = pathParts[1].split('-')[1];
+							var promise = $scope.showUntil(id);
+							if (promise)
+								promise.then(go(id));
+							else
+								go(id);
+							
+							//if (/^fr/.test(pathParts[1])){ console.log('A friend request link'); }
 						}
 					}else {
 						$window.location.href = pathParts[0] + '?go=' + pathParts[1];

@@ -5,7 +5,12 @@ angular.module("lf.friends", [])
 		$scope.searchResults = [];
 		
 		$scope.frManager = function(frId, action) {
-			userRes.update({user_id: $scope.user.id, friendId: frId, action: action}).$promise.then(
+			if (action == 'unfriends')
+				var req = userRes.remove({user_id: $scope.user.id, friendId: frId, action: action});
+			else if (action == 'friends')
+				var req = userRes.update({user_id: $scope.user.id, friendId: frId, action: action});
+			
+			req.$promise.then(
 					function(res) {
 						var found = $filter('filter')($scope.friends, {id: frId}, true);
 						if (found.length > 0 && action == 'unfriends')

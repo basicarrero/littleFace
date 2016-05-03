@@ -15,9 +15,15 @@ angular.module("lf.resources", [])
 				});
 	})
 	.factory('userRes', function($resource) {
-		return $resource('/user/:id/:action.json', {},
+		return $resource('/user/:user_id/:action.json', {},
 				{
-					'update': { method:'PUT' }
+					'update': { method:'PUT',
+								params: { 
+									user_id: "@user_id",
+									friendId: "@friendId",
+									action: "@action"
+								}
+					}
 				});
 	})
 	.factory('JSONutils', function() {

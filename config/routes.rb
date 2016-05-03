@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   get 'page/home' => 'page#home'
   get 'page/timeline' => 'page#timeline'
+  get 'page/external/:id' => 'page#timeline'
   
   get 'user/current' => 'user#current'
   get 'user/search' => 'user#search'
@@ -13,7 +14,7 @@ Rails.application.routes.draw do
 
   get 'user/:user_id/timeline' => 'timeline#index'
   put 'user/:user_id/friends' => 'user#friends'
-  delete 'user/:user_id/friends' => 'user#unfriends'
+  delete 'user/:user_id/unfriends' => 'user#unfriends'
   
   resources :user do
     resources :post, :notif

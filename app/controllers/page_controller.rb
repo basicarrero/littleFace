@@ -3,9 +3,6 @@ class PageController < ApplicationController
   
   def timeline   
     respond_to do |format|
-      if params[:go].present?
-        @go = params[:go]
-      end
       format.html
     end
   end

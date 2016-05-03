@@ -1,8 +1,6 @@
 class PostController < ApplicationController
   before_filter :authenticate_user!
-#  before_filter do 
-#    redirect_to :new_user_session_path unless current_user && current_user.admin?
-#  end
+  #before_filter :permissionsCheck
   include PostResourceResolver
   
   def new
@@ -151,4 +149,25 @@ class PostController < ApplicationController
     def  paramID
       return params.require(:id)
     end
+    
+    
+    def  userID
+      return params.require(:user_id)
+    end
+    
+    def  permissionsCheck
+      unless (current_user && current_user.id == 1) || (current_user && current_user.id == userID.to_i)
+        redirect_to :new_user_session
+      end
+    end
+    
+#    def  userID
+#      return params.require(:user_id)
+#    end
+#    
+#    def  permissionsCheck
+#      unless (current_user && current_user.id == 1) || (current_user && current_user.id == userID.to_i)
+#        render file: "#{Rails.root}/public/403.html", layout: false, status: 403
+#      end
+#    end
 end
