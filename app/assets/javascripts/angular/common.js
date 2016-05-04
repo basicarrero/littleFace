@@ -17,8 +17,8 @@ angular.module("lf.common", [])
 						$scope.frRequests = res.requests;
 					
 					// Notifications
-					var INTERVAL = 10000;
-			    	$scope.notifs = notifRes.query({user_id: $scope.user.id, limit: $scope.maxNotifs});
+//					var INTERVAL = 10000;
+//			    	$scope.notifs = notifRes.query({user_id: $scope.user.id, limit: $scope.maxNotifs});
 //			    	$scope.notifs.$promise.then(
 //							function(res) {
 //								$scope.notifs = res;

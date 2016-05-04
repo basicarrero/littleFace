@@ -12,4 +12,5 @@ angular.module('ngCli', ['duScroll',
                          'lf.friends',
                          'lf.modalNew',
                          'lf.post',
+                         'lf.admin',
                          'lf.fileUploader']);

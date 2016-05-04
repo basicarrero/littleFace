@@ -8,11 +8,15 @@ class PageController < ApplicationController
   end
   
   def home
-    respond_to do |format|
-      if params[:go].present?
-        @go = params[:go]
+    if current_user.id == 1
+      render "page/admin"
+    else
+      respond_to do |format|
+        if params[:go].present?
+          @go = params[:go]
+        end
+        format.html
       end
-      format.html
     end
   end
 end
