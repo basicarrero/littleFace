@@ -1,9 +1,3 @@
 == README
 
-This littleFace social network project for subjet Web Systems at UCLM.
-by Basilio Carrero & Raúl Tejuelo.
-
-TODO:
-
-* Friends
-* Admin view
+A small social network project for Web Systems subjet at UCLM using Rails 4 & Angular.
