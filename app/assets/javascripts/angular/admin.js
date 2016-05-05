@@ -1,58 +1,105 @@
 angular.module("lf.admin", [])
-	.controller('adminCtrl', function($scope, userRes, postRes) {
+	.controller('adminCtrl', function($scope, userRes, postRes, JSONutils) {
 		$scope.output = [];
+		
     	var err = function(err) {
-			$scope.output += '\n' + err.statusText;
+			if ($scope.output.length > 0) $scope.output += '\n' + err.statusText;
+			else $scope.output += err.statusText;
 		};
 		
     	var out = function(res) {
-			$scope.output += '\n' + res;
+    		if (typeof res === 'string' || res instanceof String) {
+    			if ($scope.output.length > 0) $scope.output += '\n' + res;
+    			else $scope.output += res;    			
+    		}
+    		else if (res instanceof Array) {
+    			angular.forEach(res.slice().reverse(), function(r) {
+    				if ($scope.output.length > 0) $scope.output += '\n';
+    				$scope.output += JSON.stringify(r, JSONutils.escape, 4);
+    			});
+    		}else {
+				if ($scope.output.length > 0) $scope.output += '\n';
+				$scope.output += JSON.stringify(res, JSONutils.escape, 4);
+    		}
 		};
 		
     	$scope.execute = function(comm) {
-    		var commParts = comm.split(' ');
-    		if (commParts.length > 0) {
-	    		switch(commParts[0]) {
+    		//$scope.commandline = '';
+    		if (comm === 'clear') {
+    			$scope.output = '';
+    			return;
+    		}
+    		// Nasty command parser
+    		var args = comm.substring(comm.indexOf(' ') + 1);
+    		var action = comm.substring(0, comm.indexOf(' '));
+    		if (action.length > 0) {
+	    		switch(action) {
 	    		    case 'get':
-	    		    	switch(commParts.length) {
-			    		    case 2:
-			    		    	if (/^users$/.test(commParts[1])){
-			    		    		userRes.query().$promise.then(out, err);
-			    		    		return;
-			    		    	}
-			    		    	if (/^user:[0-9]+$/.test(commParts[1])) {
-			    		    		var usrId = parseInt(commParts[1].split(':')[1]);
-			    		    		userRes.get({user_id: usrId}).$promise.then(out, err);
-			    		    		return;
-			    		    	}
-			    		        break;
-			    		    case 3:
-			    		    	if (/^user:[0-9]+$/.test(commParts[1]) && /^posts$/.test(commParts[2])) {
-			    		    		var usrId = parseInt(commParts[1].split(':')[1]);
-			    		    		postRes.query({user_id: usrId}).$promise.then(out, err);
-			    		    		return;
-			    		    	}
-			    		    	if (/^user:[0-9]+$/.test(commParts[1]) && /^post:[0-9]+$/.test(commParts[2])) {
-			    		    		var usrId = parseInt(commParts[1].split(':')[1]);
-			    		    		var postId = parseInt(commParts[2].split(':')[1]);
-			    		    		postRes.query({user_id: usrId, id: postId}).$promise.then(out, err);
-			    		    		return;
-			    		    	}
-			    		        break;
-	    	    		}
+	    		    	if (/^users$/.test(args)){
+	    		    		userRes.query().$promise.then(out, err);
+	    		    		return;
+	    		    	}
+	    		    	if (/^user:[0-9]+$/.test(args)) {
+	    		    		var usrId = parseInt(args.split(':')[1]);
+	    		    		userRes.get({user_id: usrId}).$promise.then(out, err);
+	    		    		return;
+	    		    	}
+	    		    	if (/^user:[0-9]+\sposts$/.test(args)) {
+	    		    		var usrId = parseInt(args.split(' ')[0].split(':')[1]);
+	    		    		postRes.query({user_id: usrId}).$promise.then(out, err);
+	    		    		return;
+	    		    	}
+	    		    	if (/^user:[0-9]+\spost:[0-9]+$/.test(args)) {
+	    		    		var usrId = parseInt(args.split(' ')[0].split(':')[1]);
+	    		    		var postId = parseInt(args.split(' ')[1].split(':')[1]);
+	    		    		postRes.get({user_id: usrId, id: postId}).$promise.then(out, err);
+	    		    		return;
+	    		    	}
 	    		        break;
 	    		    case 'delete':
-	    		        //code block
+	    		    	if (/^user:[0-9]+$/.test(args)) {
+	    		    		var usrId = parseInt(args.split(':')[1]);
+	    		    		userRes.remove({user_id: usrId}).$promise.then(out, err);
+	    		    		return;
+	    		    	}
+	    		    	if (/^user:[0-9]+\spost:[0-9]+$/.test(args)) {
+	    		    		var usrId = parseInt(args.split(' ')[0].split(':')[1]);
+	    		    		var postId = parseInt(args.split(' ')[1].split(':')[1]);
+	    		    		postRes.remove({user_id: usrId, id: postId}).$promise.then(out, err);
+	    		    		return;
+	    		    	}	    		    	
 	    		        break;
 	    		    case 'update':
-	    		        //code block
+	    		    	if (/^user:[0-9]+\s{.*}$/.test(args)) {
+	    		    		var usrId = parseInt(args.split(':')[1]);
+	    		    		var params = args.substring(args.indexOf('{'), args.indexOf('}') + 1);
+	    		    		userRes.update({user_id: usrId, id: postId}, JSON.parse(params)).$promise.then(out, err);
+	    		    		return;
+	    		    	}
+	    		    	if (/^user:[0-9]+\spost:[0-9]+\s{.*}$/.test(args)) {
+	    		    		var usrId = parseInt(args.split(' ')[0].split(':')[1]);
+	    		    		var postId = parseInt(args.split(' ')[1].split(':')[1]);
+	    		    		var params = args.substring(args.indexOf('{'), args.indexOf('}') + 1);
+	    		    		postRes.update({user_id: usrId, id: postId}, JSON.parse(params)).$promise.then(out, err);
+	    		    		return;
+	    		    	}
 	    		        break;
 	    		    case 'create':
-	    		        //code block
+	    		    	if (/^user\s{.*}$/.test(args)) {
+	    		    		var params = args.substring(args.indexOf('{'), args.indexOf('}') + 1);
+	    		    		userRes.save(JSON.parse(params)).$promise.then(out, err);
+	    		    		return;
+	    		    	}
+	    		    	if (/^user:[0-9]+\spost\s{.*}$/.test(args)) {
+	    		    		var usrId = parseInt(args.split(' ')[0].split(':')[1]);
+	    		    		var params = args.substring(args.indexOf('{'), args.indexOf('}') + 1);
+	    		    		postRes.update({user_id: usrId}, JSON.parse(params)).$promise.then(out, err);
+	    		    		return;
+	    		    	}
 	    		        break;
 	    		}
     		} 
-    		$scope.output += '\nbad command';
+    		out('bad command');
     	};
 	})
 	.directive('scrollDown', function () {

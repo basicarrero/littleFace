@@ -1,5 +1,6 @@
 class UserController < ApplicationController
   before_filter :authenticate_user!
+  before_filter :adminCheck
   
   def current
     respond_to do |format|
@@ -19,48 +20,40 @@ class UserController < ApplicationController
   def show
      respond_to do |format|
        @user = User.where('id = ?', userID)
-       if @user.first
-         format.json { render json: @user, status: 200}
-       else
+       if @user.empty?
          format.json { render :nothing => true, :status => 404}
+       else
+         format.json { render json: @user.first, status: 200}
        end
      end
   end
   
   def unfriends
-    unless (current_user && current_user.id == 1) || (current_user && current_user.id == userID.to_i)
-      render file: "#{Rails.root}/public/403.html", layout: false, status: 403
-    else
-      respond_to do |format|
-        @user = User.where('id = ?', friends_params).first
-        if @user
-          current_user.friends.delete(@user.id)
-          @user.friends.delete(current_user.id)
-          current_user.save!
-          @user.save!
-          format.json { render json: @user, status: 200}
-        else
-          format.json { render :nothing => true, :status => 404}
-        end
+    respond_to do |format|
+      @user = User.where('id = ?', friends_params).first
+      if @user
+        @target.friends.delete(@user.id)
+        @user.friends.delete(@target.id)
+        @target.save!
+        @user.save!
+        format.json { render json: @user, status: 200}
+      else
+        format.json { render :nothing => true, :status => 404}
       end
     end
   end
   
   def friends
-    unless (current_user && current_user.id == 1) || (current_user && current_user.id == userID.to_i)
-      render file: "#{Rails.root}/public/403.html", layout: false, status: 403
-    else
-      respond_to do |format|
-        @user = User.where('id = ?', friends_params).first
-        if @user
-          current_user.friends.push(@user.id)
-          @user.friends.push(current_user.id)
-          current_user.save!
-          @user.save!
-          format.json { render json: @user, status: 200}
-        else
-          format.json { render :nothing => true, :status => 404}
-        end
+    respond_to do |format|
+      @user = User.where('id = ?', friends_params).first
+      if @user
+        @target.friends.push(@user.id)
+        @user.friends.push(@target.id)
+        @target.save!
+        @user.save!
+        format.json { render json: @user, status: 200}
+      else
+        format.json { render :nothing => true, :status => 404}
       end
     end
   end
@@ -76,19 +69,61 @@ class UserController < ApplicationController
        end
      end
   end
+  
+  def index
+     respond_to do |format|
+       @users = User.all()
+       if index_params[:limit].present?
+         @users = @users.limit(index_params[:limit])
+       end
+       format.json { render json: @users, status: 200}
+     end
+  end
+  
+  def create
+     respond_to do |format|
+       # TODO
+       format.json { render :nothing => true, :status => 200}
+     end
+  end
+  
+  def update
+     respond_to do |format|
+       # TODO
+       format.json { render :nothing => true, :status => 200}
+     end
+  end
 
   private
-    def  search_params
+    def index_params
+      return params.permit(:limit)
+    end
+
+    def search_params
       return params.require(:searchToken)
     end
     
-    def  friends_params
+    def friends_params
       return params.require(:friendId)
     end
     
-    def  userID
-      return params.require(:user_id)
+    
+    def userID
+      return params.require(:id)
+    end
+
+    def  adminCheck
+      if params[:id].present? && current_user
+        if current_user.id == 1
+          @target = User.where('id = ?', userID)
+          if @target.empty?
+            render :nothing => true, :status => 404
+          else
+            @target = @target.first
+          end
+        else
+          @target = current_user
+        end
+      end
     end
 end
-
-

@@ -1,6 +1,5 @@
 class NotifController < ApplicationController
   before_filter :authenticate_user!
-  #before_filter :permissionsCheck
   
   def new
     return Notif.new
@@ -36,7 +35,6 @@ class NotifController < ApplicationController
   
   def create
     respond_to do |format|
-      byebug
       @notif = Notif.create(
         user_id: create_params,
         from: current_user.id,
@@ -62,22 +60,4 @@ class NotifController < ApplicationController
       params.require(:n_type_aux)
       return params.permit(:id, :n_type_aux)
     end
-    
-    
-    
-#    def  userID
-#      return params.require(:user_id)
-#    end
-#    
-#    def  permissionsCheck
-#      unless (current_user && current_user.id == 1) || (current_user && current_user.id == userID.to_i)
-#        render file: "#{Rails.root}/public/403.html", layout: false, status: 403
-#      else
-#        if current_user.id == 1
-#          target = User.where('id = ?', userID)
-#        else
-#          @target = current_user
-#        end
-#      end
-#    end
 end

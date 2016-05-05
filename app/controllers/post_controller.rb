@@ -1,6 +1,6 @@
 class PostController < ApplicationController
   before_filter :authenticate_user!
-  #before_filter :permissionsCheck
+  before_filter :adminCheck
   include PostResourceResolver
   
   def new
@@ -8,12 +8,12 @@ class PostController < ApplicationController
   end
   
   def likeIt (p)
-    existingNotif = Notif.where(user_id: p.user_id, from: current_user.id, n_type: 'like', n_type_aux: p.id)
+    existingNotif = Notif.where(user_id: p.user_id, from: @target.id, n_type: 'like', n_type_aux: p.id)
     if existingNotif.empty?
       Notif.create(
         user_id: p.user_id,
-        from: current_user.id,
-        message: current_user.name + ' Likes your post: ' + p.title,
+        from: @target.id,
+        message: @target.name + ' Likes your post: ' + p.title,
         n_type: 'like',
         n_type_aux: p.id,
         link: '/page/home#p-' + p.id.to_s)
@@ -23,10 +23,10 @@ class PostController < ApplicationController
   def like
     respond_to do |format|
       @post = Post.where('id = ' + paramID).first
-      if @post.likes.include? current_user.id
-        @post.likes.delete(current_user.id)
+      if @post.likes.include? @target.id
+        @post.likes.delete(@target.id)
       else
-        @post.likes.push(current_user.id)
+        @post.likes.push(@target.id)
       end
       @post.save!
       likeIt(@post)
@@ -34,13 +34,20 @@ class PostController < ApplicationController
     end
   end
   
+  def share
+     respond_to do |format|
+       # TODO
+       format.json { render :nothing => true, :status => 200}
+     end
+  end
+  
   def index
     respond_to do |format|
       if index_params[:start].present?
-        startPost = current_user.posts.where('id = ?', index_params[:start])
-        @posts = current_user.posts.where('created_at < ?', startPost.first.created_at).order('created_at DESC').limit(index_params[:limit])
+        startPost = @target.posts.where('id = ?', index_params[:start])
+        @posts = @target.posts.where('created_at < ?', startPost.first.created_at).order('created_at DESC').limit(index_params[:limit])
       else
-        @posts = current_user.posts.order('created_at DESC').limit(index_params[:limit])
+        @posts = @target.posts.order('created_at DESC').limit(index_params[:limit])
       end
       format.json { render json: postArray_resolver(@posts), status: 200}
     end
@@ -48,12 +55,12 @@ class PostController < ApplicationController
   
   def range
     respond_to do |format|
-      startPost = current_user.posts.where('id = ?', range_params[:begin])
-      endPost = current_user.posts.where('id = ?', range_params[:end])
+      startPost = @target.posts.where('id = ?', range_params[:begin])
+      endPost = @target.posts.where('id = ?', range_params[:end])
       if startPost.first && endPost.first
-        @posts = current_user.posts.where('created_at < ? AND created_at >= ?', startPost.first.created_at, endPost.first.created_at).order('created_at DESC')
+        @posts = @target.posts.where('created_at < ? AND created_at >= ?', startPost.first.created_at, endPost.first.created_at).order('created_at DESC')
         if range_params[:tailSize].present?
-          @posts += current_user.posts.where('created_at < ?', endPost.first.created_at).order('created_at DESC').limit(range_params[:tailSize])
+          @posts += @target.posts.where('created_at < ?', endPost.first.created_at).order('created_at DESC').limit(range_params[:tailSize])
         end
         format.json { render json: postArray_resolver(@posts), status: 200}
       else
@@ -63,7 +70,7 @@ class PostController < ApplicationController
   end
   
   def show
-    @post = current_user.posts.where('id = ' + paramID)
+    @post = @target.posts.where('id = ' + paramID)
     respond_to do |format|
       if @post.empty?
         format.json { render :nothing => true, :status => 404}
@@ -74,7 +81,7 @@ class PostController < ApplicationController
   end
   
   def destroy
-    @post = current_user.posts.destroy(paramID).first
+    @post = @target.posts.destroy(paramID).first
     Cloudinary::Api.delete_resources(@post.photos)
     respond_to do |format|
       if !@post.persisted?
@@ -87,7 +94,7 @@ class PostController < ApplicationController
   
   def recent
     # get posts of the present year
-    posts = current_user.posts.select('id, title, created_at').where('extract(year from created_at) = extract(year from CURRENT_DATE)').order('created_at DESC')
+    posts = @target.posts.select('id, title, created_at').where('extract(year from created_at) = extract(year from CURRENT_DATE)').order('created_at DESC')
     @monthsPosts = [[],[],[],[],[],[],[],[],[],[],[],[]]
     posts.each do |p|
       @monthsPosts[p.created_at.to_time.month - 1].push({id: p.id, title: p.title})
@@ -98,7 +105,7 @@ class PostController < ApplicationController
   end
   
   def update
-    @post = current_user.posts.where('id = ' + paramID).first
+    @post = @target.posts.where('id = ' + paramID).first
     beforePhotos = @post.photos
     @post.update(update_params)
     photosForDeletion = beforePhotos - @post.photos
@@ -109,7 +116,7 @@ class PostController < ApplicationController
   end
   
   def create
-    @post = current_user.posts.create(post_params)
+    @post = @target.posts.create(post_params)
     respond_to do |format|
       if @post.valid?
         statusCode = 201
@@ -141,7 +148,6 @@ class PostController < ApplicationController
     end
     
     def index_params
-      params.require(:limit)
       return params.permit(:limit, :start)
     end
     
@@ -151,28 +157,27 @@ class PostController < ApplicationController
       return params.permit(:begin, :end, :tailSize)
     end
     
-    def  paramID
+    def paramID
       return params.require(:id)
     end
     
     
-    def  userID
+    def userID
       return params.require(:user_id)
     end
     
-    def  permissionsCheck
-      unless (current_user && current_user.id == 1) || (current_user && current_user.id == userID.to_i)
-        redirect_to :new_user_session
+    def  adminCheck
+      if params[:user_id].present? && current_user
+        if current_user.id == 1
+          @target = User.where('id = ?', userID)
+          if @target.empty?
+            render :nothing => true, :status => 404
+          else
+            @target = @target.first
+          end
+        else
+          @target = current_user
+        end
       end
     end
-    
-#    def  userID
-#      return params.require(:user_id)
-#    end
-#    
-#    def  permissionsCheck
-#      unless (current_user && current_user.id == 1) || (current_user && current_user.id == userID.to_i)
-#        render file: "#{Rails.root}/public/403.html", layout: false, status: 403
-#      end
-#    end
 end

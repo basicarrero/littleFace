@@ -18,7 +18,7 @@
 			        </div>
 				</form>
 			</div>
-	        <ul ng-show="tabSelector" class="nav nav-stacked hidden" reveal time="1500">
+	        <ul ng-show="tabSelector" class="nav nav-stacked">
 	        	<li class="contact-animation tab-animation"  ng-repeat="usrEntry in (filteredContent = (searchResults | filter:searchToken))">
 					<div class="user-entry btn-group" ng-if="user.friends.indexOf(usrEntry.id) >= 0" style="margin-top: 1px; margin-bottom: 1px">
 							<a href="/page/external/{{usrEntry.id}}" class="btn userEntry col-xs-10">
@@ -32,9 +32,9 @@
 							</a>
 							<button class="btn btn-warning col-xs-2" style="margin: 0; height: 35px" ng-click="sendFrReq(usrEntry)"><i class="glyphicon glyphicon-envelope"></i></button>
 					</div>
-	          	</li>
-	          	<uib-alert type="info" ng-show="filteredContent.length == 0 && tabSelector" style="margin-top: 20px" >Hit enter for a global search!</uib-alert>          	
+	          	</li>    	
 	      	</ul>
+	      	<uib-alert reveal time="2000" class="hidden" type="info" ng-show="filteredContent.length == 0 && tabSelector" style="margin-top: 20px" >Hit enter for a global search!</uib-alert> 
 	        <ul ng-show="!tabSelector" class="nav nav-stacked">
 	        	<li class="contact-animation tab-animation" ng-repeat="req in frRequests">
 					<div class="user-entry btn-group" style="margin-top: 1px; margin-bottom: 1px">

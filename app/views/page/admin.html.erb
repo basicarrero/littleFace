@@ -3,21 +3,21 @@
 		<div class="panel panel-default panel-corners transparent" ng-controller="adminCtrl">
 			<div class="panel-heading well">
 				<h2><strong>Admin console <small>Use:</small><br/></strong></h2>
-				<h5 class="console">get|delete|create|update users|user:id {params}</h5>
-				<h5 class="console">get|delete|create|update user:id posts|post:id {params}</h5>
+				<h5 class="console">get|delete|create|update users|user:id {params as json}</h5>
+				<h5 class="console">get|delete|create|update user:id posts|post:id {params as json}</h5>
+				<h5 class="console">clear (purge output)</h5>
 			</div>
 			<div class="panel-body">
 				<form class="form-search" style="padding-top: 10px" ng-submit="execute(commandline)"> 
 			        <div class="input-group" >
 			          <input type="text" ng-model="commandline" class="form-control console" placeholder="Command line">
 			          <span class="input-group-btn">
-			          	<button type="button" class="btn btn-default" ng-click="commandline = ''"><i class="glyphicon glyphicon-remove-circle"></i></button>
 			          	<button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-tasks"></i> run</button>
 			          </span>
 			        </div>
 				</form>
 		        <div>
-					<textarea scroll-down ng-model="output" class="console" style="width: 100%; height: 300px; margin-top: 30px;"></textarea>
+					<textarea scroll-down ng-model="output" class="console" style="width: 100%; height: 300px; margin-top: 30px; font-size: small"></textarea>
 		        </div>
 			</div>
 			<div class="panel-footer transparent well">
