@@ -34,22 +34,20 @@ class PostController < ApplicationController
     end
   end
   
-  def share
-     respond_to do |format|
-       # TODO
-       format.json { render :nothing => true, :status => 200}
-     end
-  end
-  
   def index
     respond_to do |format|
-      if index_params[:start].present?
-        startPost = @target.posts.where('id = ?', index_params[:start])
-        @posts = @target.posts.where('created_at < ?', startPost.first.created_at).order('created_at DESC').limit(index_params[:limit])
+      @user = User.where('id = ?', userID).first
+      if @user
+        if index_params[:start].present?
+          startPost = @user.posts.where('id = ?', index_params[:start])
+          @posts = @user.posts.where('created_at < ?', startPost.first.created_at).order('created_at DESC').limit(index_params[:limit])
+        else
+          @posts = @user.posts.order('created_at DESC').limit(index_params[:limit])
+        end
+        format.json { render json: postArray_resolver(@posts), status: 200}
       else
-        @posts = @target.posts.order('created_at DESC').limit(index_params[:limit])
+        format.json { render :nothing => true, :status => 404}
       end
-      format.json { render json: postArray_resolver(@posts), status: 200}
     end
   end
   
@@ -81,44 +79,52 @@ class PostController < ApplicationController
   end
   
   def destroy
-    @post = @target.posts.destroy(paramID).first
-    Cloudinary::Api.delete_resources(@post.photos)
     respond_to do |format|
-      if !@post.persisted?
-          format.json { render json: @post, status: 200}
+      @post = @target.posts.destroy(paramID).first
+      if @post.destroyed?
+        if !@post.photos.empty?
+          Cloudinary::Api.delete_resources(@post.photos)
+        end
+        format.json { render json: @post, status: 200}
       else
-          format.json { render :nothing => true, :status => 500}
+        format.json { render :nothing => true, :status => 500}
       end
     end
   end
   
   def recent
     # get posts of the present year
-    posts = @target.posts.select('id, title, created_at').where('extract(year from created_at) = extract(year from CURRENT_DATE)').order('created_at DESC')
-    @monthsPosts = [[],[],[],[],[],[],[],[],[],[],[],[]]
-    posts.each do |p|
-      @monthsPosts[p.created_at.to_time.month - 1].push({id: p.id, title: p.title})
-    end
-    respond_to do |format|
+      respond_to do |format|
+      posts = @target.posts.select('id, title, created_at').where('extract(year from created_at) = extract(year from CURRENT_DATE)').order('created_at DESC')
+      @monthsPosts = [[],[],[],[],[],[],[],[],[],[],[],[]]
+      posts.each do |p|
+        @monthsPosts[p.created_at.to_time.month - 1].push({id: p.id, title: p.title})
+      end
       format.json { render json: @monthsPosts, status: 200}
     end
   end
   
   def update
-    @post = @target.posts.where('id = ' + paramID).first
-    beforePhotos = @post.photos
-    @post.update(update_params)
-    photosForDeletion = beforePhotos - @post.photos
-    Cloudinary::Api.delete_resources(photosForDeletion)
     respond_to do |format|
-      format.json { render json:  post_resolver(@post), status: 200}
+      @post = @target.posts.where('id = ' + paramID).first
+      beforePhotos = @post.photos
+      res = @post.update(update_params)
+      if res
+        photosForDeletion = beforePhotos - @post.photos
+        if !photosForDeletion.empty?
+          Cloudinary::Api.delete_resources(photosForDeletion)
+        end
+        format.json { render json:  post_resolver(@post), status: 200}
+      else
+        format.json { render :nothing => true, :status => 500}
+      end
     end
   end
   
   def create
     @post = @target.posts.create(post_params)
     respond_to do |format|
-      if @post.valid?
+      if @post.persisted?
         statusCode = 201
       else
         statusCode = 500

@@ -42,7 +42,7 @@ angular.module("lf.paginator", [])
 		
 		var listener = $scope.$watch("user", function (usr) {
 			if (usr) {
-				$scope.target = $scope.externalUsr ? $scope.externalUsr : usr.id;
+				$scope.target = $scope.externalUsr == undefined ? usr.id : $scope.externalUsr;
 				$scope.endPoint.query({user_id: $scope.target, limit: $scope.pageSize}).$promise.then(onSuccess(), onErr());
 				listener();
 			}
@@ -163,8 +163,6 @@ angular.module("lf.paginator", [])
 								promise.then(go(id));
 							else
 								go(id);
-							
-							//if (/^fr/.test(pathParts[1])){ console.log('A friend request link'); }
 						}
 					}else {
 						$window.location.href = pathParts[0] + '?go=' + pathParts[1];

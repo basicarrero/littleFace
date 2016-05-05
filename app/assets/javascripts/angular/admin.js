@@ -24,7 +24,7 @@ angular.module("lf.admin", [])
 		};
 		
     	$scope.execute = function(comm) {
-    		//$scope.commandline = '';
+    		$scope.commandline = '';
     		if (comm === 'clear') {
     			$scope.output = '';
     			return;
@@ -93,7 +93,7 @@ angular.module("lf.admin", [])
 	    		    	if (/^user:[0-9]+\spost\s{.*}$/.test(args)) {
 	    		    		var usrId = parseInt(args.split(' ')[0].split(':')[1]);
 	    		    		var params = args.substring(args.indexOf('{'), args.indexOf('}') + 1);
-	    		    		postRes.update({user_id: usrId}, JSON.parse(params)).$promise.then(out, err);
+	    		    		postRes.save({user_id: usrId}, JSON.parse(params)).$promise.then(out, err);
 	    		    		return;
 	    		    	}
 	    		        break;

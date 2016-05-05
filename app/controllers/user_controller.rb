@@ -72,7 +72,7 @@ class UserController < ApplicationController
   
   def index
      respond_to do |format|
-       @users = User.all()
+       @users = User.all().order('id DESC')
        if index_params[:limit].present?
          @users = @users.limit(index_params[:limit])
        end
@@ -81,20 +81,66 @@ class UserController < ApplicationController
   end
   
   def create
-     respond_to do |format|
-       # TODO
-       format.json { render :nothing => true, :status => 200}
-     end
+    @user = User.create(create_params)
+    respond_to do |format|
+      if @user.persisted?
+        statusCode = 201
+      else
+        statusCode = 500
+      end
+      format.json { render json:  @user, status: statusCode}
+    end
+  end
+  
+  def destroy
+    respond_to do |format|
+      @target.destroy()
+      if @target.destroyed?
+          format.json { render json: @target, status: 200}
+      else
+          format.json { render :nothing => true, :status => 500}
+      end
+    end
   end
   
   def update
-     respond_to do |format|
-       # TODO
-       format.json { render :nothing => true, :status => 200}
-     end
+    respond_to do |format|
+      res = @target.update(update_params)
+      if res
+        format.json { render json:  @target, status: 200}
+      else
+        format.json { render :nothing => true, :status => 500}
+      end
+    end
   end
-
+  
+  def share # Untested
+    @post = Post.where('id = ?', share_params)
+    if @post.empty?
+      format.json { render :nothing => true, :status => 404}
+    else
+      @target.posts.push(@post.first)
+      res = @target.save
+      if res
+        format.json { render json:  @post, status: 201}
+      else
+        format.json { render :nothing => true, :status => 500}
+      end
+    end
+  end
+  
   private
+    def create_params
+      params.require(:email)
+      params.require(:password)
+      params.require(:password_confirmation)
+      return params.permit(:name, :email, :password, :password_confirmation, :friends => [])
+    end
+    
+    def update_params
+      return params.permit(:name, :email, :password, :password_confirmation, :friends => [])
+    end
+    
     def index_params
       return params.permit(:limit)
     end
@@ -107,6 +153,9 @@ class UserController < ApplicationController
       return params.require(:friendId)
     end
     
+    def share_params
+      return params.require(:post_id)
+    end
     
     def userID
       return params.require(:id)
