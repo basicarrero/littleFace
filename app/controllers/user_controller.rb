@@ -114,21 +114,6 @@ class UserController < ApplicationController
     end
   end
   
-  def share # Untested
-    @post = Post.where('id = ?', share_params)
-    if @post.empty?
-      format.json { render :nothing => true, :status => 404}
-    else
-      @target.posts.push(@post.first)
-      res = @target.save
-      if res
-        format.json { render json:  @post, status: 201}
-      else
-        format.json { render :nothing => true, :status => 500}
-      end
-    end
-  end
-  
   private
     def create_params
       params.require(:email)
@@ -151,10 +136,6 @@ class UserController < ApplicationController
     
     def friends_params
       return params.require(:friendId)
-    end
-    
-    def share_params
-      return params.require(:post_id)
     end
     
     def userID

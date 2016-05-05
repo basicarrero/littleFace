@@ -1,7 +1,7 @@
 <div class="container" style="margin-top: 4%">
-	<div class="col-md-5 col-md-offset-6">
+	<div class="col-md-6 col-md-offset-5">
 		<div class="panel panel-default panel-corners transparent">
-			<div class="panel-heading well"><h2><strong class="">Sign up</strong></h2></div>
+			<div class="panel-heading well"><h2><strong>Sign up</strong></h2></div>
 			<div class="panel-body">
 				<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
 				  <%= devise_error_messages! %>
@@ -10,7 +10,12 @@
 				    <%= f.label :email %><br />
 				    <%= f.email_field :email, autofocus: true %>
 				  </div>
-				
+				  
+				  <div class="field">
+				    <%= f.label :name %><br />
+				    <%= f.text_field :name %>
+				  </div>
+				  
 				  <div class="field">
 				    <%= f.label :password %>
 				    <% if @minimum_password_length %>

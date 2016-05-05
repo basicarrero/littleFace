@@ -51,6 +51,21 @@ class PostController < ApplicationController
     end
   end
   
+  def share
+    @post = Post.where('id = ?', paramID)
+    if @post.empty?
+      format.json { render :nothing => true, :status => 404}
+    else
+      @post = @target.posts.create(title: @post.first.title, text: @post.first.text, photos: @post.first.photos)
+      if @post.persisted?
+        statusCode = 201
+      else
+        statusCode = 500
+      end
+      format.json { render json:  post_resolver(@post), status: statusCode}
+    end
+  end
+   
   def range
     respond_to do |format|
       startPost = @target.posts.where('id = ?', range_params[:begin])

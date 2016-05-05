@@ -1,6 +1,5 @@
 angular.module("lf.friends", [])
 	.controller('friendsCtrl', function($scope, $filter, userRes, notifRes) {
-
 		$scope.tabSelector = true;
 		$scope.goBack = false;
 		$scope.searchResults = [];

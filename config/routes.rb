@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, :controllers => { registrations: 'registrations' }
 
   get 'page/home' => 'page#home'
   get 'page/timeline' => 'page#timeline'
@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get 'user/search' => 'user#search'
   
   put 'user/:user_id/post/:id/like' => 'post#like'
+  put 'user/:user_id/post/:id/share' => 'post#share'
   get 'user/:user_id/post/recent' => 'post#recent'
   get 'user/:user_id/post/range' => 'post#range'
 

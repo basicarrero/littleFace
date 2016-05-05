@@ -17,29 +17,29 @@ angular.module("lf.common", [])
 						$scope.frRequests = res.requests;
 					
 					// Notifications
-//					var INTERVAL = 10000;
-//			    	$scope.notifs = notifRes.query({user_id: $scope.user.id, limit: $scope.maxNotifs});
-//			    	$scope.notifs.$promise.then(
-//							function(res) {
-//								$scope.notifs = res;
-//								$interval(function(){
-//									var queryParams = {user_id: $scope.user.id, limit: $scope.maxNotifs};
-//									if ($scope.notifs.length > 0) { queryParams.last = $scope.notifs[0].id; }
-//									notifRes.query(queryParams).$promise.then(
-//											function(res) {
-//												console.log(res);
-//												angular.forEach(res.slice().reverse(), function(r) {
-//													$scope.notifs.unshift(r);
-//													if (r.n_type == 'friendship')
-//														$scope.frRequests.push(r);
-//													if ($scope.notifs.length > $scope.maxNotifs)
-//														$scope.notifs.pop();
-//													$scope.newNotifsCount += 1;
-//													$scope.sound.play();
-//												});
-//											});
-//								},INTERVAL);	// milliseconds
-//							});
+					var INTERVAL = 10000;
+			    	$scope.notifs = notifRes.query({user_id: $scope.user.id, limit: $scope.maxNotifs});
+			    	$scope.notifs.$promise.then(
+							function(res) {
+								$scope.notifs = res;
+								$interval(function(){
+									var queryParams = {user_id: $scope.user.id, limit: $scope.maxNotifs};
+									if ($scope.notifs.length > 0) { queryParams.last = $scope.notifs[0].id; }
+									notifRes.query(queryParams).$promise.then(
+											function(res) {
+												console.log(res);
+												angular.forEach(res.slice().reverse(), function(r) {
+													$scope.notifs.unshift(r);
+													if (r.n_type == 'friendship')
+														$scope.frRequests.push(r);
+													if ($scope.notifs.length > $scope.maxNotifs)
+														$scope.notifs.pop();
+													$scope.newNotifsCount += 1;
+													$scope.sound.play();
+												});
+											});
+								},INTERVAL);	// milliseconds
+							});
 				},
 				function(err) { 
 					console.log(err);

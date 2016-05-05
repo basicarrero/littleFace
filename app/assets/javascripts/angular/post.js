@@ -1,5 +1,5 @@
 angular.module("lf.post", [])
-	.controller('postCtrl', function($scope, $filter, postRes, $q, JSONutils) {
+	.controller('postCtrl', function($scope, $filter, $q, postRes, JSONutils) {
 		$scope.pop = {
 			title : 'Friends who likes It:',
 			place: 'right',
@@ -112,6 +112,10 @@ angular.module("lf.post", [])
 		// Update likes
 		$scope.likeIt = function(post) {
 			update(post, {}, 'like');
+		};
+		// Share post
+		$scope.share = function(post) {
+			update(post, {}, 'share');
 		};
 		// Delete uploaded images if go back without saving
 		$scope.back = function() {

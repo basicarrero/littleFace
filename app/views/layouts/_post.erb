@@ -70,7 +70,10 @@
 			    </script>
 				<button class="btn" ng-class="post.likes.indexOf(user.id) < 0 ? 'btn-primary' : 'btn-info';" ng-click="likeIt(post)" ng-show="!edition"
 				popover-enable="likers.length > 0" popover-trigger="mouseenter" uib-popover-template="pop.templateUrl" popover-title="{{pop.title}}" popover-placement="{{pop.place}}">
-					<i class="glyphicon glyphicon-thumbs-up"></i>&nbsp;Like!
+					<i class="glyphicon glyphicon-thumbs-up icon-space"></i>Like!
+				</button>
+				<button class="btn btn-success" ng-click="share(post)" ng-show="!editable">
+					<i class="glyphicon glyphicon-share-alt icon-space"></i>Share
 				</button>
 			</div>
 		</div>
