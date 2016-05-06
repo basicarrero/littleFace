@@ -2,10 +2,10 @@
 
 A small social network project for Web Systems subjet at UCLM using Rails 4 & Angular.
 
-Living Demo: https://littleface.herokuapp.com/
+Living Demo: https://littleface.herokuapp.com
 
 == Some features:
-- Multi file image upload powered by http://cloudinary.com/
+- Multi file image upload powered by http://cloudinary.com
 - Dynamic post load
 - Reactive using Angular, jQuery and Bootstrap
 - Admin web console
