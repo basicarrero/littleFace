@@ -127,11 +127,11 @@ angular.module("lf.paginator", [])
 	}])
 	.directive('linkHandler',['$window', '$timeout', '$animate', function ($window, $timeout, $animate) {
 	    return {
-			controller : function($scope, $document) {
+			controller : ['$scope', '$document', function($scope, $document) {
 		    	$scope.goTo = function(target) {
 		    		return $document.scrollToElementAnimated(target, 130);
 		    	};
-			},
+			}],
 			link : function($scope, $element, $attr) {
 				
 		    	var go = function (id, after) {
