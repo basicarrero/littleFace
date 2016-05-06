@@ -117,13 +117,13 @@ angular.module("lf.paginator", [])
     		$scope.lastDeleted = p;
     	};
     	
-    	angular.element($window).bind('scroll',['$document', '$window', function () {
+    	angular.element($window).bind('scroll', function () {
             //console.log('in scroll ' + (angular.element($document)[0].body.clientHeight - $window.innerHeight - 60) + ' - ' + $window.pageYOffset);
 			if ($window.pageYOffset > angular.element($document)[0].body.clientHeight - $window.innerHeight - 60) {
                 $scope.showMore();
             }
 			//$scope.$apply(); // scroll will run outside of the normal digest cycle, so we need to apply changes to scope
-        }]);
+        });
 	}])
 	.directive('linkHandler',['$window', '$timeout', '$animate', function ($window, $timeout, $animate) {
 	    return {
