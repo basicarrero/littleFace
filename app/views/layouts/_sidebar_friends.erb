@@ -34,7 +34,9 @@
 					</div>
 	          	</li>    	
 	      	</ul>
-	      	<uib-alert reveal class="hidden" type="info" ng-show="filteredContent.length == 0 && tabSelector" style="margin-top: 20px" >Hit enter for a global search!</uib-alert> 
+	      	<div class="hidden" reveal>
+	      		<uib-alert type="info" ng-show="filteredContent.length == 0 && tabSelector" style="margin-top: 20px" >Hit enter for a global search!</uib-alert>
+	      	</div> 
 	        <ul ng-show="!tabSelector" class="nav nav-stacked">
 	        	<li class="contact-animation tab-animation" ng-repeat="req in frRequests">
 					<div class="user-entry btn-group" style="margin-top: 1px; margin-bottom: 1px; width: 100%;">
