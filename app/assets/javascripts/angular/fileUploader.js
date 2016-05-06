@@ -10,9 +10,9 @@ angular.module("lf.fileUploader", [])
 	    		callback: "&",
 	    		id: "@"
 	    	},
-            controller: function($scope, $document) {
+            controller: ['$scope', '$document', function($scope, $document) {
             	$scope.rows = [];
-        	},
+        	}],
 			link : function($scope, $element, $attr) {
 				var input = angular.element($element.children().find("input"));
 				

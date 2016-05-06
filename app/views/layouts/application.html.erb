@@ -9,7 +9,7 @@
 		<%= cloudinary_js_config %>
 		<%= csrf_meta_tags %>
 	</head>
-	<body ng-app="ngCli" style="overflow-x: hidden;">
+	<body ng-app="ngCli" style="overflow-x: hidden;" ng-strict-di>
 		<% if user_signed_in? %>
 			<div ng-controller="commonCtrl">
 				<%= yield %>
