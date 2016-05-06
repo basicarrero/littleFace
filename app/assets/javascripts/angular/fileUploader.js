@@ -1,5 +1,5 @@
 angular.module("lf.fileUploader", [])
-	.directive('fileUploader', function () {
+	.directive('fileUploader',[ function () {
 	    return {
 	    	scope: {
 	    		uploads: "=",
@@ -177,4 +177,4 @@ angular.module("lf.fileUploader", [])
 				});
 			}
 	    };
-	});
+	}]);

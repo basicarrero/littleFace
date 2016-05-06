@@ -127,7 +127,7 @@ angular.module("lf.post", [])
 			});
 		};
 	}])
-	.directive('richTextEditor', function() {
+	.directive('richTextEditor',[ function() {
 	    return {
             restrict : "E",
             replace: true,
@@ -184,8 +184,8 @@ angular.module("lf.post", [])
         	    });
             }
 	    };
-	})
-	.directive('galleryLink', function () {
+	}])
+	.directive('galleryLink',[ function () {
 	    return {
 			restrict: 'A',
 	        link: function ($scope, $element, $attrs) {
@@ -197,8 +197,8 @@ angular.module("lf.post", [])
 				});
 	        }
 	    };
-	})
-	.directive('cloudImage', function () {
+	}])
+	.directive('cloudImage',[ function () {
 	    return {
 	        replace: true,
 			restrict: 'E',
@@ -211,4 +211,4 @@ angular.module("lf.post", [])
 	        	$element.replaceWith(img[0]);
 	        }
 	    };
-	});
+	}]);

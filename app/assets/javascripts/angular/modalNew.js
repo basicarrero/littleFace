@@ -36,7 +36,7 @@ angular.module("lf.modalNew", [])
 			clear();
 		};
 	}])
-	.directive('modalActions', function () {
+	.directive('modalActions',[ function () {
 	    return {
 	        restrict: 'A',
 	        require: 'ngController',
@@ -49,4 +49,4 @@ angular.module("lf.modalNew", [])
 				};
 			}
 	    };
-	});
+	}]);

@@ -102,7 +102,7 @@ angular.module("lf.admin", [])
     		out('bad command');
     	};
 	}])
-	.directive('scrollDown', function () {
+	.directive('scrollDown',[ function () {
 	    return {
 	        restrict: 'A',
 			link : function($scope, $element, $attr) {
@@ -113,4 +113,4 @@ angular.module("lf.admin", [])
 				    );
 			}
 	    };
-	});
+	}]);

@@ -26,12 +26,12 @@ angular.module("lf.resources", [])
 					}
 				});
 	}])
-	.filter('capitalize', function() {
+	.filter('capitalize',[ function() {
 	    return function(input) {
 	      return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
 	    };
-	})
-	.factory('JSONutils', function() {
+	}])
+	.factory('JSONutils',[ function() {
 		return {
 			escape: function (key, val) {
 					    if (typeof(val)!="string") return val;
@@ -47,4 +47,4 @@ angular.module("lf.resources", [])
 					      ;
 					}
 		};
-	});
+	}]);
