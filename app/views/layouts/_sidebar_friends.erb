@@ -12,7 +12,7 @@
 			        <div class="input-group" >
 			          <input type="text" ng-model="searchToken" class="form-control" placeholder="Username or eMail">
 			          <span class="input-group-btn">
-			          	<button type="button" class="btn btn-success hidden" ng-click="clearSearch()" ng-show="goBack" reveal><i class="glyphicon glyphicon-step-backward"></i></button>
+			          	<button type="button" class="btn btn-success hidden" ng-click="clearSearch()" ng-show="goBack" reveal time="1500"><i class="glyphicon glyphicon-step-backward"></i></button>
 			          	<button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
 			          </span>
 			        </div>
@@ -34,7 +34,7 @@
 					</div>
 	          	</li>    	
 	      	</ul>
-	      	<div class="hidden" reveal>
+	      	<div class="hidden" reveal time="2000">
 	      		<uib-alert type="info" ng-show="filteredContent.length == 0 && tabSelector" style="margin-top: 20px" >Hit enter for a global search!</uib-alert>
 	      	</div> 
 	        <ul ng-show="!tabSelector" class="nav nav-stacked">
