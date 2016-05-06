@@ -1,3 +1,5 @@
 == README
 
 A small social network project for Web Systems subjet at UCLM using Rails 4 & Angular.
+
+Living Demo: https://littleface.herokuapp.com/
