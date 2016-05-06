@@ -14,4 +14,5 @@ Living Demo: https://littleface.herokuapp.com
 - Likes & Share buttons
 - Easy registration throught Devise
 
-For running locally do: rake db:setup && rails s
+===For running locally do:
+  rake db:setup && rails s
