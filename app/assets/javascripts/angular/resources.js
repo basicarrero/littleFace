@@ -1,20 +1,20 @@
 angular.module("lf.resources", [])
-	.factory('postRes', function($resource) {
+	.factory('postRes',['$resource', function($resource) {
 		return $resource('/user/:user_id/post/:id/:action.json', {},
 			    {
 		    		'update': { method:'PUT' }
 			    });
-	})
-	.factory('timelineRes', function($resource) {
+	}])
+	.factory('timelineRes',['$resource', function($resource) {
 		return $resource('/user/:user_id/timeline.json');
-	})
-	.factory('notifRes', function($resource) {
+	}])
+	.factory('notifRes',['$resource', function($resource) {
 		return $resource('/user/:user_id/notif/:id/:action.json', {},
 				{
 					'update': { method:'PUT' }
 				});
-	})
-	.factory('userRes', function($resource) {
+	}])
+	.factory('userRes',['$resource', function($resource) {
 		return $resource('/user/:user_id/:action.json', {},
 				{
 					'update': { method:'PUT',
@@ -25,7 +25,7 @@ angular.module("lf.resources", [])
 								}
 					}
 				});
-	})
+	}])
 	.filter('capitalize', function() {
 	    return function(input) {
 	      return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';

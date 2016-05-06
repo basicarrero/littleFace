@@ -1,5 +1,5 @@
 angular.module("lf.modalNew", [])
-	.controller('modalNewPostCtrl', function($scope, $document, postRes, JSONutils) {
+	.controller('modalNewPostCtrl',['$scope', '$document', 'postRes', 'JSONutils', function($scope, $document, postRes, JSONutils) {
 		$scope.currentUploads = 0;
 		$scope.doPost = false;
 		$scope.text = '';
@@ -35,7 +35,7 @@ angular.module("lf.modalNew", [])
 				function(err) { console.log(err); });
 			clear();
 		};
-	})
+	}])
 	.directive('modalActions', function () {
 	    return {
 	        restrict: 'A',

@@ -1,5 +1,5 @@
 angular.module("lf.friends", [])
-	.controller('friendsCtrl', function($scope, $filter, userRes, notifRes) {
+	.controller('friendsCtrl',['$scope', '$filter', 'userRes', 'notifRes', function($scope, $filter, userRes, notifRes) {
 		$scope.tabSelector = true;
 		$scope.goBack = false;
 		$scope.searchResults = [];
@@ -61,4 +61,4 @@ angular.module("lf.friends", [])
 			}
 		});
 		
-	});
+	}]);

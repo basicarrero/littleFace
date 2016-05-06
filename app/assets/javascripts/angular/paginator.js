@@ -1,5 +1,5 @@
 angular.module("lf.paginator", [])
-	.controller('timelineCtrl', function($scope, $window, timelineRes, postRes) {
+	.controller('timelineCtrl',['$scope', '$window', 'timelineRes', 'postRes', function($scope, $window, timelineRes, postRes) {
 		var currentPath = $window.location.pathname == '/' ? '/page/home' : $window.location.pathname;
 		if (/^\/page\/external\//.test(currentPath)){
 			var pathParts = currentPath.split('/');
@@ -8,11 +8,11 @@ angular.module("lf.paginator", [])
 		}else {
 			$scope.endPoint = timelineRes;
 		}
-	})
-	.controller('homeCtrl', function($scope, postRes) {
+	}])
+	.controller('homeCtrl',['$scope', 'postRes', function($scope, postRes) {
 		$scope.endPoint = postRes;
-	})
-	.controller('paginatorCtrl', function($scope, $window, $document, $filter, $q) {
+	}])
+	.controller('paginatorCtrl',['$scope', '$window', '$document', '$filter', '$q', function($scope, $window, $document, $filter, $q) {
     	$scope.pageSize = 8;
     	$scope.items = [];
     	$scope.isBusy = true;
@@ -124,8 +124,8 @@ angular.module("lf.paginator", [])
             }
 			//$scope.$apply(); // scroll will run outside of the normal digest cycle, so we need to apply changes to scope
         });
-	})
-	.directive('linkHandler', function ($window, $timeout, $animate) {
+	}])
+	.directive('linkHandler',['$window', '$timeout', '$animate', function ($window, $timeout, $animate) {
 	    return {
 			controller : function($scope, $document) {
 		    	$scope.goTo = function(target) {
@@ -184,8 +184,8 @@ angular.module("lf.paginator", [])
 	        	}
 			}
 	    };
-	})
-	.directive('reveal', function ($timeout) {
+	}])
+	.directive('reveal',['$timeout', function ($timeout) {
 	    return {
 	        restrict: 'A',
 	        scope: {time: "@"},
@@ -196,4 +196,4 @@ angular.module("lf.paginator", [])
 				}, t);
 			}
 	    };
-	});
+	}]);

@@ -1,5 +1,5 @@
 angular.module("lf.common", [])
-	.controller('commonCtrl', function($scope, $interval, $filter, ngAudio, userRes, notifRes) {
+	.controller('commonCtrl',['$scope', '$interval', '$filter', 'ngAudio', 'userRes', 'notifRes', function($scope, $interval, $filter, ngAudio, userRes, notifRes) {
     	// User Info
     	$scope.friends = [];
 		$scope.notifs = [];
@@ -63,8 +63,8 @@ angular.module("lf.common", [])
 			});
 			return res;
 		};
-	})
-	.directive('pulsingBadge', function($animate, $timeout) {
+	}])
+	.directive('pulsingBadge',['$animate', '$timeout', function($animate, $timeout) {
 	    return {
             restrict : 'E',
             replace: true,
@@ -82,7 +82,7 @@ angular.module("lf.common", [])
 	    		});
             }
 	    };
-	})
+	}])
 	.directive('notif', function() {
 	    return {
             restrict : 'E',

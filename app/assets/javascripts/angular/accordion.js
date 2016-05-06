@@ -1,5 +1,5 @@
 angular.module("lf.accordion", [])
-	.controller('accordionCtrl', function($scope, $q, $timeout, postRes) {
+	.controller('accordionCtrl',['$scope', '$q', '$timeout', 'postRes', function($scope, $q, $timeout, postRes) {
 		$scope.data = [{label:'December', posts: []},
 		               {label:'November', posts: []},
 		               {label:'October', posts: []},
@@ -74,4 +74,4 @@ angular.module("lf.accordion", [])
 			if (month.posts && month.posts.length > 0) { return false; }
 			else { return true; }
 		};
-	});
+	}]);

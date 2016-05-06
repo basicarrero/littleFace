@@ -1,5 +1,5 @@
 angular.module("lf.post", [])
-	.controller('postCtrl', function($scope, $filter, $q, postRes, JSONutils) {
+	.controller('postCtrl',['$scope', '$filter', '$q', 'postRes', 'JSONutils', function($scope, $filter, $q, postRes, JSONutils) {
 		$scope.pop = {
 			title : 'Friends who likes It:',
 			place: 'right',
@@ -126,7 +126,7 @@ angular.module("lf.post", [])
 				console.log('removed photo: ' + token);
 			});
 		};
-	})
+	}])
 	.directive('richTextEditor', function() {
 	    return {
             restrict : "E",

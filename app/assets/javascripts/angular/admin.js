@@ -1,5 +1,5 @@
 angular.module("lf.admin", [])
-	.controller('adminCtrl', function($scope, userRes, postRes, JSONutils) {
+	.controller('adminCtrl', ['$scope', 'userRes', 'postRes', 'JSONutils', function($scope, userRes, postRes, JSONutils) {
 		$scope.output = [];
 		
     	var err = function(err) {
@@ -101,7 +101,7 @@ angular.module("lf.admin", [])
     		} 
     		out('bad command');
     	};
-	})
+	}])
 	.directive('scrollDown', function () {
 	    return {
 	        restrict: 'A',
